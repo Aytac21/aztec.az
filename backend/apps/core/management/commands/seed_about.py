@@ -12,26 +12,24 @@ class Command(BaseCommand):
             defaults={
                 'tag': 'Haqqımızda',
                 'title': 'Gələcəyi inşa edirik',
-                'summary_p1': 'Aztec Construction 2017-ci ildən tikinti, təmir və dizayn sahəsində fəaliyyət göstərən, dinamik və etibarlı şirkətdir. 500-dən çox yaşayış və qeyri-yaşayış obyektinin tikintisində iştirak etmişik.',
-                'summary_p2': '4 ofis, 100-dən çox peşəkar əməkdaşla Azərbaycanın hər 12 regionunda xidmət göstəririk.',
-                'badge1_number': '500+',
+                'summary_p1': 'Aztec Construction Azərbaycanın mərkəzi bölgələrində fəaliyyət göstərən tikinti və layihələndirmə şirkətidir. Baş ofisimiz Mingəçevir şəhərində yerləşir. Fərdi yaşayış evləri, kommersiya obyektləri, iaşə məkanları və dövlət layihələri üzrə ixtisaslaşmışıq.',
+                'summary_p2': 'Bu günə qədər 100-dən çox layihəni uğurla tamamlamışıq. 30-dan çox dövlət müəssisəsi ilə əməkdaşlıq etmişik. Fəaliyyət coğrafiyamız Mingəçevir, Yevlax, Ağdaş, Bərdə, Tərtər və Lənkəranı əhatə edir.',
+                'badge1_number': '100+',
                 'badge1_label': 'Layihə',
-                'badge2_number': '4',
-                'badge2_label': 'Ofis',
-                'badge3_number': '100+',
-                'badge3_label': 'Əməkdaş',
+                'badge2_number': '30+',
+                'badge2_label': 'Dövlət əməkdaşlığı',
+                'badge3_number': '6+',
+                'badge3_label': 'Region',
                 'profile_tag': 'Profil',
                 'profile_title': 'Şirkət profili',
                 'profile_text': (
-                    '<p>Aztec Construction 2017-ci ildən tikinti, təmir və dizayn sahəsində fəaliyyət göstərən, '
-                    'dinamik və etibarlı şirkətdir. Müasir yanaşma və yüksək keyfiyyət standartları ilə bazarda '
-                    'mövqeyimizi gücləndiririk.</p>'
-                    '<p>Bu günə qədər 500-dən çox yaşayış və qeyri-yaşayış obyektinin, həmçinin bir çox dövlət '
-                    'əhəmiyyətli layihənin tikintisində və təmirində iştirak etmişik. Hər layihədə planlama '
-                    'mərhələsindən təhvilə qədər tam nəzarət edirik. Peşəkar komanda, operativ icra, zəmanətli '
-                    'nəticə, keyfiyyətə nəzarət.</p>'
-                    '<p>Ərazi üzrə 4 ofis və 100-dən çox peşəkar əməkdaşımızla Ümumi Azərbaycan ərazisində, '
-                    'hər 12 regionda xidmət göstəririk.</p>'
+                    '<p>Aztec Construction Azərbaycanın mərkəzi bölgələrində fəaliyyət göstərən tikinti və '
+                    'layihələndirmə şirkətidir. Baş ofisimiz Mingəçevir şəhərində, Məhəmmədhüseyn Şəhriyar '
+                    'küçəsi 75 ünvanında yerləşir. Şirkətimiz fərdi yaşayış evləri, kommersiya obyektləri, '
+                    'iaşə məkanları və dövlət layihələri üzrə ixtisaslaşmışdır.</p>'
+                    '<p>Bu günə qədər 100-dən çox layihəni uğurla tamamlamışıq. 30-dan çox dövlət müəssisəsi '
+                    'ilə əməkdaşlıq etmişik. Fəaliyyət coğrafiyamız Mingəçevir, Yevlax, Ağdaş, Bərdə, Tərtər '
+                    'və Lənkəranı əhatə edir.</p>'
                     '<p><strong>Aztec Construction — etibarlı tərəfdaşınız.</strong></p>'
                 ),
                 'values_tag': 'Dəyərlər',
@@ -40,10 +38,10 @@ class Command(BaseCommand):
                 'vm_tag': 'Hədəflər',
                 'vm_title': 'Baxışımız və missiyamız',
                 'vision_title': 'Baxışımız',
-                'vision_text': 'Azərbaycanın tikinti bazarında keyfiyyət, dəqiqlik və müştəri məmnuniyyəti ilə tanınan aparıcı şirkət olmaq.',
+                'vision_text': 'Azərbaycanın regional tikinti bazarında keyfiyyət, dəqiqlik və müştəri məmnuniyyəti ilə tanınan aparıcı şirkət olmaq.',
                 'mission_title': 'Missiyamız',
                 'mission_text': 'Hər layihədə müştərinin ehtiyaclarını dəqiq anlayaraq, peşəkar komandamız və keyfiyyətli materiallarla davamlı, estetik və funksional məkanlar yaratmaq.',
-                'mega_description': '2017-ci ildən fəaliyyət, 500+ layihə.',
+                'mega_description': '100+ layihə, 30+ dövlət əməkdaşlığı, 6+ region.',
             },
         )
         action = 'Created' if created else 'Updated'

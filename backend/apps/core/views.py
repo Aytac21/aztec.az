@@ -3,7 +3,7 @@ import json
 from django.http import Http404, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 
-from .models import AboutContent, ContactInfo, ContactSubmission, GalleryItem, KnowledgeBase, News, PageHero, Project, Service, Vacancy
+from .models import AboutContent, Advantage, ContactInfo, ContactSubmission, GalleryItem, KnowledgeBase, News, PageHero, Project, Service, Vacancy
 
 
 def _cors(response):
@@ -144,11 +144,42 @@ def knowledge_base_list(request):
     items = []
     for kb in qs:
         items.append({
+            'slug': kb.slug,
             'tag': kb.tag,
             'title': kb.title,
             'description': kb.description,
         })
     return _cors(JsonResponse({'knowledge_base': items}))
+
+
+def knowledge_base_detail(request, slug):
+    try:
+        kb = KnowledgeBase.objects.get(slug=slug, is_active=True)
+    except KnowledgeBase.DoesNotExist:
+        raise Http404('Article not found')
+    data = {
+        'slug': kb.slug,
+        'tag': kb.tag,
+        'title': kb.title,
+        'description': kb.description,
+        'content': kb.content,
+        'meta_title': kb.meta_title,
+        'meta_description': kb.meta_description,
+    }
+    return _cors(JsonResponse(data))
+
+
+def advantages_list(request):
+    qs = Advantage.objects.all()
+    items = []
+    for a in qs:
+        items.append({
+            'icon': a.icon,
+            'title': a.title,
+            'description': a.description,
+            'order': a.order,
+        })
+    return _cors(JsonResponse({'advantages': items}))
 
 
 def vacancies_list(request):
@@ -310,6 +341,7 @@ def submit_contact(request):
     ContactSubmission.objects.create(
         name=name,
         phone=phone,
+        email=body.get('email', ''),
         project_type=body.get('project_type', ''),
         message=body.get('message', ''),
     )

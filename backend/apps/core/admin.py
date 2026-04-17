@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import AboutContent, ContactInfo, ContactSubmission, GalleryItem, KnowledgeBase, News, PageHero, Project, Service, Vacancy
+from .models import AboutContent, Advantage, ContactInfo, ContactSubmission, GalleryItem, KnowledgeBase, News, PageHero, Project, Service, Vacancy
 
 
 @admin.register(PageHero)
@@ -32,10 +32,16 @@ class ServiceAdmin(admin.ModelAdmin):
 
 @admin.register(KnowledgeBase)
 class KnowledgeBaseAdmin(admin.ModelAdmin):
-    list_display = ('title', 'tag', 'is_active', 'order')
+    list_display = ('title', 'slug', 'tag', 'is_active', 'order')
     list_editable = ('order', 'is_active')
     list_filter = ('is_active', 'tag')
-    search_fields = ('title', 'description')
+    search_fields = ('title', 'description', 'content')
+    prepopulated_fields = {'slug': ('title',)}
+    fieldsets = (
+        ('Əsas', {'fields': ('slug', 'tag', 'title', 'order', 'is_active')}),
+        ('Məzmun', {'fields': ('description', 'content')}),
+        ('SEO', {'fields': ('meta_title', 'meta_description')}),
+    )
 
 
 @admin.register(News)
@@ -113,13 +119,24 @@ class ContactInfoAdmin(admin.ModelAdmin):
 
 @admin.register(ContactSubmission)
 class ContactSubmissionAdmin(admin.ModelAdmin):
-    list_display = ('name', 'phone', 'project_type', 'created_at')
+    list_display = ('name', 'phone', 'email', 'project_type', 'created_at')
     list_filter = ('project_type', 'created_at')
-    search_fields = ('name', 'phone', 'message')
-    readonly_fields = ('name', 'phone', 'project_type', 'message', 'created_at')
+    search_fields = ('name', 'phone', 'email', 'message')
+    readonly_fields = ('name', 'phone', 'email', 'project_type', 'message', 'created_at')
 
     def has_add_permission(self, request):
         return False
+
+
+@admin.register(Advantage)
+class AdvantageAdmin(admin.ModelAdmin):
+    list_display = ('title', 'icon', 'order')
+    list_editable = ('order',)
+    search_fields = ('title', 'description')
+    fieldsets = (
+        ('Əsas', {'fields': ('icon', 'title', 'order')}),
+        ('Məzmun', {'fields': ('description',)}),
+    )
 
 
 @admin.register(Project)

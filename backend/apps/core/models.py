@@ -148,14 +148,18 @@ class News(models.Model):
 
 
 class KnowledgeBase(models.Model):
+    slug = models.SlugField(max_length=200, unique=True, blank=True, verbose_name='Slug')
     tag = models.CharField(max_length=100, verbose_name='Tag')
     title = models.CharField(max_length=300, verbose_name='Başlıq')
-    description = models.CharField(max_length=500, verbose_name='Açıqlama')
+    description = models.CharField(max_length=500, verbose_name='Qısa açıqlama')
+    content = models.TextField(blank=True, verbose_name='Tam məzmun (HTML)')
+    meta_title = models.CharField(max_length=200, blank=True, verbose_name='Meta Title')
+    meta_description = models.TextField(blank=True, verbose_name='Meta Description')
     order = models.PositiveIntegerField(default=0, verbose_name='Sıralama')
     is_active = models.BooleanField(default=True, verbose_name='Aktiv')
 
     class Meta:
-        verbose_name = 'Bilik bazası'
+        verbose_name = 'Bilik bazası məqaləsi'
         verbose_name_plural = 'Bilik bazası'
         ordering = ['order']
 
@@ -338,9 +342,29 @@ class Project(models.Model):
         return self.title
 
 
+class Advantage(models.Model):
+    icon = models.CharField(
+        max_length=100,
+        verbose_name='İkon (FA class)',
+        help_text='Məs: fas fa-drafting-compass',
+    )
+    title = models.CharField(max_length=200, verbose_name='Başlıq')
+    description = models.TextField(verbose_name='Açıqlama')
+    order = models.PositiveIntegerField(default=0, verbose_name='Sıralama')
+
+    class Meta:
+        verbose_name = 'Üstünlük'
+        verbose_name_plural = 'Üstünlüklər'
+        ordering = ['order']
+
+    def __str__(self):
+        return self.title
+
+
 class ContactSubmission(models.Model):
     name = models.CharField(max_length=200, verbose_name='Ad')
     phone = models.CharField(max_length=30, verbose_name='Telefon')
+    email = models.EmailField(blank=True, verbose_name='E-poçt')
     project_type = models.CharField(max_length=100, blank=True, verbose_name='Növ')
     message = models.TextField(blank=True, verbose_name='Mesaj')
     created_at = models.DateTimeField(auto_now_add=True)
