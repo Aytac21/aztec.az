@@ -1,0 +1,26 @@
+[Unit]
+Description=Aztec Construction — Gunicorn daemon
+Requires=gunicorn.socket
+After=network.target
+
+[Service]
+Type=notify
+User=www-data
+Group=www-data
+RuntimeDirectory=gunicorn
+WorkingDirectory=/var/www/aztec.az/backend
+EnvironmentFile=/var/www/aztec.az/backend/.env
+ExecStart=/var/www/aztec.az/backend/.venv/bin/gunicorn \
+    --workers 3 \
+    --bind unix:/run/gunicorn/aztec.sock \
+    --access-logfile /var/log/gunicorn/aztec-access.log \
+    --error-logfile /var/log/gunicorn/aztec-error.log \
+    config.wsgi:application
+ExecReload=/bin/kill -s HUP $MAINPID
+KillMode=mixed
+TimeoutStopSec=5
+PrivateTmp=true
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

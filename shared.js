@@ -1,5 +1,22 @@
 /* Aztec Construction v4 - Full Translation + All JS */
 
+/* Backend API base.
+   - On localhost dev: http://127.0.0.1:8000 (Django runserver)
+   - On production: '' (same-origin, nginx reverse-proxies /api/ to gunicorn)
+   Override manually: set window.API_BASE before including shared.js. */
+(function(){
+  if(window.API_BASE !== undefined) return;
+  var h = location.hostname;
+  window.API_BASE = (h === 'localhost' || h === '127.0.0.1' || h === '') ? 'http://127.0.0.1:8000' : '';
+})();
+
+/* Append ?lang=xx to API paths so backend serves translated model fields */
+window.apiUrl = function(path){
+  var lang = localStorage.getItem('aztec-lang') || 'az';
+  var sep = path.indexOf('?') > -1 ? '&' : '?';
+  return window.API_BASE + path + sep + 'lang=' + encodeURIComponent(lang);
+};
+
 /* Mobile Menu */
 function toggleMenu(){var m=document.getElementById('mm');m.classList.toggle('open');document.body.style.overflow=m.classList.contains('open')?'hidden':''}
 
@@ -13,7 +30,9 @@ document.querySelectorAll('.reveal').forEach(function(el){new IntersectionObserv
 function openMega(){document.getElementById('megaMenu').classList.add('show');document.getElementById('megaOv').classList.add('show');document.getElementById('nav').classList.add('mega-open')}
 function closeMega(){document.getElementById('megaMenu').classList.remove('show');document.getElementById('megaOv').classList.remove('show');document.getElementById('nav').classList.remove('mega-open')}
 
-/* ======== FULL TRANSLATION SYSTEM ======== */
+/* ======== FULL TRANSLATION SYSTEM ========
+   Strings are loaded from backend (/api/i18n/<lang>/), translated via Rosetta.
+   Local fallback below covers AZ in case backend is unavailable. */
 var TR={
   az:{
     'navHome':'Əsas',
@@ -462,10 +481,8 @@ var TR={
 };
 
 
-function setLang(l){
-  localStorage.setItem('aztec-lang',l);
+function _applyLang(l){
   document.documentElement.lang=l;
-  /* Update all lang buttons */
   document.querySelectorAll('.lang-sw button,.mob-lang button').forEach(function(b){
     b.classList.toggle('active',b.textContent.trim()===l.toUpperCase());
   });
@@ -523,10 +540,39 @@ function setLang(l){
     var k=btn.getAttribute('data-tr');
     if(d[k])btn.textContent=d[k];
   });
+
+  /* Placeholder attributes */
+  document.querySelectorAll('[data-tr-ph]').forEach(function(el){
+    var k=el.getAttribute('data-tr-ph');
+    if(d[k])el.setAttribute('placeholder',d[k]);
+  });
+}
+
+/* Fetch translations from backend, merge into TR, then apply */
+function _loadLang(l, cb){
+  if(TR[l] && TR[l].__fromBackend){ cb && cb(); return; }
+  var base = window.API_BASE || '';
+  fetch(base + '/api/i18n/' + l + '/', {cache:'no-store'})
+    .then(function(r){ if(!r.ok) throw new Error('i18n '+r.status); return r.json(); })
+    .then(function(data){
+      TR[l] = Object.assign({}, TR[l]||{}, data.strings||{});
+      TR[l].__fromBackend = true;
+      cb && cb();
+    })
+    .catch(function(err){ console.warn('[i18n] fetch failed:', err); cb && cb(); });
+}
+
+function setLang(l){
+  var prev = localStorage.getItem('aztec-lang') || 'az';
+  localStorage.setItem('aztec-lang', l);
+  /* If lang changes, reload so backend-driven content (services, projects, news,
+     heroes, etc.) is re-fetched in the new language. */
+  if(prev !== l){ location.reload(); return; }
+  _loadLang(l, function(){ _applyLang(l); });
 }
 
 /* Auto-restore saved language */
-(function(){var sl=localStorage.getItem('aztec-lang');if(sl&&sl!=='az')setLang(sl)})();
+(function(){var sl=localStorage.getItem('aztec-lang');if(sl&&sl!=='az')setLang(sl);else _loadLang('az');})();
 
 /* Counter Animation */
 document.querySelectorAll('.stat-n[data-t]').forEach(function(c){
@@ -550,7 +596,7 @@ document.addEventListener('DOMContentLoaded', function(){
   var grid = document.getElementById('galleryGrid');
   if(!grid) return;
 
-  fetch(window.API_BASE + '/api/gallery/', {cache:'no-store'})
+  fetch(window.apiUrl('/api/gallery/'), {cache:'no-store'})
     .then(function(r){ if(!r.ok) throw new Error('gal '+r.status); return r.json(); })
     .then(function(data){
       var list = data.gallery;
@@ -591,16 +637,13 @@ document.addEventListener('DOMContentLoaded',function(){
 });
 
 /* ======== BACKEND PAGE HERO LOADER ======== */
-/* Override with window.API_BASE='https://...' before shared.js if needed */
-window.API_BASE = window.API_BASE || 'http://127.0.0.1:8000';
-
 document.addEventListener('DOMContentLoaded', function(){
   var hero = document.querySelector('section.page-hero[data-page]');
   if(!hero) return;
   var slug = hero.getAttribute('data-page');
   if(!slug) return;
 
-  fetch(window.API_BASE + '/api/hero/' + slug + '/', {cache:'no-store'})
+  fetch(window.apiUrl('/api/hero/' + slug + '/'), {cache:'no-store'})
     .then(function(r){ if(!r.ok) throw new Error('hero '+r.status); return r.json(); })
     .then(function(d){
       var tagEl  = hero.querySelector('.tag');
@@ -657,11 +700,11 @@ document.addEventListener('DOMContentLoaded', function(){
   if(!megaGrid) return;
 
   /* About description in mega menu */
-  fetch(window.API_BASE + '/api/about/', {cache:'no-store'})
+  fetch(window.apiUrl('/api/about/'), {cache:'no-store'})
     .then(function(r){ if(!r.ok) throw new Error('about-nav '+r.status); return r.json(); })
     .then(function(d){
       if(d.mega_description){
-        var megaAboutItem = megaGrid.querySelector('a[href="haqqimizda.html"] p');
+        var megaAboutItem = megaGrid.querySelector('a[href="haqqimizda"] p');
         if(megaAboutItem) megaAboutItem.textContent = d.mega_description;
       }
     })
@@ -670,7 +713,7 @@ document.addEventListener('DOMContentLoaded', function(){
   /* Featured project in mega menu */
   var megaFeatured = document.querySelector('.mega-featured');
   if(megaFeatured){
-    fetch(window.API_BASE + '/api/projects/featured/', {cache:'no-store'})
+    fetch(window.apiUrl('/api/projects/featured/'), {cache:'no-store'})
       .then(function(r){ if(!r.ok) throw new Error('feat '+r.status); return r.json(); })
       .then(function(data){
         var f = data.featured;
@@ -680,7 +723,7 @@ document.addEventListener('DOMContentLoaded', function(){
         var link = megaFeatured.querySelector('a.u-link');
         if(h3) h3.textContent = f.title;
         if(p) p.textContent = f.description;
-        if(link) link.href = 'layihe-detail.html?slug=' + f.slug;
+        if(link) link.href = 'layihe-detail?slug=' + f.slug;
       })
       .catch(function(err){ console.warn('[nav-featured] load failed:', err); });
   }
@@ -697,7 +740,7 @@ document.addEventListener('DOMContentLoaded', function(){
 
   if(!homeAboutText && !aboutProfile) return;
 
-  fetch(window.API_BASE + '/api/about/', {cache:'no-store'})
+  fetch(window.apiUrl('/api/about/'), {cache:'no-store'})
     .then(function(r){ if(!r.ok) throw new Error('about '+r.status); return r.json(); })
     .then(function(d){
 
@@ -713,7 +756,7 @@ document.addEventListener('DOMContentLoaded', function(){
             '<div class="a-badge"><div class="n">' + d.badge2_number + '</div><div class="l">' + d.badge2_label + '</div></div>' +
             '<div class="a-badge"><div class="n">' + d.badge3_number + '</div><div class="l">' + d.badge3_label + '</div></div>' +
           '</div>' +
-          '<a href="haqqimizda.html" class="u-link" style="margin-top:20px">Ətraflı oxuyun <i class="fas fa-arrow-right"></i></a>';
+          '<a href="haqqimizda" class="u-link" style="margin-top:20px">Ətraflı oxuyun <i class="fas fa-arrow-right"></i></a>';
       }
       if(homeAboutImg && d.image){
         homeAboutImg.innerHTML = '<img src="' + d.image + '" alt="Aztec Construction" style="width:100%;height:100%;object-fit:cover">';
@@ -763,7 +806,7 @@ document.addEventListener('DOMContentLoaded', function(){
   var vacList = document.getElementById('vacancyList');
   if(!vacList) return;
 
-  fetch(window.API_BASE + '/api/vacancies/', {cache:'no-store'})
+  fetch(window.apiUrl('/api/vacancies/'), {cache:'no-store'})
     .then(function(r){ if(!r.ok) throw new Error('vac '+r.status); return r.json(); })
     .then(function(data){
       var list = data.vacancies;
@@ -804,7 +847,7 @@ document.addEventListener('DOMContentLoaded', function(){
   var newsGrid = document.getElementById('newsGrid');
   if(!newsGrid) return;
 
-  fetch(window.API_BASE + '/api/news/', {cache:'no-store'})
+  fetch(window.apiUrl('/api/news/'), {cache:'no-store'})
     .then(function(r){ if(!r.ok) throw new Error('news '+r.status); return r.json(); })
     .then(function(data){
       var list = data.news;
@@ -817,7 +860,7 @@ document.addEventListener('DOMContentLoaded', function(){
           ? '<img src="' + n.image + '" alt="' + n.title + '" style="width:100%;height:100%;object-fit:cover;border-radius:var(--r) var(--r) 0 0">'
           : '<i class="fas fa-image"></i>';
         card.innerHTML =
-          '<a href="xeber.html?slug=' + n.slug + '" style="text-decoration:none;color:inherit">' +
+          '<a href="xeber?slug=' + n.slug + '" style="text-decoration:none;color:inherit">' +
           '<div class="nimg">' + imgHtml + '</div>' +
           '<div class="nb">' +
             '<div class="nd">' + (n.date_label || '') + '</div>' +
@@ -836,7 +879,7 @@ document.addEventListener('DOMContentLoaded', function(){
   var kbGrid = document.getElementById('kbGrid');
   if(!kbGrid) return;
 
-  fetch(window.API_BASE + '/api/knowledge-base/', {cache:'no-store'})
+  fetch(window.apiUrl('/api/knowledge-base/'), {cache:'no-store'})
     .then(function(r){ if(!r.ok) throw new Error('kb '+r.status); return r.json(); })
     .then(function(data){
       var list = data.knowledge_base;
@@ -864,7 +907,7 @@ document.addEventListener('DOMContentLoaded', function(){
   var slug = params.get('slug');
   if(!slug){ newsDetailContent.innerHTML = '<p>Xəbər tapılmadı.</p>'; return; }
 
-  fetch(window.API_BASE + '/api/news/' + slug + '/', {cache:'no-store'})
+  fetch(window.apiUrl('/api/news/' + slug + '/'), {cache:'no-store'})
     .then(function(r){ if(!r.ok) throw new Error('news-d '+r.status); return r.json(); })
     .then(function(d){
       /* Hero fields */
@@ -885,7 +928,7 @@ document.addEventListener('DOMContentLoaded', function(){
       if(d.video_url){
         html += '<h2>Video</h2><div class="detail-video"><iframe src="' + d.video_url + '" allow="autoplay;encrypted-media" allowfullscreen></iframe></div>';
       }
-      html += '<div style="margin-top:40px;text-align:center"><a href="elaqe.html" class="u-link lg">Konsultasiya alın <i class="fas fa-arrow-right"></i></a></div>';
+      html += '<div style="margin-top:40px;text-align:center"><a href="elaqe" class="u-link lg">Konsultasiya alın <i class="fas fa-arrow-right"></i></a></div>';
       newsDetailContent.innerHTML = html;
     })
     .catch(function(err){
@@ -900,7 +943,7 @@ document.addEventListener('DOMContentLoaded', function(){
   var svcContainer = document.getElementById('svcBlocksContainer');
   if(!svcGrid && !svcContainer) return;
 
-  fetch(window.API_BASE + '/api/services/', {cache:'no-store'})
+  fetch(window.apiUrl('/api/services/'), {cache:'no-store'})
     .then(function(r){ if(!r.ok) throw new Error('svc '+r.status); return r.json(); })
     .then(function(data){
       var list = data.services;
@@ -910,7 +953,7 @@ document.addEventListener('DOMContentLoaded', function(){
       if(svcGrid){
         list.forEach(function(s){
           var card = document.createElement('a');
-          card.href = 'xidmet-detail.html?slug=' + s.slug;
+          card.href = 'xidmet-detail?slug=' + s.slug;
           card.className = 'svc reveal visible';
           card.style.textDecoration = 'none';
           card.style.color = 'inherit';
@@ -947,7 +990,7 @@ document.addEventListener('DOMContentLoaded', function(){
               '<h2>' + s.title + '</h2>' +
               '<p>' + s.description + '</p>' +
               catHtml +
-              '<a href="xidmet-detail.html?slug=' + s.slug + '" class="u-link">Ətraflı bax <i class="fas fa-arrow-right"></i></a>' +
+              '<a href="xidmet-detail?slug=' + s.slug + '" class="u-link">Ətraflı bax <i class="fas fa-arrow-right"></i></a>' +
             '</div>';
           svcContainer.appendChild(block);
         });
@@ -964,7 +1007,7 @@ document.addEventListener('DOMContentLoaded', function(){
   var catFilters = document.getElementById('projCatFilters');
   if(!projGrid && !homeProjGrid) return;
 
-  fetch(window.API_BASE + '/api/projects/', {cache:'no-store'})
+  fetch(window.apiUrl('/api/projects/'), {cache:'no-store'})
     .then(function(r){ if(!r.ok) throw new Error('proj '+r.status); return r.json(); })
     .then(function(data){
       var list = data.projects;
@@ -974,7 +1017,7 @@ document.addEventListener('DOMContentLoaded', function(){
       if(homeProjGrid){
         list.slice(0, 3).forEach(function(p){
           var card = document.createElement('a');
-          card.href = 'layihe-detail.html?slug=' + p.slug;
+          card.href = 'layihe-detail?slug=' + p.slug;
           card.className = 'proj reveal visible';
           var imgHtml = p.image
             ? '<img src="' + p.image + '" alt="' + p.title + '" style="width:100%;height:100%;object-fit:cover">'
@@ -1009,7 +1052,7 @@ document.addEventListener('DOMContentLoaded', function(){
             if(!matchStatus || !matchCat) return;
 
             var card = document.createElement('a');
-            card.href = 'layihe-detail.html?slug=' + p.slug;
+            card.href = 'layihe-detail?slug=' + p.slug;
             card.className = 'proj reveal visible';
             card.style.textDecoration = 'none';
             var imgHtml = p.image
@@ -1041,7 +1084,7 @@ document.addEventListener('DOMContentLoaded', function(){
           var cats = {};
           filtered.forEach(function(p){ cats[p.category] = true; });
           var catKeys = Object.keys(cats);
-          if(catKeys.length <= 1){
+          if(catKeys.length === 0){
             catFilters.style.display = 'none';
             currentCat = 'all';
             return;
@@ -1111,7 +1154,7 @@ document.addEventListener('DOMContentLoaded', function(){
   var slug = params.get('slug');
   if(!slug){ detailContent.innerHTML = '<p>Layihə tapılmadı.</p>'; return; }
 
-  fetch(window.API_BASE + '/api/projects/' + slug + '/', {cache:'no-store'})
+  fetch(window.apiUrl('/api/projects/' + slug + '/'), {cache:'no-store'})
     .then(function(r){ if(!r.ok) throw new Error('detail '+r.status); return r.json(); })
     .then(function(d){
       /* Hero */
@@ -1185,7 +1228,7 @@ document.addEventListener('DOMContentLoaded', function(){
   var slug = params.get('slug');
   if(!slug){ svcDetailContent.innerHTML = '<p>Xidmət tapılmadı.</p>'; return; }
 
-  fetch(window.API_BASE + '/api/services/' + slug + '/', {cache:'no-store'})
+  fetch(window.apiUrl('/api/services/' + slug + '/'), {cache:'no-store'})
     .then(function(r){ if(!r.ok) throw new Error('svc-detail '+r.status); return r.json(); })
     .then(function(d){
       /* Hero */
@@ -1217,6 +1260,13 @@ document.addEventListener('DOMContentLoaded', function(){
       if(d.image){
         html += '<div style="width:100%;aspect-ratio:16/9;border-radius:var(--r2);overflow:hidden;margin-bottom:32px;background:var(--g1)">';
         html += '<img src="' + d.image + '" alt="' + d.title + '" style="width:100%;height:100%;object-fit:cover">';
+        html += '</div>';
+      }
+
+      /* Video (mp4) */
+      if(d.video){
+        html += '<div class="detail-video" style="width:100%;aspect-ratio:16/9;border-radius:var(--r2);overflow:hidden;margin-bottom:32px;background:#000">';
+        html += '<video src="' + d.video + '" controls playsinline preload="metadata" style="width:100%;height:100%;object-fit:cover"></video>';
         html += '</div>';
       }
 

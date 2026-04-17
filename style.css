@@ -31,7 +31,8 @@ img{max-width:100%;display:block}
 .nav.mega-open .logo-name{color:var(--dark)}.nav.mega-open .logo-name small{color:var(--g4)}
 .nav.mega-open .burger span{background:var(--dark)}
 .nav.mega-open .lang-sw{background:var(--g1)}
-.nav.mega-open .lang-sw button{color:var(--g4)}
+.nav.mega-open .lang-sw button{color:var(--dark)}
+.nav.mega-open .lang-sw button.active,.nav.scrolled .lang-sw button.active{background:var(--accent);color:var(--white)}
 .nav-center{display:flex;align-items:center;gap:24px}
 .nav-center>a,.mega-trigger{color:rgba(255,255,255,0.7);font-size:15px;font-weight:600;letter-spacing:1px;text-transform:uppercase;position:relative;padding:6px 0;background:none;border:none;cursor:pointer;font-family:var(--font);transition:all var(--tr);display:inline-flex;align-items:center}
 .nav-center>a::after,.mega-trigger::after{content:'';position:absolute;bottom:0;left:0;width:0;height:1.5px;background:var(--accent);transition:width var(--tr)}
@@ -43,7 +44,7 @@ img{max-width:100%;display:block}
 .lang-sw{display:flex;align-items:center;gap:2px;background:rgba(255,255,255,0.1);border-radius:var(--r);padding:3px}
 .nav.scrolled .lang-sw{background:var(--g1)}
 .lang-sw button{background:none;border:none;color:rgba(255,255,255,0.5);font-size:11px;font-weight:700;letter-spacing:1px;padding:5px 10px;border-radius:10px;cursor:pointer;font-family:var(--font);transition:all var(--tr)}
-.nav.scrolled .lang-sw button{color:var(--g4)}
+.nav.scrolled .lang-sw button{color:var(--dark)}
 .lang-sw button.active{background:var(--accent);color:var(--white)}
 .burger{display:none;flex-direction:column;gap:5px;cursor:pointer;z-index:1001}
 .burger span{width:22px;height:1.5px;background:var(--white);transition:all var(--tr);border-radius:2px}

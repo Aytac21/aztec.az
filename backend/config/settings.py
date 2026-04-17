@@ -10,33 +10,80 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
+import os
 from pathlib import Path
 
-import dj_database_url
-from decouple import Csv, config
+from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+load_dotenv(BASE_DIR / '.env')
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = config(
+SECRET_KEY = os.getenv(
     'SECRET_KEY',
-    default='django-insecure-d8nqip8^jm0i!l2q--58wr=4h81dpb019^o6c0^&pyrj5)8(!z',
+    'django-insecure-d8nqip8^jm0i!l2q--58wr=4h81dpb019^o6c0^&pyrj5)8(!z',
 )
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = config('DEBUG', default=True, cast=bool)
+DEBUG = os.getenv('DEBUG', 'true').strip().lower() in ['true', '1', 'yes']
 
-ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='', cast=Csv())
+ALLOWED_HOSTS = ['aztec.az', 'www.aztec.az', '94.20.59.240']
+if DEBUG:
+    ALLOWED_HOSTS.extend(['127.0.0.1', 'localhost'])
+
+
+# PostgreSQL (set USE_POSTGRES=true in .env to enable)
+USE_POSTGRES = os.getenv('USE_POSTGRES', 'false').lower() == 'true'
+
+if USE_POSTGRES:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': os.getenv('POSTGRES_DB'),
+            'USER': os.getenv('POSTGRES_USER'),
+            'PASSWORD': os.getenv('POSTGRES_PASSWORD'),
+            'HOST': os.getenv('POSTGRES_HOST', 'localhost'),
+            'PORT': os.getenv('POSTGRES_PORT', '5432'),
+            'CONN_MAX_AGE': 600,
+        }
+    }
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
+
+
+CORS_ALLOWED_ORIGINS = [
+    'http://94.20.59.240',
+    'https://94.20.59.240',
+    'http://aztec.az',
+    'https://aztec.az',
+    'http://www.aztec.az',
+    'https://www.aztec.az',
+]
+
+CSRF_TRUSTED_ORIGINS = [
+    'http://94.20.59.240',
+    'https://94.20.59.240',
+    'http://aztec.az',
+    'https://aztec.az',
+    'http://www.aztec.az',
+    'https://www.aztec.az',
+]
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    'modeltranslation',
     'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -46,11 +93,15 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'apps.core',
+    'rosetta',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
+    'apps.core.middleware.ApiLanguageMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -81,12 +132,7 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
-DATABASES = {
-    'default': dj_database_url.config(
-        default=f"sqlite:///{(BASE_DIR / 'db.sqlite3').as_posix()}",
-        conn_max_age=600,
-    )
-}
+# Database already configured above via USE_POSTGRES switch.
 
 
 # Password validation
@@ -111,7 +157,15 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'az'
+
+LANGUAGES = [
+    ('az', 'Azərbaycan'),
+    ('ru', 'Русский'),
+    ('en', 'English'),
+]
+
+LOCALE_PATHS = [BASE_DIR / 'locale']
 
 TIME_ZONE = 'UTC'
 
@@ -119,14 +173,83 @@ USE_I18N = True
 
 USE_TZ = True
 
+ROSETTA_SHOW_AT_ADMIN_PANEL = True
+ROSETTA_MESSAGES_PER_PAGE = 50
+
+# django-modeltranslation
+MODELTRANSLATION_DEFAULT_LANGUAGE = 'az'
+MODELTRANSLATION_LANGUAGES = ('az', 'ru', 'en')
+MODELTRANSLATION_FALLBACK_LANGUAGES = ('az',)
+
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
 STATIC_URL = 'static/'
 
+if DEBUG:
+    STATICFILES_DIRS = [BASE_DIR / 'staticfiles']
+else:
+    STATIC_ROOT = BASE_DIR / 'staticfiles'
+    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+
+
+# Session & security
+SESSION_COOKIE_AGE = 86400
+SESSION_SAVE_EVERY_REQUEST = True
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False
+SESSION_COOKIE_SECURE = not DEBUG
+SESSION_COOKIE_HTTPONLY = True
+CSRF_COOKIE_SECURE = not DEBUG
+
+SECURE_BROWSER_XSS_FILTER = True
+SECURE_CONTENT_TYPE_NOSNIFF = True
+X_FRAME_OPTIONS = 'SAMEORIGIN'
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+
+# Logging
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '{levelname} {asctime} {module} {process:d} {thread:d} {message}',
+            'style': '{',
+        },
+        'simple': {
+            'format': '{levelname} {message}',
+            'style': '{',
+        },
+    },
+    'handlers': {
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': BASE_DIR / 'debug.log',
+            'formatter': 'verbose',
+        },
+        'console': {
+            'level': 'DEBUG' if DEBUG else 'INFO',
+            'class': 'logging.StreamHandler',
+            'formatter': 'simple',
+        },
+    },
+    'root': {
+        'handlers': ['console', 'file'],
+        'level': 'DEBUG' if DEBUG else 'INFO',
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console', 'file'],
+            'level': 'INFO',
+            'propagate': True,
+        },
+    },
+}
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field

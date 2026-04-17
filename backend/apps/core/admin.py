@@ -1,10 +1,11 @@
 from django.contrib import admin
+from modeltranslation.admin import TabbedTranslationAdmin
 
-from .models import AboutContent, Advantage, ContactInfo, ContactSubmission, GalleryItem, KnowledgeBase, News, PageHero, Project, Service, Vacancy
+from .models import AboutContent, Advantage, CareerApplication, ContactInfo, ContactSubmission, GalleryItem, KnowledgeBase, News, PageHero, Project, Service, Vacancy
 
 
 @admin.register(PageHero)
-class PageHeroAdmin(admin.ModelAdmin):
+class PageHeroAdmin(TabbedTranslationAdmin):
     list_display = ('page', 'title', 'tag', 'updated_at')
     list_filter = ('page',)
     search_fields = ('title', 'tag', 'description')
@@ -17,7 +18,7 @@ class PageHeroAdmin(admin.ModelAdmin):
 
 
 @admin.register(Service)
-class ServiceAdmin(admin.ModelAdmin):
+class ServiceAdmin(TabbedTranslationAdmin):
     list_display = ('title', 'slug', 'icon', 'order')
     list_editable = ('order',)
     search_fields = ('title', 'description')
@@ -25,13 +26,13 @@ class ServiceAdmin(admin.ModelAdmin):
     fieldsets = (
         ('Əsas', {'fields': ('slug', 'icon', 'title', 'order')}),
         ('Məzmun', {'fields': ('short_description', 'description')}),
-        ('Vizual', {'fields': ('image',)}),
+        ('Vizual', {'fields': ('image', 'video')}),
         ('Kateqoriya', {'fields': ('category_name', 'category_items')}),
     )
 
 
 @admin.register(KnowledgeBase)
-class KnowledgeBaseAdmin(admin.ModelAdmin):
+class KnowledgeBaseAdmin(TabbedTranslationAdmin):
     list_display = ('title', 'slug', 'tag', 'is_active', 'order')
     list_editable = ('order', 'is_active')
     list_filter = ('is_active', 'tag')
@@ -45,7 +46,7 @@ class KnowledgeBaseAdmin(admin.ModelAdmin):
 
 
 @admin.register(News)
-class NewsAdmin(admin.ModelAdmin):
+class NewsAdmin(TabbedTranslationAdmin):
     list_display = ('title', 'slug', 'tag', 'date_label', 'is_published', 'order')
     list_editable = ('order', 'is_published')
     list_filter = ('is_published', 'tag')
@@ -59,7 +60,7 @@ class NewsAdmin(admin.ModelAdmin):
 
 
 @admin.register(Vacancy)
-class VacancyAdmin(admin.ModelAdmin):
+class VacancyAdmin(TabbedTranslationAdmin):
     list_display = ('title', 'vacancy_type', 'location', 'work_type', 'is_active', 'order')
     list_editable = ('order', 'is_active')
     list_filter = ('vacancy_type', 'is_active')
@@ -72,7 +73,7 @@ class VacancyAdmin(admin.ModelAdmin):
 
 
 @admin.register(AboutContent)
-class AboutContentAdmin(admin.ModelAdmin):
+class AboutContentAdmin(TabbedTranslationAdmin):
     fieldsets = (
         ('Ana səhifə xülasə', {'fields': ('tag', 'title', 'summary_p1', 'summary_p2', 'image')}),
         ('Badge-lər', {'fields': ('badge1_number', 'badge1_label', 'badge2_number', 'badge2_label', 'badge3_number', 'badge3_label')}),
@@ -90,7 +91,7 @@ class AboutContentAdmin(admin.ModelAdmin):
 
 
 @admin.register(GalleryItem)
-class GalleryItemAdmin(admin.ModelAdmin):
+class GalleryItemAdmin(TabbedTranslationAdmin):
     list_display = ('title', 'item_type', 'order')
     list_editable = ('order',)
     list_filter = ('item_type',)
@@ -101,7 +102,7 @@ class GalleryItemAdmin(admin.ModelAdmin):
 
 
 @admin.register(ContactInfo)
-class ContactInfoAdmin(admin.ModelAdmin):
+class ContactInfoAdmin(TabbedTranslationAdmin):
     fieldsets = (
         ('Telefon', {'fields': ('phone1', 'phone2')}),
         ('Ünvan & İş saatları', {'fields': ('address', 'work_hours')}),
@@ -119,17 +120,28 @@ class ContactInfoAdmin(admin.ModelAdmin):
 
 @admin.register(ContactSubmission)
 class ContactSubmissionAdmin(admin.ModelAdmin):
-    list_display = ('name', 'phone', 'email', 'project_type', 'created_at')
+    list_display = ('name', 'phone', 'project_type', 'created_at')
     list_filter = ('project_type', 'created_at')
-    search_fields = ('name', 'phone', 'email', 'message')
-    readonly_fields = ('name', 'phone', 'email', 'project_type', 'message', 'created_at')
+    search_fields = ('name', 'phone', 'message')
+    readonly_fields = ('name', 'phone', 'project_type', 'message', 'created_at')
+
+    def has_add_permission(self, request):
+        return False
+
+
+@admin.register(CareerApplication)
+class CareerApplicationAdmin(admin.ModelAdmin):
+    list_display = ('name', 'phone', 'area', 'created_at')
+    list_filter = ('area', 'created_at')
+    search_fields = ('name', 'phone', 'message')
+    readonly_fields = ('name', 'phone', 'area', 'message', 'created_at')
 
     def has_add_permission(self, request):
         return False
 
 
 @admin.register(Advantage)
-class AdvantageAdmin(admin.ModelAdmin):
+class AdvantageAdmin(TabbedTranslationAdmin):
     list_display = ('title', 'icon', 'order')
     list_editable = ('order',)
     search_fields = ('title', 'description')
@@ -140,7 +152,7 @@ class AdvantageAdmin(admin.ModelAdmin):
 
 
 @admin.register(Project)
-class ProjectAdmin(admin.ModelAdmin):
+class ProjectAdmin(TabbedTranslationAdmin):
     list_display = ('title', 'status', 'category', 'location', 'is_featured', 'order')
     list_editable = ('order', 'is_featured')
     list_filter = ('status', 'category', 'is_featured')

@@ -1,0 +1,11 @@
+[Unit]
+Description=Aztec Construction — Gunicorn socket
+
+[Socket]
+ListenStream=/run/gunicorn/aztec.sock
+SocketUser=www-data
+SocketGroup=www-data
+SocketMode=0660
+
+[Install]
+WantedBy=sockets.target

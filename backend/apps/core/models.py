@@ -70,6 +70,13 @@ class Service(models.Model):
         null=True,
         verbose_name='Şəkil',
     )
+    video = models.FileField(
+        upload_to='services/videos/',
+        blank=True,
+        null=True,
+        verbose_name='Video (mp4)',
+        help_text='MP4 video faylı yüklə',
+    )
     category_name = models.CharField(
         max_length=100,
         blank=True,
@@ -364,7 +371,6 @@ class Advantage(models.Model):
 class ContactSubmission(models.Model):
     name = models.CharField(max_length=200, verbose_name='Ad')
     phone = models.CharField(max_length=30, verbose_name='Telefon')
-    email = models.EmailField(blank=True, verbose_name='E-poçt')
     project_type = models.CharField(max_length=100, blank=True, verbose_name='Növ')
     message = models.TextField(blank=True, verbose_name='Mesaj')
     created_at = models.DateTimeField(auto_now_add=True)
@@ -372,6 +378,22 @@ class ContactSubmission(models.Model):
     class Meta:
         verbose_name = 'Əlaqə müraciəti'
         verbose_name_plural = 'Əlaqə müraciətləri'
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return f'{self.name} — {self.phone} ({self.created_at:%d.%m.%Y %H:%M})'
+
+
+class CareerApplication(models.Model):
+    name = models.CharField(max_length=200, verbose_name='Ad')
+    phone = models.CharField(max_length=30, verbose_name='Telefon')
+    area = models.CharField(max_length=100, blank=True, verbose_name='Sahə')
+    message = models.TextField(blank=True, verbose_name='Məlumat')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = 'Karyera müraciəti'
+        verbose_name_plural = 'Karyera müraciətləri'
         ordering = ['-created_at']
 
     def __str__(self):

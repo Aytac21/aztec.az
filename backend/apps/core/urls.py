@@ -4,6 +4,7 @@ from . import views
 
 urlpatterns = [
     path('health/', views.health, name='health'),
+    path('i18n/<str:lang>/', views.i18n_strings, name='i18n-strings'),
     path('hero/<slug:slug>/', views.page_hero, name='page-hero'),
     path('about/', views.about_content, name='about-content'),
     path('news/', views.news_list, name='news-list'),
@@ -20,4 +21,5 @@ urlpatterns = [
     path('projects/<slug:slug>/', views.project_detail, name='project-detail'),
     path('contact/', views.contact_info, name='contact-info'),
     path('contact/submit/', views.submit_contact, name='contact-submit'),
+    path('career/submit/', views.submit_career, name='career-submit'),
 ]

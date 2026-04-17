@@ -1,9 +1,12 @@
 import json
 
+from django.conf import settings
 from django.http import Http404, JsonResponse
+from django.utils import translation
 from django.views.decorators.csrf import csrf_exempt
 
-from .models import AboutContent, Advantage, ContactInfo, ContactSubmission, GalleryItem, KnowledgeBase, News, PageHero, Project, Service, Vacancy
+from .i18n_strings import STRINGS
+from .models import AboutContent, Advantage, CareerApplication, ContactInfo, ContactSubmission, GalleryItem, KnowledgeBase, News, PageHero, Project, Service, Vacancy
 
 
 def _cors(response):
@@ -14,6 +17,15 @@ def _cors(response):
 
 def health(request):
     return _cors(JsonResponse({'status': 'ok'}))
+
+
+def i18n_strings(request, lang):
+    supported = {code for code, _ in settings.LANGUAGES}
+    if lang not in supported:
+        lang = settings.LANGUAGE_CODE
+    with translation.override(lang):
+        data = {k: str(v) for k, v in STRINGS.items()}
+    return _cors(JsonResponse({'lang': lang, 'strings': data}))
 
 
 def page_hero(request, slug):
@@ -79,6 +91,13 @@ def service_detail(request, slug):
         except Exception:
             img = s.image.url
 
+    video = ''
+    if s.video:
+        try:
+            video = request.build_absolute_uri(s.video.url)
+        except Exception:
+            video = s.video.url
+
     data = {
         'slug': s.slug,
         'icon': s.icon,
@@ -86,6 +105,7 @@ def service_detail(request, slug):
         'short_description': s.short_description,
         'description': s.description,
         'image': img,
+        'video': video,
         'category_name': s.category_name,
         'category_items': s.category_items,
     }
@@ -341,8 +361,34 @@ def submit_contact(request):
     ContactSubmission.objects.create(
         name=name,
         phone=phone,
-        email=body.get('email', ''),
         project_type=body.get('project_type', ''),
+        message=body.get('message', ''),
+    )
+    return _cors(JsonResponse({'ok': True}))
+
+
+@csrf_exempt
+def submit_career(request):
+    if request.method == 'OPTIONS':
+        resp = JsonResponse({})
+        resp['Access-Control-Allow-Origin'] = '*'
+        resp['Access-Control-Allow-Methods'] = 'POST, OPTIONS'
+        resp['Access-Control-Allow-Headers'] = 'Content-Type'
+        return resp
+    if request.method != 'POST':
+        return _cors(JsonResponse({'error': 'POST only'}, status=405))
+    try:
+        body = json.loads(request.body)
+    except (json.JSONDecodeError, ValueError):
+        return _cors(JsonResponse({'error': 'Invalid JSON'}, status=400))
+    name = body.get('name', '').strip()
+    phone = body.get('phone', '').strip()
+    if not name or not phone:
+        return _cors(JsonResponse({'error': 'name and phone required'}, status=400))
+    CareerApplication.objects.create(
+        name=name,
+        phone=phone,
+        area=body.get('area', ''),
         message=body.get('message', ''),
     )
     return _cors(JsonResponse({'ok': True}))
