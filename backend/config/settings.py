@@ -144,6 +144,13 @@ JAZZMIN_SETTINGS = {
     'show_ui_builder': False,
     'icons': {
         'core.PageHero': 'fas fa-image',
+        'core.Service': 'fas fa-concierge-bell',
+        'core.Project': 'fas fa-building',
+        'core.AboutContent': 'fas fa-info-circle',
+        'core.KnowledgeBase': 'fas fa-book',
+        'core.News': 'fas fa-newspaper',
+        'core.Vacancy': 'fas fa-briefcase',
+        'core.GalleryItem': 'fas fa-photo-video',
         'auth.user': 'fas fa-user',
         'auth.Group': 'fas fa-users',
     },

@@ -545,6 +545,43 @@ function navLB(dir){currentLB=(currentLB+dir+galleryItems.length)%galleryItems.l
 function renderLB(){var item=galleryItems[currentLB],ct=document.getElementById('lbContent');if(!item)return;if(item.type==='video')ct.innerHTML='<iframe src="'+item.src+'?autoplay=1" allow="autoplay;encrypted-media" allowfullscreen></iframe>';else ct.innerHTML='<img src="'+item.src+'" alt="Layihə">'}
 document.addEventListener('keydown',function(e){var lb=document.getElementById('lb');if(!lb||!lb.classList.contains('open'))return;if(e.key==='Escape')closeLB();if(e.key==='ArrowLeft')navLB(-1);if(e.key==='ArrowRight')navLB(1)});
 
+/* ======== BACKEND GALLERY LOADER ======== */
+document.addEventListener('DOMContentLoaded', function(){
+  var grid = document.getElementById('galleryGrid');
+  if(!grid) return;
+
+  fetch(window.API_BASE + '/api/gallery/', {cache:'no-store'})
+    .then(function(r){ if(!r.ok) throw new Error('gal '+r.status); return r.json(); })
+    .then(function(data){
+      var list = data.gallery;
+      if(!list || !list.length) return;
+
+      initGallery(list.map(function(g){ return {type: g.type, src: g.src}; }));
+
+      list.forEach(function(g, idx){
+        var el = document.createElement('div');
+        if(g.type === 'video'){
+          el.className = 'g-item video';
+          el.onclick = function(){ openLB(idx); };
+          var ph = g.image
+            ? '<img src="' + g.image + '" alt="' + (g.title||'Video') + '" style="width:100%;height:100%;object-fit:cover">'
+            : '<div class="g-item-ph"><i class="fas fa-image"></i>' + (g.title||'Video') + '</div>';
+          el.innerHTML = ph + '<div class="g-play"><i class="fas fa-play"></i></div>';
+        } else {
+          el.className = 'g-item';
+          el.onclick = function(){ openLB(idx); };
+          if(g.src){
+            el.innerHTML = '<img src="' + g.src + '" alt="' + (g.title||'Foto') + '" style="width:100%;height:100%;object-fit:cover;border-radius:var(--r)">';
+          } else {
+            el.innerHTML = '<div class="g-item-ph"><i class="fas fa-image"></i>' + (g.title||'Foto') + '</div>';
+          }
+        }
+        grid.appendChild(el);
+      });
+    })
+    .catch(function(err){ console.warn('[gallery] backend load failed:', err); });
+});
+
 /* AZ Form Validation */
 document.addEventListener('DOMContentLoaded',function(){
   document.querySelectorAll('input[required],select[required],textarea[required]').forEach(function(i){
@@ -612,4 +649,589 @@ document.addEventListener('DOMContentLoaded', function(){
       }
     })
     .catch(function(err){ console.warn('[hero] backend load failed:', err); });
+});
+
+/* ======== NAVBAR BACKEND LOADER (all pages) ======== */
+document.addEventListener('DOMContentLoaded', function(){
+  var megaGrid = document.querySelector('.mega-grid');
+  if(!megaGrid) return;
+
+  /* About description in mega menu */
+  fetch(window.API_BASE + '/api/about/', {cache:'no-store'})
+    .then(function(r){ if(!r.ok) throw new Error('about-nav '+r.status); return r.json(); })
+    .then(function(d){
+      if(d.mega_description){
+        var megaAboutItem = megaGrid.querySelector('a[href="haqqimizda.html"] p');
+        if(megaAboutItem) megaAboutItem.textContent = d.mega_description;
+      }
+    })
+    .catch(function(err){ console.warn('[nav-about] load failed:', err); });
+
+  /* Featured project in mega menu */
+  var megaFeatured = document.querySelector('.mega-featured');
+  if(megaFeatured){
+    fetch(window.API_BASE + '/api/projects/featured/', {cache:'no-store'})
+      .then(function(r){ if(!r.ok) throw new Error('feat '+r.status); return r.json(); })
+      .then(function(data){
+        var f = data.featured;
+        if(!f) return;
+        var h3 = megaFeatured.querySelector('h3');
+        var p = megaFeatured.querySelector('p');
+        var link = megaFeatured.querySelector('a.u-link');
+        if(h3) h3.textContent = f.title;
+        if(p) p.textContent = f.description;
+        if(link) link.href = 'layihe-detail.html?slug=' + f.slug;
+      })
+      .catch(function(err){ console.warn('[nav-featured] load failed:', err); });
+  }
+});
+
+/* ======== BACKEND ABOUT LOADER (index + haqqimizda) ======== */
+document.addEventListener('DOMContentLoaded', function(){
+  var homeAboutText = document.getElementById('homeAboutText');
+  var homeAboutImg = document.getElementById('homeAboutImg');
+  var aboutProfile = document.getElementById('aboutProfile');
+  var aboutImg = document.getElementById('aboutImg');
+  var aboutValues = document.getElementById('aboutValues');
+  var aboutVM = document.getElementById('aboutVM');
+
+  if(!homeAboutText && !aboutProfile) return;
+
+  fetch(window.API_BASE + '/api/about/', {cache:'no-store'})
+    .then(function(r){ if(!r.ok) throw new Error('about '+r.status); return r.json(); })
+    .then(function(d){
+
+      /* --- INDEX.HTML about summary --- */
+      if(homeAboutText){
+        homeAboutText.innerHTML =
+          '<div class="s-tag">' + d.tag + '</div>' +
+          '<h2 class="s-title">' + d.title + '</h2>' +
+          '<p>' + d.summary_p1 + '</p>' +
+          '<p>' + d.summary_p2 + '</p>' +
+          '<div class="a-badges">' +
+            '<div class="a-badge"><div class="n">' + d.badge1_number + '</div><div class="l">' + d.badge1_label + '</div></div>' +
+            '<div class="a-badge"><div class="n">' + d.badge2_number + '</div><div class="l">' + d.badge2_label + '</div></div>' +
+            '<div class="a-badge"><div class="n">' + d.badge3_number + '</div><div class="l">' + d.badge3_label + '</div></div>' +
+          '</div>' +
+          '<a href="haqqimizda.html" class="u-link" style="margin-top:20px">Ətraflı oxuyun <i class="fas fa-arrow-right"></i></a>';
+      }
+      if(homeAboutImg && d.image){
+        homeAboutImg.innerHTML = '<img src="' + d.image + '" alt="Aztec Construction" style="width:100%;height:100%;object-fit:cover">';
+      }
+
+      /* --- HAQQIMIZDA.HTML profile section --- */
+      if(aboutProfile){
+        aboutProfile.innerHTML =
+          '<div class="s-tag">' + d.profile_tag + '</div>' +
+          '<h2 class="s-title">' + d.profile_title + '</h2>' +
+          d.profile_text;
+      }
+      if(aboutImg && d.image){
+        aboutImg.innerHTML = '<img src="' + d.image + '" alt="Aztec Construction" style="width:100%;height:100%;object-fit:cover">';
+      }
+
+      /* --- HAQQIMIZDA.HTML values section --- */
+      if(aboutValues){
+        var vc = aboutValues.querySelector('.container');
+        if(vc){
+          vc.innerHTML =
+            '<div class="s-tag" style="justify-content:center">' + d.values_tag + '</div>' +
+            '<h2 class="s-title" style="display:inline-block">' + d.values_title + '</h2>' +
+            '<p class="s-desc" style="margin:16px auto 0;text-align:center">' + d.values_text + '</p>';
+        }
+      }
+
+      /* --- HAQQIMIZDA.HTML vision/mission section --- */
+      if(aboutVM){
+        var vmc = aboutVM.querySelector('.container');
+        if(vmc){
+          vmc.innerHTML =
+            '<div style="text-align:center"><div class="s-tag" style="justify-content:center">' + d.vm_tag + '</div>' +
+            '<h2 class="s-title" style="display:inline-block">' + d.vm_title + '</h2></div>' +
+            '<div class="vm-row">' +
+              '<div class="vm reveal visible"><h3><i class="fas fa-eye" style="margin-right:8px;color:var(--accent)"></i>' + d.vision_title + '</h3><p>' + d.vision_text + '</p></div>' +
+              '<div class="vm reveal visible"><h3><i class="fas fa-bullseye" style="margin-right:8px;color:var(--accent)"></i>' + d.mission_title + '</h3><p>' + d.mission_text + '</p></div>' +
+            '</div>';
+        }
+      }
+    })
+    .catch(function(err){ console.warn('[about] backend load failed:', err); });
+});
+
+/* ======== BACKEND VACANCIES LOADER ======== */
+document.addEventListener('DOMContentLoaded', function(){
+  var vacList = document.getElementById('vacancyList');
+  if(!vacList) return;
+
+  fetch(window.API_BASE + '/api/vacancies/', {cache:'no-store'})
+    .then(function(r){ if(!r.ok) throw new Error('vac '+r.status); return r.json(); })
+    .then(function(data){
+      var list = data.vacancies;
+      if(!list || !list.length){
+        vacList.innerHTML = '<p>Hal-hazırda açıq vakansiya yoxdur.</p>';
+        return;
+      }
+
+      list.forEach(function(v){
+        var el = document.createElement('div');
+        var waLink = 'https://wa.me/994559758900?text=' + encodeURIComponent(v.whatsapp_text || v.title);
+
+        if(v.type === 'intern'){
+          el.className = 'intern reveal visible';
+          el.innerHTML =
+            '<h3><i class="fas fa-graduation-cap" style="margin-right:8px;color:var(--accent)"></i>' + v.title + '</h3>' +
+            '<p>' + v.description + '</p>' +
+            '<a href="' + waLink + '" target="_blank" class="u-link">Müraciət et <i class="fab fa-whatsapp"></i></a>';
+        } else {
+          el.className = 'job reveal visible';
+          var meta = '';
+          if(v.location) meta += '<span><i class="fas fa-map-marker-alt"></i>' + v.location + '</span>';
+          if(v.work_type) meta += '<span><i class="fas fa-briefcase"></i>' + v.work_type + '</span>';
+          el.innerHTML =
+            '<h3>' + v.title + '</h3>' +
+            (meta ? '<div class="jm">' + meta + '</div>' : '') +
+            '<p>' + v.description + '</p>' +
+            '<a href="' + waLink + '" target="_blank" class="u-link">Müraciət et <i class="fab fa-whatsapp"></i></a>';
+        }
+        vacList.appendChild(el);
+      });
+    })
+    .catch(function(err){ console.warn('[vacancies] backend load failed:', err); });
+});
+
+/* ======== BACKEND NEWS LIST LOADER ======== */
+document.addEventListener('DOMContentLoaded', function(){
+  var newsGrid = document.getElementById('newsGrid');
+  if(!newsGrid) return;
+
+  fetch(window.API_BASE + '/api/news/', {cache:'no-store'})
+    .then(function(r){ if(!r.ok) throw new Error('news '+r.status); return r.json(); })
+    .then(function(data){
+      var list = data.news;
+      if(!list || !list.length) return;
+
+      list.forEach(function(n){
+        var card = document.createElement('div');
+        card.className = 'nc reveal visible';
+        var imgHtml = n.image
+          ? '<img src="' + n.image + '" alt="' + n.title + '" style="width:100%;height:100%;object-fit:cover;border-radius:var(--r) var(--r) 0 0">'
+          : '<i class="fas fa-image"></i>';
+        card.innerHTML =
+          '<a href="xeber.html?slug=' + n.slug + '" style="text-decoration:none;color:inherit">' +
+          '<div class="nimg">' + imgHtml + '</div>' +
+          '<div class="nb">' +
+            '<div class="nd">' + (n.date_label || '') + '</div>' +
+            '<h3>' + n.title + '</h3>' +
+            '<p>' + (n.short_description || '') + '</p>' +
+            '<span class="u-link" style="font-size:11px">Ətraflı <i class="fas fa-arrow-right"></i></span>' +
+          '</div></a>';
+        newsGrid.appendChild(card);
+      });
+    })
+    .catch(function(err){ console.warn('[news] backend load failed:', err); });
+});
+
+/* ======== BACKEND KNOWLEDGE BASE LOADER ======== */
+document.addEventListener('DOMContentLoaded', function(){
+  var kbGrid = document.getElementById('kbGrid');
+  if(!kbGrid) return;
+
+  fetch(window.API_BASE + '/api/knowledge-base/', {cache:'no-store'})
+    .then(function(r){ if(!r.ok) throw new Error('kb '+r.status); return r.json(); })
+    .then(function(data){
+      var list = data.knowledge_base;
+      if(!list || !list.length) return;
+
+      list.forEach(function(kb){
+        var card = document.createElement('div');
+        card.className = 'bc reveal visible';
+        card.innerHTML =
+          '<span class="btg">' + kb.tag + '</span>' +
+          '<h3>' + kb.title + '</h3>' +
+          '<p>' + kb.description + '</p>';
+        kbGrid.appendChild(card);
+      });
+    })
+    .catch(function(err){ console.warn('[kb] backend load failed:', err); });
+});
+
+/* ======== NEWS DETAIL PAGE LOADER ======== */
+document.addEventListener('DOMContentLoaded', function(){
+  var newsDetailContent = document.getElementById('newsDetailContent');
+  if(!newsDetailContent) return;
+
+  var params = new URLSearchParams(window.location.search);
+  var slug = params.get('slug');
+  if(!slug){ newsDetailContent.innerHTML = '<p>Xəbər tapılmadı.</p>'; return; }
+
+  fetch(window.API_BASE + '/api/news/' + slug + '/', {cache:'no-store'})
+    .then(function(r){ if(!r.ok) throw new Error('news-d '+r.status); return r.json(); })
+    .then(function(d){
+      /* Hero fields */
+      var tagEl = document.getElementById('newsDetailTag');
+      var titleEl = document.getElementById('newsDetailTitle');
+      var dateEl = document.getElementById('newsDetailDate');
+      var heroBg = document.getElementById('newsDetailHeroBg');
+      if(tagEl) tagEl.textContent = d.tag || '';
+      if(titleEl) titleEl.textContent = d.title;
+      if(dateEl) dateEl.textContent = d.date_label || '';
+      if(heroBg && d.image) heroBg.style.backgroundImage = 'url(' + d.image + ')';
+
+      /* Page title */
+      document.title = d.title + ' | Aztec Construction';
+
+      /* Content */
+      var html = d.content || '';
+      if(d.video_url){
+        html += '<h2>Video</h2><div class="detail-video"><iframe src="' + d.video_url + '" allow="autoplay;encrypted-media" allowfullscreen></iframe></div>';
+      }
+      html += '<div style="margin-top:40px;text-align:center"><a href="elaqe.html" class="u-link lg">Konsultasiya alın <i class="fas fa-arrow-right"></i></a></div>';
+      newsDetailContent.innerHTML = html;
+    })
+    .catch(function(err){
+      console.warn('[news-detail] load failed:', err);
+      newsDetailContent.innerHTML = '<p>Xəbər tapılmadı.</p>';
+    });
+});
+
+/* ======== BACKEND SERVICES LOADER ======== */
+document.addEventListener('DOMContentLoaded', function(){
+  var svcGrid = document.getElementById('svcGrid');
+  var svcContainer = document.getElementById('svcBlocksContainer');
+  if(!svcGrid && !svcContainer) return;
+
+  fetch(window.API_BASE + '/api/services/', {cache:'no-store'})
+    .then(function(r){ if(!r.ok) throw new Error('svc '+r.status); return r.json(); })
+    .then(function(data){
+      var list = data.services;
+      if(!list || !list.length) return;
+
+      /* --- HOMEPAGE RENDER (.svc-grid) --- */
+      if(svcGrid){
+        list.forEach(function(s){
+          var card = document.createElement('a');
+          card.href = 'xidmet-detail.html?slug=' + s.slug;
+          card.className = 'svc reveal visible';
+          card.style.textDecoration = 'none';
+          card.style.color = 'inherit';
+          card.innerHTML =
+            '<div class="svc-top"><i class="' + s.icon + '"></i></div>' +
+            '<div class="svc-body">' +
+              '<h3>' + s.title + '</h3>' +
+              '<p>' + s.short_description + '</p>' +
+              '<span class="u-link">Ətraflı <i class="fas fa-arrow-right"></i></span>' +
+            '</div>';
+          svcGrid.appendChild(card);
+        });
+      }
+
+      /* --- SERVICES PAGE RENDER (.svc-block) --- */
+      if(svcContainer){
+        list.forEach(function(s){
+          var block = document.createElement('div');
+          block.className = 'svc-block reveal visible';
+
+          var imgPlaceholder = s.image
+            ? '<img src="' + s.image + '" alt="' + s.title + '" style="width:100%;height:100%;object-fit:cover;border-radius:12px">'
+            : '<i class="' + s.icon + ' ph"></i><span>' + s.title + ' şəkli</span>';
+
+          var catHtml = '';
+          if(s.category_name){
+            catHtml = '<div class="inc"><h4>' + s.category_name + '</h4><p>' + s.category_items + '</p></div>';
+          }
+
+          block.innerHTML =
+            '<div class="svc-img">' + imgPlaceholder + '</div>' +
+            '<div class="svc-txt">' +
+              '<div class="ic"><i class="' + s.icon + '"></i></div>' +
+              '<h2>' + s.title + '</h2>' +
+              '<p>' + s.description + '</p>' +
+              catHtml +
+              '<a href="xidmet-detail.html?slug=' + s.slug + '" class="u-link">Ətraflı bax <i class="fas fa-arrow-right"></i></a>' +
+            '</div>';
+          svcContainer.appendChild(block);
+        });
+      }
+    })
+    .catch(function(err){ console.warn('[services] backend load failed:', err); });
+});
+
+/* ======== BACKEND PROJECTS LOADER ======== */
+document.addEventListener('DOMContentLoaded', function(){
+  var projGrid = document.getElementById('projGrid');
+  var homeProjGrid = document.getElementById('homeProjGrid');
+  var statusFilters = document.getElementById('projStatusFilters');
+  var catFilters = document.getElementById('projCatFilters');
+  if(!projGrid && !homeProjGrid) return;
+
+  fetch(window.API_BASE + '/api/projects/', {cache:'no-store'})
+    .then(function(r){ if(!r.ok) throw new Error('proj '+r.status); return r.json(); })
+    .then(function(data){
+      var list = data.projects;
+      if(!list || !list.length) return;
+
+      /* --- HOMEPAGE: first 3 projects --- */
+      if(homeProjGrid){
+        list.slice(0, 3).forEach(function(p){
+          var card = document.createElement('a');
+          card.href = 'layihe-detail.html?slug=' + p.slug;
+          card.className = 'proj reveal visible';
+          var imgHtml = p.image
+            ? '<img src="' + p.image + '" alt="' + p.title + '" style="width:100%;height:100%;object-fit:cover">'
+            : '<i class="fas fa-image"></i>' + p.title;
+          var subtitle = p.description || p.location || '';
+          card.innerHTML =
+            '<div class="proj-ph">' + imgHtml + '</div>' +
+            '<div class="proj-ov"></div>' +
+            '<div class="proj-badge">' + p.category_display + '</div>' +
+            '<div class="proj-ct">' +
+              '<div class="proj-cat">' + p.category_display + '</div>' +
+              '<h3>' + p.title + '</h3>' +
+              '<p>' + subtitle + '</p>' +
+            '</div>';
+          homeProjGrid.appendChild(card);
+        });
+      }
+
+      /* --- PROJECTS PAGE: cascading filters + grid --- */
+      if(projGrid && statusFilters){
+        var allProjects = list;
+        var currentStatus = 'all';
+        var currentCat = 'all';
+
+        var CAT_LABELS = {gov:'Dövlət', com:'Kommersiya', res:'Yaşayış', pub:'İctimai'};
+
+        function renderGrid(){
+          projGrid.innerHTML = '';
+          allProjects.forEach(function(p){
+            var matchStatus = currentStatus === 'all' || p.status === currentStatus;
+            var matchCat = currentCat === 'all' || p.category === currentCat;
+            if(!matchStatus || !matchCat) return;
+
+            var card = document.createElement('a');
+            card.href = 'layihe-detail.html?slug=' + p.slug;
+            card.className = 'proj reveal visible';
+            card.style.textDecoration = 'none';
+            var imgHtml = p.image
+              ? '<img src="' + p.image + '" alt="' + p.title + '" style="width:100%;height:100%;object-fit:cover">'
+              : '<i class="fas fa-image"></i>' + p.title;
+            var badgeClass = p.status === 'on' ? 'proj-badge on' : 'proj-badge';
+            var subtitle = p.description || '';
+            card.innerHTML =
+              '<div class="proj-ph">' + imgHtml + '</div>' +
+              '<div class="proj-ov"></div>' +
+              '<div class="' + badgeClass + '">' + p.status_display + '</div>' +
+              '<div class="proj-ct">' +
+                '<div class="proj-cat">' + p.category_display + '</div>' +
+                '<h3>' + p.title + '</h3>' +
+                '<p>' + subtitle + '</p>' +
+              '</div>';
+            projGrid.appendChild(card);
+          });
+        }
+
+        function buildCatFilters(){
+          catFilters.innerHTML = '';
+          if(currentStatus === 'all'){
+            catFilters.style.display = 'none';
+            currentCat = 'all';
+            return;
+          }
+          var filtered = allProjects.filter(function(p){ return p.status === currentStatus; });
+          var cats = {};
+          filtered.forEach(function(p){ cats[p.category] = true; });
+          var catKeys = Object.keys(cats);
+          if(catKeys.length <= 1){
+            catFilters.style.display = 'none';
+            currentCat = 'all';
+            return;
+          }
+          catFilters.style.display = '';
+          var allBtn = document.createElement('button');
+          allBtn.className = 'fbtn active';
+          allBtn.textContent = 'Hamısı';
+          allBtn.onclick = function(){ currentCat = 'all'; setCatActive(this); renderGrid(); };
+          catFilters.appendChild(allBtn);
+          catKeys.forEach(function(c){
+            var btn = document.createElement('button');
+            btn.className = 'fbtn';
+            btn.textContent = CAT_LABELS[c] || c;
+            btn.onclick = function(){ currentCat = c; setCatActive(this); renderGrid(); };
+            catFilters.appendChild(btn);
+          });
+        }
+
+        function setCatActive(btn){
+          catFilters.querySelectorAll('.fbtn').forEach(function(b){ b.classList.remove('active'); });
+          btn.classList.add('active');
+        }
+        function setStatusActive(btn){
+          statusFilters.querySelectorAll('.fbtn').forEach(function(b){ b.classList.remove('active'); });
+          btn.classList.add('active');
+        }
+
+        /* Build status buttons: Hamısı, Tamamlanmış, Cari */
+        var statusAll = document.createElement('button');
+        statusAll.className = 'fbtn active';
+        statusAll.textContent = 'Hamısı';
+        statusAll.onclick = function(){ currentStatus = 'all'; currentCat = 'all'; setStatusActive(this); buildCatFilters(); renderGrid(); };
+        statusFilters.appendChild(statusAll);
+
+        var hasDone = allProjects.some(function(p){ return p.status === 'done'; });
+        var hasOn = allProjects.some(function(p){ return p.status === 'on'; });
+
+        if(hasDone){
+          var btnDone = document.createElement('button');
+          btnDone.className = 'fbtn';
+          btnDone.textContent = 'Tamamlanmış';
+          btnDone.onclick = function(){ currentStatus = 'done'; currentCat = 'all'; setStatusActive(this); buildCatFilters(); renderGrid(); };
+          statusFilters.appendChild(btnDone);
+        }
+        if(hasOn){
+          var btnOn = document.createElement('button');
+          btnOn.className = 'fbtn';
+          btnOn.textContent = 'Cari';
+          btnOn.onclick = function(){ currentStatus = 'on'; currentCat = 'all'; setStatusActive(this); buildCatFilters(); renderGrid(); };
+          statusFilters.appendChild(btnOn);
+        }
+
+        catFilters.style.display = 'none';
+        renderGrid();
+      }
+    })
+    .catch(function(err){ console.warn('[projects] backend load failed:', err); });
+});
+
+/* ======== PROJECT DETAIL PAGE LOADER ======== */
+document.addEventListener('DOMContentLoaded', function(){
+  var detailContent = document.getElementById('projDetailContent');
+  if(!detailContent) return;
+
+  var params = new URLSearchParams(window.location.search);
+  var slug = params.get('slug');
+  if(!slug){ detailContent.innerHTML = '<p>Layihə tapılmadı.</p>'; return; }
+
+  fetch(window.API_BASE + '/api/projects/' + slug + '/', {cache:'no-store'})
+    .then(function(r){ if(!r.ok) throw new Error('detail '+r.status); return r.json(); })
+    .then(function(d){
+      /* Hero */
+      var titleEl = document.getElementById('projDetailTitle');
+      var catEl = document.getElementById('projDetailCat');
+      var descEl = document.getElementById('projDetailDesc');
+      var bgEl = document.getElementById('projDetailBg');
+
+      if(titleEl) titleEl.textContent = d.title;
+      if(catEl){ catEl.textContent = d.category_display; }
+      if(descEl) descEl.textContent = d.description;
+      if(bgEl && d.image){
+        bgEl.style.backgroundImage = "url('" + d.image + "')";
+      }
+
+      document.title = d.title + ' | Aztec Construction';
+
+      /* Detail content */
+      var html = '';
+
+      /* Info cards row */
+      html += '<div style="display:flex;flex-wrap:wrap;gap:16px;margin-bottom:36px">';
+      html += '<div style="flex:1;min-width:180px;padding:20px;background:var(--g1);border-radius:var(--r);border-left:3px solid var(--accent)">';
+      html += '<div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--accent);margin-bottom:4px">Status</div>';
+      html += '<div style="font-size:16px;color:var(--dark);font-weight:600">' + d.status_display + '</div></div>';
+
+      html += '<div style="flex:1;min-width:180px;padding:20px;background:var(--g1);border-radius:var(--r);border-left:3px solid var(--accent)">';
+      html += '<div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--accent);margin-bottom:4px">Kateqoriya</div>';
+      html += '<div style="font-size:16px;color:var(--dark);font-weight:600">' + d.category_display + '</div></div>';
+
+      if(d.location){
+        html += '<div style="flex:1;min-width:180px;padding:20px;background:var(--g1);border-radius:var(--r);border-left:3px solid var(--accent)">';
+        html += '<div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--accent);margin-bottom:4px">Məkan</div>';
+        html += '<div style="font-size:16px;color:var(--dark);font-weight:600">' + d.location + '</div></div>';
+      }
+
+      if(d.area){
+        html += '<div style="flex:1;min-width:180px;padding:20px;background:var(--g1);border-radius:var(--r);border-left:3px solid var(--accent)">';
+        html += '<div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--accent);margin-bottom:4px">Sahə</div>';
+        html += '<div style="font-size:16px;color:var(--dark);font-weight:600">' + d.area + '</div></div>';
+      }
+      html += '</div>';
+
+      /* Project image */
+      if(d.image){
+        html += '<div style="width:100%;aspect-ratio:16/9;border-radius:var(--r2);overflow:hidden;margin-bottom:32px;background:var(--g1)">';
+        html += '<img src="' + d.image + '" alt="' + d.title + '" style="width:100%;height:100%;object-fit:cover">';
+        html += '</div>';
+      }
+
+      /* Description */
+      if(d.description){
+        html += '<h2>Layihə haqqında</h2>';
+        html += '<p>' + d.description + '</p>';
+      }
+
+      detailContent.innerHTML = html;
+    })
+    .catch(function(err){
+      console.warn('[project-detail] load failed:', err);
+      detailContent.innerHTML = '<p>Layihə yüklənə bilmədi.</p>';
+    });
+});
+
+/* ======== SERVICE DETAIL PAGE LOADER ======== */
+document.addEventListener('DOMContentLoaded', function(){
+  var svcDetailContent = document.getElementById('svcDetailContent');
+  if(!svcDetailContent) return;
+
+  var params = new URLSearchParams(window.location.search);
+  var slug = params.get('slug');
+  if(!slug){ svcDetailContent.innerHTML = '<p>Xidmət tapılmadı.</p>'; return; }
+
+  fetch(window.API_BASE + '/api/services/' + slug + '/', {cache:'no-store'})
+    .then(function(r){ if(!r.ok) throw new Error('svc-detail '+r.status); return r.json(); })
+    .then(function(d){
+      /* Hero */
+      var titleEl = document.getElementById('svcDetailTitle');
+      var tagEl = document.getElementById('svcDetailTag');
+      var descEl = document.getElementById('svcDetailDesc');
+      var bgEl = document.getElementById('svcDetailBg');
+
+      if(titleEl) titleEl.textContent = d.title;
+      if(tagEl) tagEl.innerHTML = '<i class="' + d.icon + '" style="margin-right:8px"></i> Xidmət';
+      if(descEl) descEl.textContent = d.short_description;
+      if(bgEl && d.image){
+        bgEl.style.backgroundImage = "url('" + d.image + "')";
+      }
+
+      document.title = d.title + ' | Aztec Construction';
+
+      /* Detail content */
+      var html = '';
+
+      /* Icon + title header */
+      html += '<div style="display:flex;align-items:center;gap:16px;margin-bottom:28px">';
+      html += '<div style="width:56px;height:56px;border:2px solid var(--accent);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0">';
+      html += '<i class="' + d.icon + '" style="font-size:20px;color:var(--accent)"></i></div>';
+      html += '<h2 style="font-family:var(--display);font-size:28px;color:var(--dark);font-weight:500;margin:0">' + d.title + '</h2>';
+      html += '</div>';
+
+      /* Image */
+      if(d.image){
+        html += '<div style="width:100%;aspect-ratio:16/9;border-radius:var(--r2);overflow:hidden;margin-bottom:32px;background:var(--g1)">';
+        html += '<img src="' + d.image + '" alt="' + d.title + '" style="width:100%;height:100%;object-fit:cover">';
+        html += '</div>';
+      }
+
+      /* Description */
+      html += '<p>' + d.description + '</p>';
+
+      /* Category (includes) */
+      if(d.category_name){
+        html += '<div class="inc"><h4>' + d.category_name + '</h4><p>' + d.category_items + '</p></div>';
+      }
+
+      svcDetailContent.innerHTML = html;
+    })
+    .catch(function(err){
+      console.warn('[svc-detail] load failed:', err);
+      svcDetailContent.innerHTML = '<p>Xidmət yüklənə bilmədi.</p>';
+    });
 });

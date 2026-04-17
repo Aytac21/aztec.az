@@ -68,18 +68,10 @@
 <div class="page-hero-ov"></div>
 <div class="container"><div class="tag" data-tr="lp_tag">Portfolio</div><h1 data-tr="lp_h1">Layihələrimiz</h1><p class="desc" data-tr="lp_desc">İcra etdiyimiz layihələr potensialımızın ən real göstəricisidir.</p></div></section>
 <section class="section"><div class="container">
-<div class="filters"><button class="fbtn active" onclick="fp('all',this)">Hamısı</button><button class="fbtn" onclick="fp('done',this)">Tamamlanmış</button><button class="fbtn" onclick="fp('on',this)">Cari</button><button class="fbtn" onclick="fp('gov',this)">Dövlət</button><button class="fbtn" onclick="fp('com',this)">Kommersiya</button><button class="fbtn" onclick="fp('res',this)">Yaşayış</button><button class="fbtn" onclick="fp('pub',this)">İctimai</button></div>
-<div class="proj-grid">
-<div class="proj reveal" data-c="gov" data-s="done"><div class="proj-ph"><i class="fas fa-image"></i>Yevlax Olimpiya</div><div class="proj-ov"></div><div class="proj-badge">Tamamlanmış</div><div class="proj-ct"><div class="proj-cat">Dövlət</div><h3>Yevlax Olimpiya Kompleksi</h3><p>Fasad və təmir işləri</p></div></div>
-<div class="proj reveal" data-c="gov" data-s="done"><div class="proj-ph"><i class="fas fa-image"></i>Qəbələ Olimpiya</div><div class="proj-ov"></div><div class="proj-badge">Tamamlanmış</div><div class="proj-ct"><div class="proj-cat">Dövlət</div><h3>Qəbələ Olimpiya Kompleksi</h3><p>Fasad və təmir işləri</p></div></div>
-<div class="proj reveal" data-c="com" data-s="done"><div class="proj-ph"><i class="fas fa-image"></i>MRT Hotel</div><div class="proj-ov"></div><div class="proj-badge">Tamamlanmış</div><div class="proj-ct"><div class="proj-cat">Kommersiya</div><h3>MRT Hotel</h3><p>Mingəçevir</p></div></div>
-<div class="proj reveal" data-c="com" data-s="done"><div class="proj-ph"><i class="fas fa-image"></i>Qarabağ Market</div><div class="proj-ov"></div><div class="proj-badge">Tamamlanmış</div><div class="proj-ct"><div class="proj-cat">Ticarət</div><h3>Qarabağ Market</h3><p>Mingəçevir</p></div></div>
-<div class="proj reveal" data-c="res" data-s="done"><div class="proj-ph"><i class="fas fa-image"></i>Salahlı evi</div><div class="proj-ov"></div><div class="proj-badge">Tamamlanmış</div><div class="proj-ct"><div class="proj-cat">Yaşayış</div><h3>Fərdi yaşayış evi</h3><p>Yevlax, Salahlı · 240 kv.m</p></div></div>
-<div class="proj reveal" data-c="res" data-s="on"><div class="proj-ph"><i class="fas fa-image"></i>2 mərtəbəli ev</div><div class="proj-ov"></div><div class="proj-badge on">Cari</div><div class="proj-ct"><div class="proj-cat">Yaşayış</div><h3>2 mərtəbəli yaşayış evi</h3><p>232 kv.m · 5 otaq</p></div></div>
-<div class="proj reveal" data-c="com" data-s="done"><div class="proj-ph"><i class="fas fa-image"></i>Ticarət kompleksi</div><div class="proj-ov"></div><div class="proj-badge">Tamamlanmış</div><div class="proj-ct"><div class="proj-cat">Ticarət</div><h3>Ticarət və əyləncə kompleksi</h3><p>Yevlax</p></div></div>
-<div class="proj reveal" data-c="pub" data-s="done"><div class="proj-ph"><i class="fas fa-image"></i>Uşaq parkı</div><div class="proj-ov"></div><div class="proj-badge">Tamamlanmış</div><div class="proj-ct"><div class="proj-cat">İctimai</div><h3>Uşaq parkı</h3><p>Yevlax</p></div></div>
-<div class="proj reveal" data-c="com" data-s="done"><div class="proj-ph"><i class="fas fa-image"></i>Tərtər</div><div class="proj-ov"></div><div class="proj-badge">Tamamlanmış</div><div class="proj-ct"><div class="proj-cat">Kommersiya</div><h3>Ticarət obyekti</h3><p>Tərtər</p></div></div>
-</div></div></section>
+<div class="filters" id="projStatusFilters"></div>
+<div class="filters" id="projCatFilters" style="margin-top:12px"></div>
+<div class="proj-grid" id="projGrid"></div>
+</div></section>
 <footer class="footer">
 <div class="container">
   <div class="ft-top">
@@ -111,5 +103,4 @@
 </footer>
 <a href="https://wa.me/994559758900" target="_blank" class="wa" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
 <script src="shared.js"></script>
-<script>function fp(f,b){document.querySelectorAll('.fbtn').forEach(function(x){x.classList.remove('active')});b.classList.add('active');document.querySelectorAll('.proj').forEach(function(c){if(f==='all')c.style.display='';else if(f==='done'||f==='on')c.style.display=c.dataset.s===f?'':'none';else c.style.display=c.dataset.c===f?'':'none'})}</script>
 </body></html>
