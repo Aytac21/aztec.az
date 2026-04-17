@@ -1,0 +1,4 @@
+Contact: mailto:info@aztec.az
+Contact: tel:+994559758900
+Preferred-Languages: az, en, ru
+Canonical: https://aztec.az/security.txt

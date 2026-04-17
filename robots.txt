@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+Disallow: /assets/
+Disallow: /fonts/
+
+Sitemap: https://aztec.az/sitemap.xml
+
+# Aztec Construction MMC
+# Mingəçevir, Azərbaycan
+# https://aztec.az
