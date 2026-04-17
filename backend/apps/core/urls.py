@@ -16,4 +16,6 @@ urlpatterns = [
     path('projects/', views.projects_list, name='projects-list'),
     path('projects/featured/', views.featured_project, name='featured-project'),
     path('projects/<slug:slug>/', views.project_detail, name='project-detail'),
+    path('contact/', views.contact_info, name='contact-info'),
+    path('contact/submit/', views.submit_contact, name='contact-submit'),
 ]

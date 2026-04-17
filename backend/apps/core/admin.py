@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import AboutContent, GalleryItem, KnowledgeBase, News, PageHero, Project, Service, Vacancy
+from .models import AboutContent, ContactInfo, ContactSubmission, GalleryItem, KnowledgeBase, News, PageHero, Project, Service, Vacancy
 
 
 @admin.register(PageHero)
@@ -92,6 +92,34 @@ class GalleryItemAdmin(admin.ModelAdmin):
         ('Əsas', {'fields': ('title', 'item_type', 'order')}),
         ('Media', {'fields': ('image', 'video_url')}),
     )
+
+
+@admin.register(ContactInfo)
+class ContactInfoAdmin(admin.ModelAdmin):
+    fieldsets = (
+        ('Telefon', {'fields': ('phone1', 'phone2')}),
+        ('Ünvan & İş saatları', {'fields': ('address', 'work_hours')}),
+        ('WhatsApp', {'fields': ('whatsapp_number',)}),
+        ('Sosial şəbəkələr', {'fields': ('instagram_url', 'tiktok_url', 'facebook_url')}),
+        ('Xəritə', {'fields': ('map_embed_url', 'map_link')}),
+    )
+
+    def has_add_permission(self, request):
+        return not ContactInfo.objects.exists()
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+
+
+@admin.register(ContactSubmission)
+class ContactSubmissionAdmin(admin.ModelAdmin):
+    list_display = ('name', 'phone', 'project_type', 'created_at')
+    list_filter = ('project_type', 'created_at')
+    search_fields = ('name', 'phone', 'message')
+    readonly_fields = ('name', 'phone', 'project_type', 'message', 'created_at')
+
+    def has_add_permission(self, request):
+        return False
 
 
 @admin.register(Project)

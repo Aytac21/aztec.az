@@ -254,6 +254,36 @@ class GalleryItem(models.Model):
         return self.title or f'{self.get_item_type_display()} #{self.pk}'
 
 
+class ContactInfo(models.Model):
+    phone1 = models.CharField(max_length=30, blank=True, verbose_name='Telefon 1')
+    phone2 = models.CharField(max_length=30, blank=True, verbose_name='Telefon 2')
+    address = models.CharField(max_length=300, blank=True, verbose_name='Ünvan')
+    work_hours = models.CharField(max_length=200, blank=True, verbose_name='İş saatları')
+    whatsapp_number = models.CharField(max_length=30, blank=True, verbose_name='WhatsApp nömrəsi', help_text='Məs: 994559758900')
+    instagram_url = models.URLField(blank=True, verbose_name='Instagram URL')
+    tiktok_url = models.URLField(blank=True, verbose_name='TikTok URL')
+    facebook_url = models.URLField(blank=True, verbose_name='Facebook URL')
+    map_embed_url = models.TextField(blank=True, verbose_name='Google Maps embed URL')
+    map_link = models.URLField(blank=True, verbose_name='Google Maps link')
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = 'Əlaqə məlumatları'
+        verbose_name_plural = 'Əlaqə məlumatları'
+
+    def __str__(self):
+        return 'Əlaqə məlumatları'
+
+    def save(self, *args, **kwargs):
+        self.pk = 1
+        super().save(*args, **kwargs)
+
+    @classmethod
+    def load(cls):
+        obj, _ = cls.objects.get_or_create(pk=1)
+        return obj
+
+
 class Project(models.Model):
     STATUS_CHOICES = [
         ('done', 'Tamamlanmış'),
@@ -306,3 +336,19 @@ class Project(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class ContactSubmission(models.Model):
+    name = models.CharField(max_length=200, verbose_name='Ad')
+    phone = models.CharField(max_length=30, verbose_name='Telefon')
+    project_type = models.CharField(max_length=100, blank=True, verbose_name='Növ')
+    message = models.TextField(blank=True, verbose_name='Mesaj')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = 'Əlaqə müraciəti'
+        verbose_name_plural = 'Əlaqə müraciətləri'
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return f'{self.name} — {self.phone} ({self.created_at:%d.%m.%Y %H:%M})'

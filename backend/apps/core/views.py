@@ -1,7 +1,9 @@
-from django.http import Http404, JsonResponse
-from django.shortcuts import get_object_or_404
+import json
 
-from .models import AboutContent, GalleryItem, KnowledgeBase, News, PageHero, Project, Service, Vacancy
+from django.http import Http404, JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+
+from .models import AboutContent, ContactInfo, ContactSubmission, GalleryItem, KnowledgeBase, News, PageHero, Project, Service, Vacancy
 
 
 def _cors(response):
@@ -268,6 +270,50 @@ def featured_project(request):
         'category_display': obj.get_category_display(),
     }
     return _cors(JsonResponse({'featured': data}))
+
+
+def contact_info(request):
+    obj = ContactInfo.load()
+    data = {
+        'phone1': obj.phone1,
+        'phone2': obj.phone2,
+        'address': obj.address,
+        'work_hours': obj.work_hours,
+        'whatsapp_number': obj.whatsapp_number,
+        'instagram_url': obj.instagram_url,
+        'tiktok_url': obj.tiktok_url,
+        'facebook_url': obj.facebook_url,
+        'map_embed_url': obj.map_embed_url,
+        'map_link': obj.map_link,
+    }
+    return _cors(JsonResponse(data))
+
+
+@csrf_exempt
+def submit_contact(request):
+    if request.method == 'OPTIONS':
+        resp = JsonResponse({})
+        resp['Access-Control-Allow-Origin'] = '*'
+        resp['Access-Control-Allow-Methods'] = 'POST, OPTIONS'
+        resp['Access-Control-Allow-Headers'] = 'Content-Type'
+        return resp
+    if request.method != 'POST':
+        return _cors(JsonResponse({'error': 'POST only'}, status=405))
+    try:
+        body = json.loads(request.body)
+    except (json.JSONDecodeError, ValueError):
+        return _cors(JsonResponse({'error': 'Invalid JSON'}, status=400))
+    name = body.get('name', '').strip()
+    phone = body.get('phone', '').strip()
+    if not name or not phone:
+        return _cors(JsonResponse({'error': 'name and phone required'}, status=400))
+    ContactSubmission.objects.create(
+        name=name,
+        phone=phone,
+        project_type=body.get('project_type', ''),
+        message=body.get('message', ''),
+    )
+    return _cors(JsonResponse({'ok': True}))
 
 
 def project_detail(request, slug):
