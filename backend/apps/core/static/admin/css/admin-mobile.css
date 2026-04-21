@@ -179,3 +179,11 @@ div#nav-sidebar {
     .main-header .navbar-nav .nav-link { padding: 8px 10px; }
     .main-header .brand-link { font-size: 14px; }
 }
+
+/* Hide "Jazzmin version X.Y.Z" footer text */
+.main-footer small,
+.main-footer .float-right,
+footer .float-right,
+footer small {
+    display: none !important;
+}
