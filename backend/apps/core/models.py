@@ -349,6 +349,56 @@ class Project(models.Model):
         return self.title
 
 
+class ProjectImage(models.Model):
+    project = models.ForeignKey(
+        Project,
+        on_delete=models.CASCADE,
+        related_name='images',
+        verbose_name='Layihə',
+    )
+    image = models.ImageField(
+        upload_to='projects/gallery/',
+        verbose_name='Şəkil',
+    )
+    caption = models.CharField(
+        max_length=200, blank=True, verbose_name='Altyazı',
+    )
+    order = models.PositiveIntegerField(default=0, verbose_name='Sıralama')
+
+    class Meta:
+        verbose_name = 'Layihə şəkli'
+        verbose_name_plural = 'Layihə şəkilləri (qalereya)'
+        ordering = ['order', 'id']
+
+    def __str__(self):
+        return f'{self.project.title} — #{self.pk}'
+
+
+class ServiceImage(models.Model):
+    service = models.ForeignKey(
+        Service,
+        on_delete=models.CASCADE,
+        related_name='images',
+        verbose_name='Xidmət',
+    )
+    image = models.ImageField(
+        upload_to='services/gallery/',
+        verbose_name='Şəkil',
+    )
+    caption = models.CharField(
+        max_length=200, blank=True, verbose_name='Altyazı',
+    )
+    order = models.PositiveIntegerField(default=0, verbose_name='Sıralama')
+
+    class Meta:
+        verbose_name = 'Xidmət şəkli'
+        verbose_name_plural = 'Xidmət şəkilləri (qalereya)'
+        ordering = ['order', 'id']
+
+    def __str__(self):
+        return f'{self.service.title} — #{self.pk}'
+
+
 class Advantage(models.Model):
     icon = models.CharField(
         max_length=100,

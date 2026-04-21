@@ -1,7 +1,19 @@
 from django.contrib import admin
 from modeltranslation.admin import TabbedTranslationAdmin
 
-from .models import AboutContent, Advantage, CareerApplication, ContactInfo, ContactSubmission, GalleryItem, KnowledgeBase, News, PageHero, Project, Service, Vacancy
+from .models import AboutContent, Advantage, CareerApplication, ContactInfo, ContactSubmission, GalleryItem, KnowledgeBase, News, PageHero, Project, ProjectImage, Service, ServiceImage, Vacancy
+
+
+class ProjectImageInline(admin.TabularInline):
+    model = ProjectImage
+    extra = 3
+    fields = ('image', 'caption', 'order')
+
+
+class ServiceImageInline(admin.TabularInline):
+    model = ServiceImage
+    extra = 3
+    fields = ('image', 'caption', 'order')
 
 
 @admin.register(PageHero)
@@ -23,6 +35,7 @@ class ServiceAdmin(TabbedTranslationAdmin):
     list_editable = ('order',)
     search_fields = ('title', 'description')
     prepopulated_fields = {'slug': ('title',)}
+    inlines = [ServiceImageInline]
     fieldsets = (
         ('Əsas', {'fields': ('slug', 'icon', 'title', 'order')}),
         ('Məzmun', {'fields': ('short_description', 'description')}),
@@ -158,6 +171,7 @@ class ProjectAdmin(TabbedTranslationAdmin):
     list_filter = ('status', 'category', 'is_featured')
     search_fields = ('title', 'description', 'location')
     prepopulated_fields = {'slug': ('title',)}
+    inlines = [ProjectImageInline]
     fieldsets = (
         ('Əsas', {'fields': ('slug', 'title', 'description', 'order')}),
         ('Filterasiya', {'fields': ('status', 'category')}),

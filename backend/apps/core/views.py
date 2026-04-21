@@ -15,6 +15,26 @@ def _cors(response):
     return response
 
 
+def _abs_url(request, field_file):
+    if not field_file:
+        return ''
+    try:
+        return request.build_absolute_uri(field_file.url)
+    except Exception:
+        return field_file.url
+
+
+def _gallery_payload(request, images_qs):
+    items = []
+    for img in images_qs.all():
+        items.append({
+            'image': _abs_url(request, img.image),
+            'caption': img.caption,
+            'order': img.order,
+        })
+    return items
+
+
 def health(request):
     return _cors(JsonResponse({'status': 'ok'}))
 
@@ -108,6 +128,7 @@ def service_detail(request, slug):
         'video': video,
         'category_name': s.category_name,
         'category_items': s.category_items,
+        'images': _gallery_payload(request, s.images),
     }
     return _cors(JsonResponse(data))
 
@@ -419,5 +440,6 @@ def project_detail(request, slug):
         'location': p.location,
         'area': p.area,
         'is_featured': p.is_featured,
+        'images': _gallery_payload(request, p.images),
     }
     return _cors(JsonResponse(data))
