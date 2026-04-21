@@ -5,7 +5,7 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('core', '0021_aboutcontent_badge1_label_az_and_more'),
+        ('core', '0023_remove_service_video_url_service_video'),
     ]
 
     operations = [
