@@ -17,38 +17,39 @@ html, body {
 /* ---------- Sidebar behaviour on mobile ---------- */
 @media (max-width: 991.98px) {
 
-    /* Hide sidebar by default, slide in when toggled */
+    /* Sidebar always floats above content on mobile, never pushes it */
     .main-sidebar {
         position: fixed !important;
         top: 0;
         left: 0;
         height: 100vh;
         width: 250px;
-        transform: translateX(-100%);
-        transition: transform .25s ease-in-out;
         z-index: 1040;
         box-shadow: 2px 0 8px rgba(0,0,0,.15);
+        transition: margin-left .25s ease-in-out, transform .25s ease-in-out;
     }
 
-    body.sidebar-open .main-sidebar,
-    body:not(.sidebar-collapse) .main-sidebar {
-        transform: translateX(0);
-    }
-
-    /* Content takes full width on mobile */
+    /* Content ALWAYS full-width on mobile regardless of sidebar state */
     .content-wrapper,
     .main-footer,
-    .main-header {
+    .main-header,
+    body.sidebar-collapse .content-wrapper,
+    body.sidebar-collapse .main-footer,
+    body.sidebar-collapse .main-header,
+    body:not(.sidebar-collapse) .content-wrapper,
+    body:not(.sidebar-collapse) .main-footer,
+    body:not(.sidebar-collapse) .main-header {
         margin-left: 0 !important;
         width: 100% !important;
+        max-width: 100vw;
     }
 
-    /* Dim overlay when sidebar open */
-    body.sidebar-open::before {
+    /* Dim overlay when sidebar is visible (not collapsed) */
+    body:not(.sidebar-collapse)::after {
         content: "";
         position: fixed;
         inset: 0;
-        background: rgba(0,0,0,.45);
+        background: rgba(0,0,0,.5);
         z-index: 1039;
     }
 }
