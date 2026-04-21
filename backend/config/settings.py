@@ -84,7 +84,6 @@ CSRF_TRUSTED_ORIGINS = [
 
 INSTALLED_APPS = [
     'modeltranslation',
-    'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -257,25 +256,3 @@ LOGGING = {
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-# Jazzmin admin UI
-JAZZMIN_SETTINGS = {
-    'site_title': 'Aztec Admin',
-    'site_header': 'Aztec Construction',
-    'site_brand': 'Aztec Admin',
-    'welcome_sign': 'Aztec idarəetmə panelinə xoş gəldiniz',
-    'copyright': 'Aztec Construction',
-    'show_ui_builder': False,
-    'custom_css': 'admin/css/admin-mobile.css',
-    'icons': {
-        'core.PageHero': 'fas fa-image',
-        'core.Service': 'fas fa-concierge-bell',
-        'core.Project': 'fas fa-building',
-        'core.AboutContent': 'fas fa-info-circle',
-        'core.KnowledgeBase': 'fas fa-book',
-        'core.News': 'fas fa-newspaper',
-        'core.Vacancy': 'fas fa-briefcase',
-        'core.GalleryItem': 'fas fa-photo-video',
-        'auth.user': 'fas fa-user',
-        'auth.Group': 'fas fa-users',
-    },
-}
