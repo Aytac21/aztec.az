@@ -1,10 +1,6 @@
 from django.contrib import admin
 from modeltranslation.admin import TabbedTranslationAdmin
 
-admin.site.site_header = 'Aztec Construction'
-admin.site.site_title = 'Aztec Admin'
-admin.site.index_title = 'İdarəetmə paneli'
-
 from .models import AboutContent, Advantage, CareerApplication, ContactInfo, ContactSubmission, GalleryItem, KnowledgeBase, News, PageHero, Project, ProjectImage, Service, ServiceImage, Vacancy
 
 
