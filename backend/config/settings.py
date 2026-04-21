@@ -32,7 +32,7 @@ SECRET_KEY = os.getenv(
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG', 'true').strip().lower() in ['true', '1', 'yes']
 
-ALLOWED_HOSTS = ['aztec.az', 'www.aztec.az', '94.20.59.240']
+ALLOWED_HOSTS = ['aztec.az', 'www.aztec.az', '187.127.74.175']
 if DEBUG:
     ALLOWED_HOSTS.extend(['127.0.0.1', 'localhost'])
 
@@ -62,8 +62,8 @@ else:
 
 
 CORS_ALLOWED_ORIGINS = [
-    'http://94.20.59.240',
-    'https://94.20.59.240',
+    'http://187.127.74.175',
+    'https://187.127.74.175',
     'http://aztec.az',
     'https://aztec.az',
     'http://www.aztec.az',
@@ -71,8 +71,8 @@ CORS_ALLOWED_ORIGINS = [
 ]
 
 CSRF_TRUSTED_ORIGINS = [
-    'http://94.20.59.240',
-    'https://94.20.59.240',
+    'http://187.127.74.175',
+    'https://187.127.74.175',
     'http://aztec.az',
     'https://aztec.az',
     'http://www.aztec.az',
@@ -265,6 +265,7 @@ JAZZMIN_SETTINGS = {
     'welcome_sign': 'Aztec idarəetmə panelinə xoş gəldiniz',
     'copyright': 'Aztec Construction',
     'show_ui_builder': False,
+    'custom_css': 'admin/css/admin-mobile.css',
     'icons': {
         'core.PageHero': 'fas fa-image',
         'core.Service': 'fas fa-concierge-bell',

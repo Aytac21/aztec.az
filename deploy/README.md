@@ -1,6 +1,6 @@
 # Aztec.az — Deployment Guide
 
-Server: **`94.20.59.240`** · Domain: **`aztec.az`**
+Server: **`187.127.74.175`** · Domain: **`aztec.az`**
 Stack: **nginx → gunicorn (unix socket) → Django 6 + PostgreSQL + static HTML frontend**
 
 ---
@@ -8,14 +8,14 @@ Stack: **nginx → gunicorn (unix socket) → Django 6 + PostgreSQL + static HTM
 ## 0. Prerequisites
 
 - Ubuntu 22.04 / 24.04 server with root/sudo access
-- DNS A record: `aztec.az → 94.20.59.240` (and `www.aztec.az`)
+- DNS A record: `aztec.az → 187.127.74.175` (and `www.aztec.az`)
 
 ## 1. One-command bootstrap
 
 ```bash
-ssh root@94.20.59.240
+ssh root@187.127.74.175
 wget -qO /tmp/deploy.sh https://raw.githubusercontent.com/Aytac21/aztec.az/main/deploy/deploy.sh
-# or scp deploy/deploy.sh root@94.20.59.240:/tmp/
+# or scp deploy/deploy.sh root@187.127.74.175:/tmp/
 bash /tmp/deploy.sh
 ```
 

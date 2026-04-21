@@ -80,11 +80,11 @@ systemctl reload nginx
 echo
 echo "=========================================="
 echo " Deploy completed."
-echo " Site:  http://aztec.az   (or http://94.20.59.240)"
+echo " Site:  http://aztec.az   (or http://187.127.74.175)"
 echo " Admin: http://aztec.az/admin/"
 echo
 echo " Next steps:"
-echo "   1. DNS A-record: aztec.az -> 94.20.59.240"
+echo "   1. DNS A-record: aztec.az -> 187.127.74.175"
 echo "   2. SSL:  certbot --nginx -d aztec.az -d www.aztec.az"
 echo "   3. Uncomment HTTPS block in /etc/nginx/sites-available/aztec.az"
 echo "=========================================="

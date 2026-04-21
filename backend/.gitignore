@@ -161,8 +161,9 @@ dmypy.json
 # Cython debug symbols
 cython_debug/
 
-
-static
+# Allow app static files (tracked)
+!apps/*/static/
+!apps/*/static/**
 
 # Production db instance
 pgdb
