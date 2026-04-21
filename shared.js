@@ -1211,6 +1211,20 @@ document.addEventListener('DOMContentLoaded', function(){
         html += '<p>' + d.description + '</p>';
       }
 
+      /* Gallery */
+      if(d.images && d.images.length){
+        html += '<h2 style="margin-top:40px">Qalereya</h2>';
+        html += '<div class="detail-gallery" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;margin-top:20px">';
+        for(var i=0;i<d.images.length;i++){
+          var gi = d.images[i];
+          if(!gi.image) continue;
+          html += '<a href="' + gi.image + '" target="_blank" rel="noopener" style="display:block;aspect-ratio:4/3;border-radius:var(--r);overflow:hidden;background:var(--g1)">';
+          html += '<img src="' + gi.image + '" alt="' + (gi.caption || d.title) + '" loading="lazy" style="width:100%;height:100%;object-fit:cover;transition:transform .3s" onmouseover="this.style.transform=\'scale(1.04)\'" onmouseout="this.style.transform=\'\'">';
+          html += '</a>';
+        }
+        html += '</div>';
+      }
+
       detailContent.innerHTML = html;
     })
     .catch(function(err){
@@ -1276,6 +1290,20 @@ document.addEventListener('DOMContentLoaded', function(){
       /* Category (includes) */
       if(d.category_name){
         html += '<div class="inc"><h4>' + d.category_name + '</h4><p>' + d.category_items + '</p></div>';
+      }
+
+      /* Gallery */
+      if(d.images && d.images.length){
+        html += '<h2 style="margin-top:40px">Qalereya</h2>';
+        html += '<div class="detail-gallery" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;margin-top:20px">';
+        for(var i=0;i<d.images.length;i++){
+          var gi = d.images[i];
+          if(!gi.image) continue;
+          html += '<a href="' + gi.image + '" target="_blank" rel="noopener" style="display:block;aspect-ratio:4/3;border-radius:var(--r);overflow:hidden;background:var(--g1)">';
+          html += '<img src="' + gi.image + '" alt="' + (gi.caption || d.title) + '" loading="lazy" style="width:100%;height:100%;object-fit:cover;transition:transform .3s" onmouseover="this.style.transform=\'scale(1.04)\'" onmouseout="this.style.transform=\'\'">';
+          html += '</a>';
+        }
+        html += '</div>';
       }
 
       svcDetailContent.innerHTML = html;
