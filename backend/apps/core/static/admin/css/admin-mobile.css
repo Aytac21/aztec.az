@@ -180,10 +180,19 @@ div#nav-sidebar {
     .main-header .brand-link { font-size: 14px; }
 }
 
-/* Hide "Jazzmin version X.Y.Z" footer text */
-.main-footer small,
+/* Hide "Jazzmin version X.Y.Z" footer text — Jazzmin puts it inside
+   <div class="float-right d-none d-sm-inline-block">Jazzmin version <b>3.0.4</b></div>
+   which sits in .main-footer. Nuke every variant + the theme chooser toggle. */
 .main-footer .float-right,
-footer .float-right,
-footer small {
+.main-footer .d-none.d-sm-inline-block,
+footer.main-footer > div,
+footer.main-footer small,
+#jazzy-actions .btn-group:last-child,
+.dark-mode-toggle {
     display: none !important;
+}
+
+/* Keep only the left-aligned copyright readable */
+.main-footer {
+    text-align: left !important;
 }
