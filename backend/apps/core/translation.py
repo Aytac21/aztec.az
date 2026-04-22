@@ -10,6 +10,7 @@ from .models import (
     PageHero,
     Project,
     Service,
+    TeamMember,
     Vacancy,
     ContactInfo,
 )
