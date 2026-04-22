@@ -182,6 +182,30 @@ msgctxt "det_allSvc"
 msgid "Bütün xidmətlər"
 msgstr "All services"
 
+msgctxt "det_status"
+msgid "Status"
+msgstr "Status"
+
+msgctxt "det_category"
+msgid "Kateqoriya"
+msgstr "Category"
+
+msgctxt "det_location"
+msgid "Məkan"
+msgstr "Location"
+
+msgctxt "det_area"
+msgid "Sahə"
+msgstr "Type"
+
+msgctxt "det_about"
+msgid "Layihə haqqında"
+msgstr "About the project"
+
+msgctxt "det_gallery"
+msgid "Qalereya"
+msgstr "Gallery"
+
 msgctxt "more"
 msgid "Ətraflı"
 msgstr "Details"

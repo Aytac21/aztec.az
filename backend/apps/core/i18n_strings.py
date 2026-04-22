@@ -211,6 +211,12 @@ STRINGS = {
     'det_backNews': pgettext_lazy('det_backNews', 'Xəbərlərə qayıt'),
     'det_allProj': pgettext_lazy('det_allProj', 'Bütün layihələr'),
     'det_allSvc': pgettext_lazy('det_allSvc', 'Bütün xidmətlər'),
+    'det_status': pgettext_lazy('det_status', 'Status'),
+    'det_category': pgettext_lazy('det_category', 'Kateqoriya'),
+    'det_location': pgettext_lazy('det_location', 'Məkan'),
+    'det_area': pgettext_lazy('det_area', 'Sahə'),
+    'det_about': pgettext_lazy('det_about', 'Layihə haqqında'),
+    'det_gallery': pgettext_lazy('det_gallery', 'Qalereya'),
     'det_consult': pgettext_lazy('det_consult', 'Konsultasiya alın'),
     # --- Common article section headings ---
     'nb_projInfo': pgettext_lazy('nb_projInfo', 'Layihə məlumatları'),

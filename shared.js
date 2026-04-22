@@ -1388,22 +1388,22 @@ document.addEventListener('DOMContentLoaded', function(){
       /* Info cards row */
       html += '<div style="display:flex;flex-wrap:wrap;gap:16px;margin-bottom:36px">';
       html += '<div style="flex:1;min-width:180px;padding:20px;background:var(--g1);border-radius:var(--r);border-left:3px solid var(--accent)">';
-      html += '<div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--accent);margin-bottom:4px">Status</div>';
+      html += '<div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--accent);margin-bottom:4px" data-tr="det_status">' + ((TR[localStorage.getItem('aztec-lang')||'az']||{}).det_status || 'Status') + '</div>';
       html += '<div style="font-size:16px;color:var(--dark);font-weight:600">' + d.status_display + '</div></div>';
 
       html += '<div style="flex:1;min-width:180px;padding:20px;background:var(--g1);border-radius:var(--r);border-left:3px solid var(--accent)">';
-      html += '<div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--accent);margin-bottom:4px">Kateqoriya</div>';
+      html += '<div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--accent);margin-bottom:4px" data-tr="det_category">' + ((TR[localStorage.getItem('aztec-lang')||'az']||{}).det_category || 'Kateqoriya') + '</div>';
       html += '<div style="font-size:16px;color:var(--dark);font-weight:600">' + d.category_display + '</div></div>';
 
       if(d.location){
         html += '<div style="flex:1;min-width:180px;padding:20px;background:var(--g1);border-radius:var(--r);border-left:3px solid var(--accent)">';
-        html += '<div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--accent);margin-bottom:4px">Məkan</div>';
+        html += '<div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--accent);margin-bottom:4px" data-tr="det_location">' + ((TR[localStorage.getItem('aztec-lang')||'az']||{}).det_location || 'Məkan') + '</div>';
         html += '<div style="font-size:16px;color:var(--dark);font-weight:600">' + d.location + '</div></div>';
       }
 
       if(d.area){
         html += '<div style="flex:1;min-width:180px;padding:20px;background:var(--g1);border-radius:var(--r);border-left:3px solid var(--accent)">';
-        html += '<div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--accent);margin-bottom:4px">Sahə</div>';
+        html += '<div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--accent);margin-bottom:4px" data-tr="det_area">' + ((TR[localStorage.getItem('aztec-lang')||'az']||{}).det_area || 'Sahə') + '</div>';
         html += '<div style="font-size:16px;color:var(--dark);font-weight:600">' + d.area + '</div></div>';
       }
       html += '</div>';
@@ -1417,13 +1417,13 @@ document.addEventListener('DOMContentLoaded', function(){
 
       /* Description */
       if(d.description){
-        html += '<h2>Layihə haqqında</h2>';
+        html += '<h2 data-tr="det_about">' + ((TR[localStorage.getItem('aztec-lang')||'az']||{}).det_about || 'Layihə haqqında') + '</h2>';
         html += '<p>' + d.description + '</p>';
       }
 
       /* Gallery */
       if(d.images && d.images.length){
-        html += '<h2 style="margin-top:40px">Qalereya</h2>';
+        html += '<h2 style="margin-top:40px" data-tr="det_gallery">' + ((TR[localStorage.getItem('aztec-lang')||'az']||{}).det_gallery || 'Qalereya') + '</h2>';
         html += '<div class="detail-gallery" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;margin-top:20px">';
         for(var i=0;i<d.images.length;i++){
           var gi = d.images[i];
@@ -1504,7 +1504,7 @@ document.addEventListener('DOMContentLoaded', function(){
 
       /* Gallery */
       if(d.images && d.images.length){
-        html += '<h2 style="margin-top:40px">Qalereya</h2>';
+        html += '<h2 style="margin-top:40px" data-tr="det_gallery">' + ((TR[localStorage.getItem('aztec-lang')||'az']||{}).det_gallery || 'Qalereya') + '</h2>';
         html += '<div class="detail-gallery" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;margin-top:20px">';
         for(var i=0;i<d.images.length;i++){
           var gi = d.images[i];
