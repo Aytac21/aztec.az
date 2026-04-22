@@ -683,6 +683,16 @@ function _applyLang(l){
   if(ftl[0]&&d.ftTerms)ftl[0].textContent=d.ftTerms;
   if(ftl[1]&&d.ftPrivacy)ftl[1].textContent=d.ftPrivacy;
 
+  /* "Made by neOtwork" credit — injected once per page */
+  var ftBot=document.querySelector('.ft-bot');
+  if(ftBot && !ftBot.querySelector('.ft-madeby')){
+    var mb=document.createElement('div');
+    mb.className='ft-madeby';
+    mb.style.cssText='margin-top:12px;font-size:12px;color:var(--g4);text-align:center;width:100%';
+    mb.innerHTML='Made by <a href="https://neotwork.com/" target="_blank" rel="noopener noreferrer" style="color:var(--accent);text-decoration:none;font-weight:500">neOtwork</a>';
+    ftBot.appendChild(mb);
+  }
+
   /* ALL data-tr elements (covers ALL page content) */
   document.querySelectorAll('[data-tr]').forEach(function(el){
     var k=el.getAttribute('data-tr');
@@ -943,8 +953,10 @@ document.addEventListener('DOMContentLoaded', function(){
         var vc = aboutValues.querySelector('.container');
         if(vc){
           vc.innerHTML =
-            '<div class="s-tag" style="justify-content:center">' + d.values_tag + '</div>' +
-            '<h2 class="s-title" style="display:inline-block">' + d.values_title + '</h2>' +
+            '<div style="display:inline-block;text-align:left">' +
+              '<div class="s-tag">' + d.values_tag + '</div>' +
+              '<h2 class="s-title" style="display:block;margin:0">' + d.values_title + '</h2>' +
+            '</div>' +
             '<p class="s-desc" style="margin:16px auto 0;text-align:center">' + d.values_text + '</p>';
         }
       }
@@ -954,8 +966,10 @@ document.addEventListener('DOMContentLoaded', function(){
         var vmc = aboutVM.querySelector('.container');
         if(vmc){
           vmc.innerHTML =
-            '<div style="text-align:center"><div class="s-tag" style="justify-content:center">' + d.vm_tag + '</div>' +
-            '<h2 class="s-title" style="display:inline-block">' + d.vm_title + '</h2></div>' +
+            '<div style="text-align:center"><div style="display:inline-block;text-align:left;margin-bottom:20px">' +
+              '<div class="s-tag">' + d.vm_tag + '</div>' +
+              '<h2 class="s-title" style="display:block;margin:0">' + d.vm_title + '</h2>' +
+            '</div></div>' +
             '<div class="vm-row">' +
               '<div class="vm reveal visible"><h3><i class="fas fa-eye" style="margin-right:8px;color:var(--accent)"></i>' + d.vision_title + '</h3><p>' + d.vision_text + '</p></div>' +
               '<div class="vm reveal visible"><h3><i class="fas fa-bullseye" style="margin-right:8px;color:var(--accent)"></i>' + d.mission_title + '</h3><p>' + d.mission_text + '</p></div>' +

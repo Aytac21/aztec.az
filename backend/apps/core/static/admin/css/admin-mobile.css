@@ -217,19 +217,25 @@ div#nav-sidebar {
     .main-header .brand-link { font-size: 14px; }
 }
 
-/* Hide "Jazzmin version X.Y.Z" footer text — Jazzmin puts it inside
-   <div class="float-right d-none d-sm-inline-block">Jazzmin version <b>3.0.4</b></div>
-   which sits in .main-footer. Nuke every variant + the theme chooser toggle. */
-.main-footer .float-right,
-.main-footer .d-none.d-sm-inline-block,
-footer.main-footer > div,
-footer.main-footer small,
-#jazzy-actions .btn-group:last-child,
-.dark-mode-toggle {
+/* =========================================================
+   Hide "Jazzmin version X.Y.Z" footer block completely.
+   Jazzmin markup (v3.0.4):
+     <footer class="main-footer">
+       <div class="float-right d-none d-sm-inline-block">
+         <b>Jazzmin version</b> 3.0.4
+       </div>
+       <strong>Copyright ...</strong>
+     </footer>
+   ========================================================= */
+body footer.main-footer .float-right,
+body footer.main-footer > div,
+body footer.main-footer div[class*="d-sm"],
+html body .main-footer .float-right {
     display: none !important;
+    visibility: hidden !important;
+    width: 0 !important;
+    height: 0 !important;
+    overflow: hidden !important;
 }
 
-/* Keep only the left-aligned copyright readable */
-.main-footer {
-    text-align: left !important;
-}
+body footer.main-footer { text-align: left !important; }
