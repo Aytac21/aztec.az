@@ -1144,8 +1144,11 @@ document.addEventListener('DOMContentLoaded', function(){
           card.className = 'svc reveal visible';
           card.style.textDecoration = 'none';
           card.style.color = 'inherit';
+          var topHtml = s.image
+            ? '<img src="' + s.image + '" alt="' + s.title + '" loading="lazy">'
+            : '<i class="' + s.icon + '"></i>';
           card.innerHTML =
-            '<div class="svc-top"><i class="' + s.icon + '"></i></div>' +
+            '<div class="svc-top">' + topHtml + '</div>' +
             '<div class="svc-body">' +
               '<h3>' + s.title + '</h3>' +
               '<p>' + s.short_description + '</p>' +
