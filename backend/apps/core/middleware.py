@@ -1,4 +1,4 @@
-"""Activate request language from ?lang=xx query parameter for /api/ requests."""
+"""Activate request language: ?lang=xx for /api/ requests; force 'az' for /admin/ and /rosetta/."""
 from django.conf import settings
 from django.utils import translation
 
@@ -16,6 +16,10 @@ class ApiLanguageMiddleware:
                 translation.activate(lang)
                 request.LANGUAGE_CODE = lang
                 activated = True
+        elif request.path.startswith('/admin/') or request.path.startswith('/rosetta/'):
+            translation.activate('az')
+            request.LANGUAGE_CODE = 'az'
+            activated = True
         response = self.get_response(request)
         if activated:
             translation.deactivate()
