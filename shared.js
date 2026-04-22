@@ -667,6 +667,12 @@ function _applyLang(l){
   var gt=document.querySelector('.mob-group-title');
   if(gt)gt.innerHTML=(d.navAbout||'Haqqımızda')+' <i class="fas fa-chevron-down"></i>';
 
+  /* Mobile menu — Haqqımızda submenu items */
+  var mgi=document.querySelectorAll('.mob-group-items a');
+  ['ha_tag','mega_kmTitle','mega_tfTitle','mega_usTitle'].forEach(function(k,i){
+    if(mgi[i]&&d[k])mgi[i].textContent=d[k];
+  });
+
   /* Mega menu items */
   var mh=document.querySelectorAll('.mega-item h4');
   var megaKeys=['ha_tag','km_h1','tf_h1','us_h1','svcTitle','navContact'];
