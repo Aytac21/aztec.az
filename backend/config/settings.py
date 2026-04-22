@@ -271,6 +271,7 @@ JAZZMIN_SETTINGS = {
     'copyright': 'Aztec Construction',
     'show_ui_builder': False,
     'custom_css': 'admin/css/admin-mobile.css',
+    'custom_js': 'admin/js/admin-custom.js',
     'icons': {
         'core.PageHero': 'fas fa-image',
         'core.Service': 'fas fa-concierge-bell',

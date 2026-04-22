@@ -2,6 +2,16 @@
    Aztec Admin – Responsive fixes for Jazzmin / AdminLTE
    =========================================================== */
 
+/* ---------- Hide Jazzmin version in footer ---------- */
+.main-footer .float-right,
+.main-footer .float-end,
+.main-footer strong:last-child,
+.main-footer span[class*="version"],
+.main-footer a[href*="jazzmin"],
+.main-footer a[href*="adminlte"] {
+    display: none !important;
+}
+
 /* ---------- Login page: full background + hide logo ---------- */
 .login-page .login-logo {
     display: none !important;

@@ -3,6 +3,8 @@ from modeltranslation.admin import TabbedTranslationAdmin
 
 from .models import AboutContent, Advantage, CareerApplication, ContactInfo, ContactSubmission, GalleryItem, KnowledgeBase, News, PageHero, Project, ProjectImage, Service, ServiceImage, TeamMember, Vacancy
 
+admin.site.index_title = 'İdarə bölməsi'
+
 
 class ProjectImageInline(admin.TabularInline):
     model = ProjectImage
