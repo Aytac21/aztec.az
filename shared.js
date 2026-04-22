@@ -936,6 +936,8 @@ document.addEventListener('DOMContentLoaded', function(){
 
       /* --- INDEX.HTML about summary --- */
       if(homeAboutText){
+        var _curLang = localStorage.getItem('aztec-lang') || 'az';
+        var _moreTxt = (TR[_curLang] && TR[_curLang].aboutMore) || 'Ətraflı oxuyun';
         homeAboutText.innerHTML =
           '<div class="s-tag">' + d.tag + '</div>' +
           '<h2 class="s-title">' + d.title + '</h2>' +
@@ -946,7 +948,7 @@ document.addEventListener('DOMContentLoaded', function(){
             '<div class="a-badge"><div class="n">' + d.badge2_number + '</div><div class="l">' + d.badge2_label + '</div></div>' +
             '<div class="a-badge"><div class="n">' + d.badge3_number + '</div><div class="l">' + d.badge3_label + '</div></div>' +
           '</div>' +
-          '<a href="haqqimizda" class="u-link" style="margin-top:20px">Ətraflı oxuyun <i class="fas fa-arrow-right"></i></a>';
+          '<a href="haqqimizda" class="u-link" style="margin-top:20px" data-trl="aboutMore">' + _moreTxt + ' <i class="fas fa-arrow-right"></i></a>';
       }
       if(homeAboutImg && d.image){
         homeAboutImg.innerHTML = '<img src="' + d.image + '" alt="Aztec Construction" style="width:100%;height:100%;object-fit:cover">';
@@ -1060,7 +1062,7 @@ document.addEventListener('DOMContentLoaded', function(){
             '<div class="nd">' + (n.date_label || '') + '</div>' +
             '<h3>' + n.title + '</h3>' +
             '<p>' + (n.short_description || '') + '</p>' +
-            '<span class="u-link" style="font-size:11px">Ətraflı <i class="fas fa-arrow-right"></i></span>' +
+            '<span class="u-link" style="font-size:11px" data-tr="more">' + ((TR[localStorage.getItem('aztec-lang')||'az']||{}).more || 'Ətraflı') + ' <i class="fas fa-arrow-right"></i></span>' +
           '</div></a>';
         newsGrid.appendChild(card);
       });
@@ -1160,7 +1162,7 @@ document.addEventListener('DOMContentLoaded', function(){
             '<div class="svc-body">' +
               '<h3>' + s.title + '</h3>' +
               '<p>' + s.short_description + '</p>' +
-              '<span class="u-link">Ətraflı <i class="fas fa-arrow-right"></i></span>' +
+              '<span class="u-link" data-tr="more">' + ((TR[localStorage.getItem('aztec-lang')||'az']||{}).more || 'Ətraflı') + ' <i class="fas fa-arrow-right"></i></span>' +
             '</div>';
           svcGrid.appendChild(card);
         });
@@ -1188,7 +1190,7 @@ document.addEventListener('DOMContentLoaded', function(){
               '<h2>' + s.title + '</h2>' +
               '<p>' + s.description + '</p>' +
               catHtml +
-              '<a href="xidmet-detail?slug=' + s.slug + '" class="u-link">Ətraflı bax <i class="fas fa-arrow-right"></i></a>' +
+              '<a href="xidmet-detail?slug=' + s.slug + '" class="u-link" data-tr="more">' + ((TR[localStorage.getItem('aztec-lang')||'az']||{}).more || 'Ətraflı') + ' <i class="fas fa-arrow-right"></i></a>' +
             '</div>';
           svcContainer.appendChild(block);
         });
