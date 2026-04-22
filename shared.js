@@ -907,6 +907,13 @@ document.addEventListener('DOMContentLoaded', function(){
         if(h3) h3.textContent = f.title;
         if(p) p.textContent = f.description;
         if(link) link.href = 'layihe-detail?slug=' + f.slug;
+        if(f.image){
+          megaFeatured.style.backgroundImage =
+            "linear-gradient(0deg,rgba(28,28,30,0.88) 0%,rgba(28,28,30,0.35) 55%,rgba(28,28,30,0.05) 100%), url('" + f.image + "')";
+          megaFeatured.style.backgroundSize = 'cover';
+          megaFeatured.style.backgroundPosition = 'center';
+          megaFeatured.classList.add('has-img');
+        }
       })
       .catch(function(err){ console.warn('[nav-featured] load failed:', err); });
   }
