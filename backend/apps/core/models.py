@@ -461,6 +461,40 @@ class ContactSubmission(models.Model):
         return f'{self.name} — {self.phone} ({self.created_at:%d.%m.%Y %H:%M})'
 
 
+class Partner(models.Model):
+    CATEGORY_CHOICES = [
+        ('material', 'Material təchizatçısı'),
+        ('dovlet', 'Dövlət əməkdaşlığı'),
+        ('ozel', 'Özəl şirkət'),
+    ]
+    name = models.CharField(max_length=200, verbose_name='Ad')
+    icon = models.CharField(
+        max_length=100,
+        help_text='Font Awesome class, məs: fas fa-cubes',
+        verbose_name='İkon (FA)',
+    )
+    description = models.CharField(
+        max_length=500,
+        blank=True,
+        verbose_name='Açıqlama',
+    )
+    category = models.CharField(
+        max_length=20,
+        choices=CATEGORY_CHOICES,
+        verbose_name='Kateqoriya',
+    )
+    order = models.PositiveIntegerField(default=0, verbose_name='Sıralama')
+    is_active = models.BooleanField(default=True, verbose_name='Aktiv')
+
+    class Meta:
+        verbose_name = 'Tərəfdaş'
+        verbose_name_plural = 'Tərəfdaşlar'
+        ordering = ['category', 'order', 'id']
+
+    def __str__(self):
+        return self.name
+
+
 class CareerApplication(models.Model):
     name = models.CharField(max_length=200, verbose_name='Ad')
     phone = models.CharField(max_length=30, verbose_name='Telefon')

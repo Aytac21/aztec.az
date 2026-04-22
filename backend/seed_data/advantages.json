@@ -1,0 +1,82 @@
+[
+  {
+    "icon": "fas fa-mountain",
+    "order": 1,
+    "title_az": "Torpaq analizi və bünövrə",
+    "title_ru": "Анализ грунта и фундамент",
+    "title_en": "Soil analysis and foundation",
+    "description_az": "Hər tikinti torpaq analizindən başlayır. Keyfiyyətli beton və armatur.",
+    "description_ru": "Каждое строительство начинается с анализа грунта. Качественный бетон и арматура.",
+    "description_en": "Every build starts with soil analysis. Premium concrete and reinforcement."
+  },
+  {
+    "icon": "fas fa-pencil-ruler",
+    "order": 2,
+    "title_az": "Peşəkar layihələndirmə",
+    "title_ru": "Профессиональное проектирование",
+    "title_en": "Professional design",
+    "description_az": "Lisenziyalı planlar, 3D vizualizasiya. Fərdi yanaşma.",
+    "description_ru": "Лицензированные планы, 3D-визуализация. Индивидуальный подход.",
+    "description_en": "Licensed blueprints, 3D visualization. Tailored approach."
+  },
+  {
+    "icon": "fas fa-gem",
+    "order": 3,
+    "title_az": "Keyfiyyətli materiallar",
+    "title_ru": "Качественные материалы",
+    "title_en": "Quality materials",
+    "description_az": "Etibarlı təchizatçılardan birinci sinif materiallar.",
+    "description_ru": "Первоклассные материалы от проверенных поставщиков.",
+    "description_en": "First-class materials from trusted suppliers."
+  },
+  {
+    "icon": "fas fa-hard-hat",
+    "order": 4,
+    "title_az": "Peşəkar icra",
+    "title_ru": "Профессиональное исполнение",
+    "title_en": "Professional execution",
+    "description_az": "100+ təcrübəli mütəxəssis. Ciddi iş qrafiki.",
+    "description_ru": "Более 100 опытных специалистов. Строгий график работ.",
+    "description_en": "100+ experienced specialists. Strict work schedule."
+  },
+  {
+    "icon": "fas fa-shield-alt",
+    "order": 5,
+    "title_az": "Keyfiyyət nəzarəti",
+    "title_ru": "Контроль качества",
+    "title_en": "Quality control",
+    "description_az": "Hər mərhələdə standartlara uyğunluq yoxlanışı.",
+    "description_ru": "Проверка соответствия стандартам на каждом этапе.",
+    "description_en": "Standards compliance check at every stage."
+  },
+  {
+    "icon": "fas fa-clock",
+    "order": 6,
+    "title_az": "Vaxtında təhvil",
+    "title_ru": "Сдача в срок",
+    "title_en": "On-time delivery",
+    "description_az": "Razılaşdırılmış müddətlərə riayət. Gecikmə məsuliyyəti.",
+    "description_ru": "Соблюдение согласованных сроков. Ответственность за задержки.",
+    "description_en": "Agreed deadlines honored. Accountability for delays."
+  },
+  {
+    "icon": "fas fa-file-contract",
+    "order": 7,
+    "title_az": "Şəffaf müqavilə",
+    "title_ru": "Прозрачный договор",
+    "title_en": "Transparent contract",
+    "description_az": "Yazılı müqavilə, əvvəlcədən smeta. Gizli xərclər yox.",
+    "description_ru": "Письменный договор, смета заранее. Без скрытых платежей.",
+    "description_en": "Written contract, estimate upfront. No hidden costs."
+  },
+  {
+    "icon": "fas fa-headset",
+    "order": 8,
+    "title_az": "Açar təhvili zəmanət",
+    "title_ru": "Гарантия «под ключ»",
+    "title_en": "Turnkey warranty",
+    "description_az": "Təhvildən sonra texniki dəstək. Pulsuz təmir zəmanəti.",
+    "description_ru": "Техподдержка после сдачи. Бесплатная гарантийная починка.",
+    "description_en": "Technical support after delivery. Free repair warranty."
+  }
+]

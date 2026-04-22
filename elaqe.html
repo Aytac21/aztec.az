@@ -76,7 +76,7 @@
 <div class="ci"><div class="ci-ic"><i class="fab fa-whatsapp"></i></div><div class="ci-t"><h4>WhatsApp</h4><p><a href="https://wa.me/994559758900" target="_blank" data-tr="el_formTitle">Mesaj göndərin</a></p></div></div>
 <div class="c-social"><a href="https://www.instagram.com/azteconstruction/" target="_blank"><i class="fab fa-instagram"></i></a><a href="https://www.tiktok.com/@aztec.constructionn" target="_blank"><i class="fab fa-tiktok"></i></a><a href="https://www.facebook.com/profile.php?id=61575721733333" target="_blank"><i class="fab fa-facebook-f"></i></a></div>
 </div>
-<div class="c-form reveal"><h2 data-tr="el_formTitle">Mesaj göndərin</h2><form onsubmit="sendC(event)"><div class="fg"><label data-tr="el_lblName">Ad *</label><input type="text" id="cn" required placeholder="Adınız" data-tr-ph="el_phName"></div><div class="fg"><label data-tr="el_lblPhone">Telefon *</label><input type="tel" id="cp" required placeholder="+994"></div><div class="fg"><label data-tr="el_lblType">Növ</label><select id="ct"><option value="" data-tr="sel_choose">Seçin</option><option data-tr="opt_private">Fərdi ev</option><option data-tr="opt_commercial">Kommersiya</option><option data-tr="opt_renovation">Təmir</option><option data-tr="opt_design">Dizayn</option><option data-tr="opt_other">Digər</option></select></div><div class="fg"><label data-tr="el_lblMsg">Mesaj</label><textarea id="cm" placeholder="Layihəniz barədə..." data-tr-ph="el_phMsg"></textarea></div><a href="#" onclick="sendC(event)" class="u-link"><i class="fab fa-whatsapp"></i> <span data-tr="el_send">WhatsApp ilə göndər</span></a></form></div>
+<div class="c-form reveal"><h2 data-tr="el_formTitle">Mesaj göndərin</h2><form onsubmit="sendC(event)"><div class="fg"><label data-tr="el_lblName">Ad *</label><input type="text" id="cn" required placeholder="Adınız" data-tr-ph="el_phName"></div><div class="fg"><label data-tr="el_lblPhone">Telefon *</label><div class="phone-field"><span class="phone-prefix">+994</span><select id="cpCode" class="phone-code" aria-label="Operator kodu"><option>50</option><option>51</option><option selected>55</option><option>60</option><option>70</option><option>77</option><option>90</option><option>99</option></select><input type="tel" id="cp" class="phone-num" required maxlength="10" placeholder="XXX XX XX" inputmode="numeric" autocomplete="tel-national" oninput="fmtPhone(this)"></div></div><div class="fg"><label data-tr="el_lblType">Növ</label><select id="ct"><option value="" data-tr="sel_choose">Seçin</option><option data-tr="opt_private">Fərdi ev</option><option data-tr="opt_commercial">Kommersiya</option><option data-tr="opt_renovation">Təmir</option><option data-tr="opt_design">Dizayn</option><option data-tr="opt_other">Digər</option></select></div><div class="fg"><label data-tr="el_lblMsg">Mesaj</label><textarea id="cm" placeholder="Layihəniz barədə..." data-tr-ph="el_phMsg"></textarea></div><a href="#" onclick="sendC(event)" class="u-link"><i class="fab fa-whatsapp"></i> <span data-tr="el_send">WhatsApp ilə göndər</span></a></form></div>
 </div>
 <div class="map-wrap"><iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3044.5!2d47.05!3d40.77!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNDDCsDQ2JzEyLjAiTiA0N8KwMDMnMDAuMCJF!5e0!3m2!1saz!2saz" allowfullscreen loading="lazy"></iframe></div>
 <p style="text-align:center;margin-top:12px"><a href="https://maps.app.goo.gl/TTKNuRFa6693KoGX8" target="_blank" style="color:var(--g4);font-size:12px"><i class="fas fa-external-link-alt" style="margin-right:4px;color:var(--accent)"></i>Google Maps</a></p>
@@ -112,15 +112,32 @@
 </footer>
 <a href="https://wa.me/994559758900" target="_blank" class="wa" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
 <script src="shared.js"></script>
-<script>function sendC(e){e.preventDefault();
+<script>
+/* Phone formatter: groups 7 digits as "XXX XX XX" */
+function fmtPhone(el){
+  var d=(el.value||'').replace(/\D/g,'').slice(0,7);
+  var out=d;
+  if(d.length>3) out=d.slice(0,3)+' '+d.slice(3);
+  if(d.length>5) out=d.slice(0,3)+' '+d.slice(3,5)+' '+d.slice(5);
+  el.value=out;
+}
+
+function sendC(e){e.preventDefault();
 var name=document.getElementById('cn').value.trim();
-var phone=document.getElementById('cp').value.trim();
+var code=document.getElementById('cpCode').value;
+var num=document.getElementById('cp').value.replace(/\D/g,'');
 var tp=document.getElementById('ct').value;
 var msg=document.getElementById('cm').value;
-if(!name||!phone)return;
-try{fetch((window.API_BASE||'')+'/api/contact/submit/',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:name,phone:phone,project_type:tp,message:msg})}).catch(function(){});}catch(_){}
-var t='Salam!%0AAd:'+encodeURIComponent(name)+'%0ATel:'+encodeURIComponent(phone);
+if(!name||num.length!==7){
+  if(num.length!==7){alert('Zəhmət olmasa 7 rəqəmli telefon nömrəsi daxil edin (məsələn 975 89 00)');}
+  return;
+}
+var phonePretty='+994 '+code+' '+num.slice(0,3)+' '+num.slice(3,5)+' '+num.slice(5);
+var phoneWa='994'+code+num;
+try{fetch((window.API_BASE||'')+'/api/contact/submit/',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:name,phone:phonePretty,project_type:tp,message:msg})}).catch(function(){});}catch(_){}
+var t='Salam!%0AAd:'+encodeURIComponent(name)+'%0ATel:'+encodeURIComponent(phonePretty);
 if(tp)t+='%0A'+encodeURIComponent(tp);
 if(msg)t+='%0A'+encodeURIComponent(msg);
-window.open('https://wa.me/994559758900?text='+t,'_blank');}</script>
+window.open('https://wa.me/994559758900?text='+t,'_blank');}
+</script>
 </body></html>

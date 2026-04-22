@@ -1,68 +1,80 @@
-from django.core.management.base import BaseCommand
+"""Seed Advantages (Üstünlüklər) from backend/seed_data/advantages.json.
+
+Each JSON item may contain localized keys (title_az/ru/en, description_az/ru/en)
+plus the shared fields: icon, order.
+
+Usage:
+    python manage.py seed_advantages
+    python manage.py seed_advantages --path /abs/path/to/file.json
+    python manage.py seed_advantages --prune     # delete DB rows not in JSON
+"""
+import json
+from pathlib import Path
+
+from django.core.management.base import BaseCommand, CommandError
 
 from apps.core.models import Advantage
 
 
+DEFAULT_PATH = Path(__file__).resolve().parents[4] / 'seed_data' / 'advantages.json'
+LANGS = ('az', 'ru', 'en')
+
+
 class Command(BaseCommand):
-    help = 'Seed advantages (Üstünlüklər)'
+    help = 'Seed Advantages from seed_data/advantages.json (multilingual).'
 
-    def handle(self, *args, **options):
-        items = [
-            {
-                'icon': 'fas fa-mountain',
-                'title': 'Torpaq analizi və bünövrə',
-                'description': 'Hər tikinti torpaq analizindən başlayır. Keyfiyyətli beton və armatur.',
-                'order': 1,
-            },
-            {
-                'icon': 'fas fa-pencil-ruler',
-                'title': 'Peşəkar layihələndirmə',
-                'description': 'Lisenziyalı planlar, 3D vizualizasiya. Fərdi yanaşma.',
-                'order': 2,
-            },
-            {
-                'icon': 'fas fa-gem',
-                'title': 'Keyfiyyətli materiallar',
-                'description': 'Etibarlı təchizatçılardan birinci sinif materiallar.',
-                'order': 3,
-            },
-            {
-                'icon': 'fas fa-hard-hat',
-                'title': 'Peşəkar icra',
-                'description': '100+ təcrübəli mütəxəssis. Ciddi iş qrafiki.',
-                'order': 4,
-            },
-            {
-                'icon': 'fas fa-shield-alt',
-                'title': 'Keyfiyyət nəzarəti',
-                'description': 'Hər mərhələdə standartlara uyğunluq yoxlanışı.',
-                'order': 5,
-            },
-            {
-                'icon': 'fas fa-clock',
-                'title': 'Vaxtında təhvil',
-                'description': 'Razılaşdırılmış müddətlərə riayət. Gecikmə məsuliyyəti.',
-                'order': 6,
-            },
-            {
-                'icon': 'fas fa-file-contract',
-                'title': 'Şəffaf müqavilə',
-                'description': 'Yazılı müqavilə, əvvəlcədən smeta. Gizli xərclər yox.',
-                'order': 7,
-            },
-            {
-                'icon': 'fas fa-headset',
-                'title': 'Açar təhvili zəmanət',
-                'description': 'Təhvildən sonra texniki dəstək. Pulsuz təmir zəmanəti.',
-                'order': 8,
-            },
-        ]
+    def add_arguments(self, parser):
+        parser.add_argument('--path', default=str(DEFAULT_PATH),
+                            help='Path to advantages JSON file.')
+        parser.add_argument('--prune', action='store_true',
+                            help='Delete DB rows whose (icon, order) are not in JSON.')
 
-        for item in items:
-            Advantage.objects.update_or_create(
-                title=item['title'],
-                defaults=item,
+    def handle(self, *args, **opts):
+        path = Path(opts['path'])
+        if not path.exists():
+            raise CommandError(f'JSON file not found: {path}')
+
+        with path.open('r', encoding='utf-8') as fh:
+            items = json.load(fh)
+        if not isinstance(items, list):
+            raise CommandError('Advantages JSON must be a top-level array.')
+
+        kept_keys = set()
+        for idx, item in enumerate(items, 1):
+            icon = item.get('icon') or 'fas fa-check'
+            order = int(item.get('order', idx))
+            # AZ title is the lookup key (matches Advantage.title default lang)
+            title_az = item.get('title_az') or item.get('title') or ''
+            if not title_az:
+                self.stdout.write(self.style.WARNING(f'  skip item #{idx}: missing title_az'))
+                continue
+
+            defaults = {
+                'icon': icon,
+                'order': order,
+                'title': title_az,
+                'description': item.get('description_az') or item.get('description') or '',
+            }
+            # Per-language translated fields (django-modeltranslation creates
+            # title_az/title_ru/title_en columns automatically)
+            for lang in LANGS:
+                t = item.get(f'title_{lang}')
+                d = item.get(f'description_{lang}')
+                if t is not None:
+                    defaults[f'title_{lang}'] = t
+                if d is not None:
+                    defaults[f'description_{lang}'] = d
+
+            obj, created = Advantage.objects.update_or_create(
+                title=title_az,
+                defaults=defaults,
             )
-            self.stdout.write(self.style.SUCCESS(f'  ✓ {item["title"]}'))
+            kept_keys.add(obj.pk)
+            status = 'created' if created else 'updated'
+            self.stdout.write(self.style.SUCCESS(f'  ✓ {status}: {title_az}'))
 
-        self.stdout.write(self.style.SUCCESS(f'\n{len(items)} advantages seeded.'))
+        if opts['prune']:
+            removed = Advantage.objects.exclude(pk__in=kept_keys).delete()
+            self.stdout.write(self.style.WARNING(f'  pruned: {removed}'))
+
+        self.stdout.write(self.style.SUCCESS(f'\n{len(items)} advantage(s) processed.'))

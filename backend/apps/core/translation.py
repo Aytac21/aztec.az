@@ -8,6 +8,7 @@ from .models import (
     KnowledgeBase,
     News,
     PageHero,
+    Partner,
     Project,
     Service,
     TeamMember,
@@ -78,3 +79,8 @@ class ContactInfoTR(TranslationOptions):
 @register(TeamMember)
 class TeamMemberTR(TranslationOptions):
     fields = ('name', 'role')
+
+
+@register(Partner)
+class PartnerTR(TranslationOptions):
+    fields = ('name', 'description')

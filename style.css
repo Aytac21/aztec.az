@@ -288,6 +288,20 @@ img{max-width:100%;display:block}
 .fg{margin-bottom:14px}.fg label{display:block;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--g4);margin-bottom:4px}
 .fg input,.fg select,.fg textarea{width:100%;padding:12px 14px;background:var(--white);border:1px solid var(--g2);border-radius:var(--r);color:var(--dark);font-size:14px;font-family:var(--font);transition:border-color var(--tr)}
 .fg input:focus,.fg select:focus,.fg textarea:focus{outline:none;border-color:var(--accent)}.fg textarea{min-height:100px;resize:vertical}
+
+/* ---------- Phone field (AZ) ---------- */
+.phone-field{display:flex;align-items:stretch;background:var(--white);border:1px solid var(--g2);border-radius:var(--r);overflow:hidden;transition:border-color var(--tr)}
+.phone-field:focus-within{border-color:var(--accent);box-shadow:0 0 0 3px rgba(224,122,40,.08)}
+.phone-field .phone-prefix{display:inline-flex;align-items:center;padding:0 12px;background:var(--g1);color:var(--dark);font-size:14px;font-weight:600;letter-spacing:.5px;border-right:1px solid var(--g2);user-select:none}
+.phone-field .phone-code{width:auto!important;min-width:72px;padding:12px 28px 12px 12px!important;background:transparent!important;border:0!important;border-right:1px solid var(--g2)!important;border-radius:0!important;font-weight:600;color:var(--dark);cursor:pointer;appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 6' fill='%23888'><path d='M0 0l5 6 5-6z'/></svg>")!important;background-repeat:no-repeat!important;background-position:right 10px center!important;background-size:9px auto!important}
+.phone-field .phone-code:focus{outline:none}
+.phone-field .phone-num{flex:1;border:0!important;border-radius:0!important;padding:12px 14px!important;font-variant-numeric:tabular-nums;letter-spacing:1px}
+.phone-field .phone-num:focus{outline:none}
+@media(max-width:480px){
+  .phone-field .phone-prefix{padding:0 8px;font-size:13px}
+  .phone-field .phone-code{min-width:60px;padding:12px 22px 12px 8px!important;font-size:13px}
+  .phone-field .phone-num{padding:12px 10px!important;font-size:13px}
+}
 .news-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
 .nc{background:var(--white);border:1px solid var(--g2);border-radius:var(--r2);overflow:hidden;transition:all var(--tr2)}.nc:hover{border-color:var(--accent);transform:translateY(-4px)}
 .nimg{height:170px;background:var(--g1);display:flex;align-items:center;justify-content:center;color:var(--g3);font-size:10px;flex-direction:column;gap:4px}.nimg i{font-size:24px}

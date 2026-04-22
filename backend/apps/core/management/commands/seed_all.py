@@ -6,6 +6,7 @@ SEED_COMMANDS = [
     'seed_heroes',
     'seed_about',
     'seed_advantages',
+    'seed_partners',
     'seed_services',
     'seed_projects',
     'seed_gallery',

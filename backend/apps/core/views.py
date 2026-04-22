@@ -6,7 +6,7 @@ from django.utils import translation
 from django.views.decorators.csrf import csrf_exempt
 
 from .i18n_strings import STRINGS
-from .models import AboutContent, Advantage, CareerApplication, ContactInfo, ContactSubmission, GalleryItem, KnowledgeBase, News, PageHero, Project, Service, TeamMember, Vacancy
+from .models import AboutContent, Advantage, CareerApplication, ContactInfo, ContactSubmission, GalleryItem, KnowledgeBase, News, PageHero, Partner, Project, Service, TeamMember, Vacancy
 
 
 def _cors(response):
@@ -221,6 +221,28 @@ def advantages_list(request):
             'order': a.order,
         })
     return _cors(JsonResponse({'advantages': items}))
+
+
+def partners_list(request):
+    qs = Partner.objects.filter(is_active=True)
+    groups = {}
+    order = []
+    for p in qs:
+        key = p.category
+        if key not in groups:
+            groups[key] = {
+                'category': key,
+                'category_display': p.get_category_display(),
+                'items': [],
+            }
+            order.append(key)
+        groups[key]['items'].append({
+            'name': p.name,
+            'icon': p.icon,
+            'description': p.description,
+            'order': p.order,
+        })
+    return _cors(JsonResponse({'groups': [groups[k] for k in order]}))
 
 
 def team_list(request):

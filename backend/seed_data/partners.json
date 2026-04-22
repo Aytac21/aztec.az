@@ -1,0 +1,35 @@
+[
+  {
+    "icon": "fas fa-cubes",
+    "category": "material",
+    "order": 1,
+    "name_az": "AzerStroyMarket MMC",
+    "name_ru": "ООО АзерСтройМаркет",
+    "name_en": "AzerStroyMarket LLC",
+    "description_az": "Tikinti materialları, armatur və sement üzrə 8 ildir etibarlı tərəfdaşımız. Bütün layihələrimizdə sertifikatlı məhsullar təqdim edir.",
+    "description_ru": "Надёжный партнёр 8 лет по стройматериалам, арматуре и цементу. Поставляет сертифицированную продукцию для всех наших проектов.",
+    "description_en": "Reliable 8-year partner for construction materials, rebar and cement. Supplies certified products for all our projects."
+  },
+  {
+    "icon": "fas fa-landmark",
+    "category": "dovlet",
+    "order": 1,
+    "name_az": "Mingəçevir Şəhər İcra Hakimiyyəti",
+    "name_ru": "Исполнительная власть города Мингячевир",
+    "name_en": "Mingachevir City Executive Power",
+    "description_az": "Şəhərin sosial və mədəni obyektlərinin tikinti və bərpa işlərində uzunmüddətli əməkdaşlıq. 12+ dövlət əhəmiyyətli layihə.",
+    "description_ru": "Долгосрочное сотрудничество в строительстве и реставрации социальных и культурных объектов города. Более 12 государственных проектов.",
+    "description_en": "Long-term cooperation on construction and restoration of social and cultural facilities. 12+ state-funded projects delivered."
+  },
+  {
+    "icon": "fas fa-utensils",
+    "category": "ozel",
+    "order": 1,
+    "name_az": "Dalğa Restaurants Group",
+    "name_ru": "Группа ресторанов «Далга»",
+    "name_en": "Dalga Restaurants Group",
+    "description_az": "5 filialın interyer dizaynı və açar təhvili tikintisi. Yevlax və Mingəçevirdəki yeni məkanlar bizim komanda tərəfindən həyata keçirilib.",
+    "description_ru": "Интерьерный дизайн и строительство «под ключ» пяти филиалов. Новые локации в Евлахе и Мингячевире реализованы нашей командой.",
+    "description_en": "Interior design and turnkey construction for 5 restaurant branches. New Yevlakh and Mingachevir locations delivered by our team."
+  }
+]

@@ -1526,3 +1526,73 @@ document.addEventListener('DOMContentLoaded', function(){
     })
     .catch(function(err){ console.warn('[team] load failed:', err); });
 });
+
+/* ======== BACKEND ADVANTAGES LOADER (ustunlukler.html) ======== */
+document.addEventListener('DOMContentLoaded', function(){
+  var grid = document.getElementById('advGrid');
+  if(!grid) return;
+
+  fetch(window.apiUrl('/api/advantages/'), {cache:'no-store'})
+    .then(function(r){ if(!r.ok) throw new Error('advantages '+r.status); return r.json(); })
+    .then(function(data){
+      var list = (data && data.advantages) || [];
+      if(!list.length){
+        grid.innerHTML = '<p style="text-align:center;color:var(--g4);grid-column:1/-1">Tezliklə əlavə olunacaq.</p>';
+        return;
+      }
+      var html = '';
+      list.forEach(function(a){
+        var icon = a.icon || 'fas fa-check';
+        html += '<div class="adv reveal visible">' +
+                  '<div class="adv-ic"><i class="' + icon + '"></i></div>' +
+                  '<div class="adv-t">' +
+                    '<h4>' + (a.title || '') + '</h4>' +
+                    (a.description ? '<p>' + a.description + '</p>' : '') +
+                  '</div>' +
+                '</div>';
+      });
+      grid.innerHTML = html;
+    })
+    .catch(function(err){
+      console.warn('[advantages] load failed:', err);
+      grid.innerHTML = '<p style="text-align:center;color:var(--g4);grid-column:1/-1">Üstünlüklər yüklənmədi.</p>';
+    });
+});
+
+/* ======== BACKEND PARTNERS LOADER (terefdashlar.html) ======== */
+document.addEventListener('DOMContentLoaded', function(){
+  var container = document.getElementById('partnersContainer');
+  if(!container) return;
+
+  fetch(window.apiUrl('/api/partners/'), {cache:'no-store'})
+    .then(function(r){ if(!r.ok) throw new Error('partners '+r.status); return r.json(); })
+    .then(function(data){
+      var groups = (data && data.groups) || [];
+      if(!groups.length){
+        container.innerHTML = '<p style="text-align:center;color:var(--g4)">Tərəfdaşlar haqqında məlumat tezliklə əlavə olunacaq.</p>';
+        return;
+      }
+
+      var html = '';
+      groups.forEach(function(g){
+        html += '<div class="reveal" style="margin-bottom:48px">' +
+                  '<div class="s-tag" style="margin-bottom:8px">' + g.category_display + '</div>' +
+                  '<h2 class="s-title" style="margin-bottom:24px">' + g.category_display + '</h2>' +
+                  '<div class="partner-grid">';
+        g.items.forEach(function(it){
+          var icon = it.icon || 'fas fa-handshake';
+          html += '<div class="ptr">' +
+                    '<div class="ptr-logo"><i class="' + icon + '"></i></div>' +
+                    '<h4>' + (it.name || '') + '</h4>' +
+                    (it.description ? '<p>' + it.description + '</p>' : '') +
+                  '</div>';
+        });
+        html += '</div></div>';
+      });
+      container.innerHTML = html;
+    })
+    .catch(function(err){
+      console.warn('[partners] load failed:', err);
+      container.innerHTML = '<p style="text-align:center;color:var(--g4)">Tərəfdaşlar siyahısı yüklənmədi.</p>';
+    });
+});
