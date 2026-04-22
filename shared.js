@@ -679,6 +679,8 @@ function _applyLang(l){
   ['navAbout','navServices','navProjects','navNews','navCareer','navContact'].forEach(function(k,i){if(ftn[i]&&d[k])ftn[i].textContent=d[k]});
   var ftc=document.querySelector('.ft-copy');
   if(ftc)ftc.innerHTML='&copy; 2026 Aztec Construction MMC. '+(d.ftCopy||'');
+  var fti=document.querySelector('.ft-info');
+  if(fti&&d.ft_info)fti.innerHTML=d.ft_info;
   var ftl=document.querySelectorAll('.ft-legal a');
   if(ftl[0]&&d.ftTerms)ftl[0].textContent=d.ftTerms;
   if(ftl[1]&&d.ftPrivacy)ftl[1].textContent=d.ftPrivacy;

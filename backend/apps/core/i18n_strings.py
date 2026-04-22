@@ -11,6 +11,7 @@ STRINGS = {
     'navNews': pgettext_lazy('navNews', 'Xəbərlər'),
     'navContact': pgettext_lazy('navContact', 'Əlaqə'),
     'ftCopy': pgettext_lazy('ftCopy', 'Bütün hüquqlar qorunur.'),
+    'ft_info': pgettext_lazy('ft_info', 'Aztec Construction MMC — Mingəçevir ş., Şəhriyar küç. 75<br>+994 55 975 89 00 · +994 55 840 05 45'),
     'ftTerms': pgettext_lazy('ftTerms', 'İstifadə Şərtləri'),
     'ftPrivacy': pgettext_lazy('ftPrivacy', 'Gizlilik Politikası'),
     'heroTitle': pgettext_lazy('heroTitle', 'Möhkəm Təməl.<br>Peşəkar İcra.<br><em>Davamlı Nəticə.</em>'),

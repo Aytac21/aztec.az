@@ -42,6 +42,10 @@ msgctxt "ftCopy"
 msgid "Bütün hüquqlar qorunur."
 msgstr "All rights reserved."
 
+msgctxt "ft_info"
+msgid "Aztec Construction MMC — Mingəçevir ş., Şəhriyar küç. 75<br>+994 55 975 89 00 · +994 55 840 05 45"
+msgstr "Aztec Construction LLC — 75 Shahriyar St., Mingachevir<br>+994 55 975 89 00 · +994 55 840 05 45"
+
 msgctxt "ftTerms"
 msgid "İstifadə Şərtləri"
 msgstr "Terms of Use"
