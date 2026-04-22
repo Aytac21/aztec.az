@@ -2,14 +2,23 @@
    Aztec Admin – Responsive fixes for Jazzmin / AdminLTE
    =========================================================== */
 
-/* ---------- Hide Jazzmin version in footer ---------- */
-.main-footer .float-right,
-.main-footer .float-end,
-.main-footer strong:last-child,
-.main-footer span[class*="version"],
-.main-footer a[href*="jazzmin"],
-.main-footer a[href*="adminlte"] {
+/* ---------- Hide Jazzmin version in footer ----------
+   Jazzmin v3 uses <footer class="app-footer"> with an inner
+   <div class="float-end d-none d-sm-inline"> that Bootstrap's
+   .d-sm-inline utility re-shows on >= sm screens. We must beat
+   that with higher-specificity selectors on BOTH classes. */
+html body footer.app-footer .float-end,
+html body footer.app-footer div.d-sm-inline,
+html body footer.app-footer div[class*="d-sm"],
+html body footer.main-footer .float-right,
+html body footer.main-footer .float-end,
+html body footer.main-footer div[class*="d-sm"] {
     display: none !important;
+    visibility: hidden !important;
+    width: 0 !important;
+    height: 0 !important;
+    overflow: hidden !important;
+    font-size: 0 !important;
 }
 
 /* ---------- Login page: full background + hide logo ---------- */
@@ -239,3 +248,62 @@ html body .main-footer .float-right {
 }
 
 body footer.main-footer { text-align: left !important; }
+
+/* =========================================================
+   LOGIN PAGE — show "AZTEC CONSTRUCTION" background fully.
+   Jazzmin uses body.login-page with background image.
+   We shift the background up so the word sits BELOW the card,
+   and shrink image so it fits in viewport as cover.
+   ========================================================= */
+body.login-page,
+.login-page {
+    background-color: #111 !important;
+    background-size: cover !important;
+    background-position: center 100% !important;
+    background-repeat: no-repeat !important;
+    min-height: 100vh !important;
+}
+
+/* Login card positioned in lower third of viewport */
+body.login-page .login-box,
+.login-page .login-box {
+    margin-top: 55vh !important;
+    position: relative;
+    z-index: 2;
+}
+
+@media (max-width: 768px) {
+    body.login-page,
+    .login-page {
+        background-position: center center !important;
+    }
+    body.login-page .login-box,
+    .login-page .login-box {
+        margin-top: 12vh !important;
+    }
+}
+
+/* =========================================================
+   LOGIN inputs — keep the icon on the SAME line as input on
+   every screen (mobile was wrapping icon below the field).
+   ========================================================= */
+.login-page .input-group,
+body.login-page .input-group {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    align-items: stretch !important;
+}
+.login-page .input-group .form-control {
+    flex: 1 1 auto !important;
+    min-width: 0 !important;
+}
+.login-page .input-group-append,
+.login-page .input-group-prepend {
+    display: flex !important;
+    flex: 0 0 auto !important;
+    margin-left: -1px !important;
+}
+.login-page .input-group .input-group-text {
+    border-top-left-radius: 0 !important;
+    border-bottom-left-radius: 0 !important;
+}
