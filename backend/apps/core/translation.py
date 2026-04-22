@@ -72,3 +72,8 @@ class AdvantageTR(TranslationOptions):
 @register(ContactInfo)
 class ContactInfoTR(TranslationOptions):
     fields = ('address', 'work_hours')
+
+
+@register(TeamMember)
+class TeamMemberTR(TranslationOptions):
+    fields = ('name', 'role')

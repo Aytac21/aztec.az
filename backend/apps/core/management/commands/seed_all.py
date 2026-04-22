@@ -12,6 +12,7 @@ SEED_COMMANDS = [
     'seed_news',
     'seed_knowledge_base',
     'seed_vacancies',
+    'seed_team',
     'seed_contact',
 ]
 

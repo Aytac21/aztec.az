@@ -1313,3 +1313,37 @@ document.addEventListener('DOMContentLoaded', function(){
       svcDetailContent.innerHTML = '<p>Xidmət yüklənə bilmədi.</p>';
     });
 });
+
+/* ======== BACKEND TEAM LOADER (komandamiz.html) ======== */
+document.addEventListener('DOMContentLoaded', function(){
+  var mgmt = document.getElementById('teamMgmt');
+  var spec = document.getElementById('teamSpec');
+  if(!mgmt && !spec) return;
+
+  fetch(window.apiUrl('/api/team/'), {cache:'no-store'})
+    .then(function(r){ if(!r.ok) throw new Error('team '+r.status); return r.json(); })
+    .then(function(data){
+      var list = data.team || [];
+      if(!list.length) return;
+
+      function card(m){
+        var visual = m.photo
+          ? '<div class="tm-ph" style="background:url(\'' + m.photo + '\') center/cover;border:none"></div>'
+          : '<div class="tm-ph"><i class="fas fa-user"></i></div>';
+        return '<div class="tm reveal">' + visual +
+               '<h4>' + m.name + '</h4>' +
+               '<p>' + m.role + '</p></div>';
+      }
+
+      var mgmtHtml = '', specHtml = '';
+      list.forEach(function(m){
+        var html = card(m);
+        if(m.group === 'mgmt') mgmtHtml += html;
+        else specHtml += html;
+      });
+
+      if(mgmt) mgmt.innerHTML = mgmtHtml;
+      if(spec) spec.innerHTML = specHtml;
+    })
+    .catch(function(err){ console.warn('[team] load failed:', err); });
+});

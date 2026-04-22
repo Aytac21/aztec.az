@@ -12,6 +12,7 @@ urlpatterns = [
     path('knowledge-base/', views.knowledge_base_list, name='knowledge-base-list'),
     path('knowledge-base/<slug:slug>/', views.knowledge_base_detail, name='knowledge-base-detail'),
     path('advantages/', views.advantages_list, name='advantages-list'),
+    path('team/', views.team_list, name='team-list'),
     path('vacancies/', views.vacancies_list, name='vacancies-list'),
     path('gallery/', views.gallery_list, name='gallery-list'),
     path('services/', views.services_list, name='services-list'),

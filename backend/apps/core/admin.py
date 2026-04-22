@@ -1,7 +1,7 @@
 from django.contrib import admin
 from modeltranslation.admin import TabbedTranslationAdmin
 
-from .models import AboutContent, Advantage, CareerApplication, ContactInfo, ContactSubmission, GalleryItem, KnowledgeBase, News, PageHero, Project, ProjectImage, Service, ServiceImage, Vacancy
+from .models import AboutContent, Advantage, CareerApplication, ContactInfo, ContactSubmission, GalleryItem, KnowledgeBase, News, PageHero, Project, ProjectImage, Service, ServiceImage, TeamMember, Vacancy
 
 
 class ProjectImageInline(admin.TabularInline):
@@ -161,6 +161,18 @@ class AdvantageAdmin(TabbedTranslationAdmin):
     fieldsets = (
         ('Əsas', {'fields': ('icon', 'title', 'order')}),
         ('Məzmun', {'fields': ('description',)}),
+    )
+
+
+@admin.register(TeamMember)
+class TeamMemberAdmin(TabbedTranslationAdmin):
+    list_display = ('name', 'role', 'group', 'order', 'is_active')
+    list_editable = ('order', 'is_active')
+    list_filter = ('group', 'is_active')
+    search_fields = ('name', 'role')
+    fieldsets = (
+        ('Əsas', {'fields': ('group', 'name', 'role', 'order', 'is_active')}),
+        ('Şəkil', {'fields': ('photo',)}),
     )
 
 

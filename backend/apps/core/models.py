@@ -418,6 +418,33 @@ class Advantage(models.Model):
         return self.title
 
 
+class TeamMember(models.Model):
+    GROUP_CHOICES = [
+        ('mgmt', 'Rəhbərlik'),
+        ('spec', 'Mütəxəssis'),
+    ]
+
+    group = models.CharField(
+        max_length=10, choices=GROUP_CHOICES, default='spec',
+        verbose_name='Qrup',
+    )
+    name = models.CharField(max_length=200, verbose_name='Ad Soyad')
+    role = models.CharField(max_length=200, verbose_name='Vəzifə')
+    photo = models.ImageField(
+        upload_to='team/', blank=True, null=True, verbose_name='Şəkil',
+    )
+    order = models.PositiveIntegerField(default=0, verbose_name='Sıralama')
+    is_active = models.BooleanField(default=True, verbose_name='Aktiv')
+
+    class Meta:
+        verbose_name = 'Komanda üzvü'
+        verbose_name_plural = 'Komanda'
+        ordering = ['group', 'order', 'id']
+
+    def __str__(self):
+        return f'{self.name} — {self.role}'
+
+
 class ContactSubmission(models.Model):
     name = models.CharField(max_length=200, verbose_name='Ad')
     phone = models.CharField(max_length=30, verbose_name='Telefon')
