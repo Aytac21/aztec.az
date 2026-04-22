@@ -1221,7 +1221,17 @@ document.addEventListener('DOMContentLoaded', function(){
         var currentStatus = 'all';
         var currentCat = 'all';
 
-        var CAT_LABELS = {gov:'Dövlət', com:'Kommersiya', res:'Yaşayış', pub:'İctimai'};
+        var _lang = localStorage.getItem('aztec-lang') || 'az';
+        var _T = (typeof TR !== 'undefined' && TR[_lang]) || {};
+        var LBL_ALL = _T.fAll || 'Hamısı';
+        var LBL_DONE = _T.fDone || 'Tamamlanmış';
+        var LBL_ON = _T.fOngoing || 'Cari';
+        var CAT_LABELS = {
+          gov: _T.fGov || 'Dövlət',
+          com: _T.fCom || 'Kommersiya',
+          res: _T.fRes || 'Yaşayış',
+          pub: _T.fPub || 'İctimai'
+        };
 
         function renderGrid(){
           projGrid.innerHTML = '';
@@ -1271,7 +1281,7 @@ document.addEventListener('DOMContentLoaded', function(){
           catFilters.style.display = '';
           var allBtn = document.createElement('button');
           allBtn.className = 'fbtn active';
-          allBtn.textContent = 'Hamısı';
+          allBtn.textContent = LBL_ALL;
           allBtn.onclick = function(){ currentCat = 'all'; setCatActive(this); renderGrid(); };
           catFilters.appendChild(allBtn);
           catKeys.forEach(function(c){
@@ -1295,7 +1305,7 @@ document.addEventListener('DOMContentLoaded', function(){
         /* Build status buttons: Hamısı, Tamamlanmış, Cari */
         var statusAll = document.createElement('button');
         statusAll.className = 'fbtn active';
-        statusAll.textContent = 'Hamısı';
+        statusAll.textContent = LBL_ALL;
         statusAll.onclick = function(){ currentStatus = 'all'; currentCat = 'all'; setStatusActive(this); buildCatFilters(); renderGrid(); };
         statusFilters.appendChild(statusAll);
 
@@ -1305,14 +1315,14 @@ document.addEventListener('DOMContentLoaded', function(){
         if(hasDone){
           var btnDone = document.createElement('button');
           btnDone.className = 'fbtn';
-          btnDone.textContent = 'Tamamlanmış';
+          btnDone.textContent = LBL_DONE;
           btnDone.onclick = function(){ currentStatus = 'done'; currentCat = 'all'; setStatusActive(this); buildCatFilters(); renderGrid(); };
           statusFilters.appendChild(btnDone);
         }
         if(hasOn){
           var btnOn = document.createElement('button');
           btnOn.className = 'fbtn';
-          btnOn.textContent = 'Cari';
+          btnOn.textContent = LBL_ON;
           btnOn.onclick = function(){ currentStatus = 'on'; currentCat = 'all'; setStatusActive(this); buildCatFilters(); renderGrid(); };
           statusFilters.appendChild(btnOn);
         }

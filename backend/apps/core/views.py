@@ -232,7 +232,7 @@ def partners_list(request):
         if key not in groups:
             groups[key] = {
                 'category': key,
-                'category_display': p.get_category_display(),
+                'category_display': str(p.get_category_display()),
                 'items': [],
             }
             order.append(key)
@@ -266,7 +266,7 @@ def vacancies_list(request):
         items.append({
             'title': v.title,
             'type': v.vacancy_type,
-            'type_display': v.get_vacancy_type_display(),
+            'type_display': str(v.get_vacancy_type_display()),
             'location': v.location,
             'work_type': v.work_type,
             'description': v.description,
@@ -347,9 +347,9 @@ def projects_list(request):
             'title': p.title,
             'description': p.description,
             'status': p.status,
-            'status_display': p.get_status_display(),
+            'status_display': str(p.get_status_display()),
             'category': p.category,
-            'category_display': p.get_category_display(),
+            'category_display': str(p.get_category_display()),
             'image': img,
             'location': p.location,
             'area': p.area,
@@ -374,8 +374,8 @@ def featured_project(request):
         'title': obj.title,
         'description': obj.featured_description or obj.description,
         'image': img,
-        'status_display': obj.get_status_display(),
-        'category_display': obj.get_category_display(),
+        'status_display': str(obj.get_status_display()),
+        'category_display': str(obj.get_category_display()),
     }
     return _cors(JsonResponse({'featured': data}))
 
@@ -469,9 +469,9 @@ def project_detail(request, slug):
         'title': p.title,
         'description': p.description,
         'status': p.status,
-        'status_display': p.get_status_display(),
+        'status_display': str(p.get_status_display()),
         'category': p.category,
-        'category_display': p.get_category_display(),
+        'category_display': str(p.get_category_display()),
         'image': img,
         'location': p.location,
         'area': p.area,

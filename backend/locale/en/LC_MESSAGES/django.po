@@ -490,6 +490,14 @@ msgctxt "el_wa"
 msgid "WhatsApp"
 msgstr "WhatsApp"
 
+msgctxt "el_addrVal"
+msgid "Mingəçevir ş., Şəhriyar küç. 75"
+msgstr "75 Shahriyar St., Mingachevir"
+
+msgctxt "el_hoursVal"
+msgid "B.e.–Ş., 09:00–18:00"
+msgstr "Mon–Sat, 09:00–18:00"
+
 msgctxt "el_send"
 msgid "WhatsApp ilə göndər"
 msgstr "Send via WhatsApp"

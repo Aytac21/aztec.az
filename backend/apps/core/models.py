@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils.translation import pgettext_lazy
 
 
 class PageHero(models.Model):
@@ -297,14 +298,14 @@ class ContactInfo(models.Model):
 
 class Project(models.Model):
     STATUS_CHOICES = [
-        ('done', 'Tamamlanmış'),
-        ('on', 'Cari'),
+        ('done', pgettext_lazy('fDone', 'Tamamlanmış')),
+        ('on', pgettext_lazy('fOngoing', 'Cari')),
     ]
     CATEGORY_CHOICES = [
-        ('gov', 'Dövlət'),
-        ('com', 'Kommersiya'),
-        ('res', 'Yaşayış'),
-        ('pub', 'İctimai'),
+        ('gov', pgettext_lazy('fGov', 'Dövlət')),
+        ('com', pgettext_lazy('fCom', 'Kommersiya')),
+        ('res', pgettext_lazy('fRes', 'Yaşayış')),
+        ('pub', pgettext_lazy('fPub', 'İctimai')),
     ]
 
     slug = models.SlugField(max_length=128, unique=True, verbose_name='Slug')
@@ -463,9 +464,9 @@ class ContactSubmission(models.Model):
 
 class Partner(models.Model):
     CATEGORY_CHOICES = [
-        ('material', 'Material təchizatçısı'),
-        ('dovlet', 'Dövlət əməkdaşlığı'),
-        ('ozel', 'Özəl şirkət'),
+        ('material', pgettext_lazy('pCat_material', 'Material təchizatçısı')),
+        ('dovlet', pgettext_lazy('pCat_dovlet', 'Dövlət əməkdaşlığı')),
+        ('ozel', pgettext_lazy('pCat_ozel', 'Özəl şirkət')),
     ]
     name = models.CharField(max_length=200, verbose_name='Ad')
     icon = models.CharField(
