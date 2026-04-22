@@ -1136,9 +1136,10 @@ document.addEventListener('DOMContentLoaded', function(){
       var list = data.services;
       if(!list || !list.length) return;
 
-      /* --- HOMEPAGE RENDER (.svc-grid) --- */
+      /* --- HOMEPAGE RENDER (.svc-grid) — last 3 services --- */
       if(svcGrid){
-        list.forEach(function(s){
+        var homeList = list.slice(-3);
+        homeList.forEach(function(s){
           var card = document.createElement('a');
           card.href = 'xidmet-detail?slug=' + s.slug;
           card.className = 'svc reveal visible';
