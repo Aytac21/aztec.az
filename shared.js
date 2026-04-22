@@ -1604,7 +1604,7 @@ document.addEventListener('DOMContentLoaded', function(){
 
       var html = '';
       groups.forEach(function(g){
-        html += '<div class="reveal" style="margin-bottom:48px">' +
+        html += '<div class="reveal visible" style="margin-bottom:48px">' +
                   '<div class="s-tag" style="margin-bottom:8px">' + g.category_display + '</div>' +
                   '<h2 class="s-title" style="margin-bottom:24px">' + g.category_display + '</h2>' +
                   '<div class="partner-grid">';
