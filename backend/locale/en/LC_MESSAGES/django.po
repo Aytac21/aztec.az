@@ -206,6 +206,18 @@ msgctxt "det_gallery"
 msgid "Qalereya"
 msgstr "Gallery"
 
+msgctxt "det_backNews"
+msgid "Xəbərlərə qayıt"
+msgstr "Back to news"
+
+msgctxt "det_consult"
+msgid "Konsultasiya alın"
+msgstr "Get a consultation"
+
+msgctxt "kr_apply"
+msgid "Müraciət et"
+msgstr "Apply"
+
 msgctxt "more"
 msgid "Ətraflı"
 msgstr "Details"
@@ -597,6 +609,18 @@ msgstr "Our partners"
 msgctxt "tf_desc"
 msgid "30-dan çox dövlət və özəl şirkət ilə etibarlı əməkdaşlıq."
 msgstr "Reliable partnership with over 30 government and private companies."
+
+msgctxt "pCat_material"
+msgid "Material təchizatçısı"
+msgstr "Material suppliers"
+
+msgctxt "pCat_dovlet"
+msgid "Dövlət əməkdaşlığı"
+msgstr "Government partnerships"
+
+msgctxt "pCat_ozel"
+msgid "Özəl şirkət"
+msgstr "Private companies"
 
 msgctxt "tf_matTag"
 msgid "Material"

@@ -1020,7 +1020,7 @@ document.addEventListener('DOMContentLoaded', function(){
           el.innerHTML =
             '<h3><i class="fas fa-graduation-cap" style="margin-right:8px;color:var(--accent)"></i>' + v.title + '</h3>' +
             '<p>' + v.description + '</p>' +
-            '<a href="' + waLink + '" target="_blank" class="u-link">Müraciət et <i class="fab fa-whatsapp"></i></a>';
+            '<a href="' + waLink + '" target="_blank" class="u-link" data-tr="kr_apply">' + ((TR[localStorage.getItem('aztec-lang')||'az']||{}).kr_apply || 'Müraciət et') + ' <i class="fab fa-whatsapp"></i></a>';
         } else {
           el.className = 'job reveal visible';
           var meta = '';
@@ -1030,7 +1030,7 @@ document.addEventListener('DOMContentLoaded', function(){
             '<h3>' + v.title + '</h3>' +
             (meta ? '<div class="jm">' + meta + '</div>' : '') +
             '<p>' + v.description + '</p>' +
-            '<a href="' + waLink + '" target="_blank" class="u-link">Müraciət et <i class="fab fa-whatsapp"></i></a>';
+            '<a href="' + waLink + '" target="_blank" class="u-link" data-tr="kr_apply">' + ((TR[localStorage.getItem('aztec-lang')||'az']||{}).kr_apply || 'Müraciət et') + ' <i class="fab fa-whatsapp"></i></a>';
         }
         vacList.appendChild(el);
       });
@@ -1124,7 +1124,7 @@ document.addEventListener('DOMContentLoaded', function(){
       if(d.video_url){
         html += '<h2>Video</h2><div class="detail-video"><iframe src="' + d.video_url + '" allow="autoplay;encrypted-media" allowfullscreen></iframe></div>';
       }
-      html += '<div style="margin-top:40px;text-align:center"><a href="elaqe" class="u-link lg">Konsultasiya alın <i class="fas fa-arrow-right"></i></a></div>';
+      html += '<div style="margin-top:40px;text-align:center"><a href="elaqe" class="u-link lg" data-tr="det_consult">' + ((TR[localStorage.getItem('aztec-lang')||'az']||{}).det_consult || 'Konsultasiya alın') + ' <i class="fas fa-arrow-right"></i></a></div>';
       newsDetailContent.innerHTML = html;
     })
     .catch(function(err){
