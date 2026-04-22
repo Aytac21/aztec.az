@@ -1330,7 +1330,7 @@ document.addEventListener('DOMContentLoaded', function(){
         var visual = m.photo
           ? '<div class="tm-ph" style="background:url(\'' + m.photo + '\') center/cover;border:none"></div>'
           : '<div class="tm-ph"><i class="fas fa-user"></i></div>';
-        return '<div class="tm reveal">' + visual +
+        return '<div class="tm reveal visible">' + visual +
                '<h4>' + m.name + '</h4>' +
                '<p>' + m.role + '</p></div>';
       }
