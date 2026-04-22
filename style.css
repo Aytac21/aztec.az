@@ -28,12 +28,12 @@ img{max-width:100%;display:block}
 .logo-name small{display:block;font-size:10px;letter-spacing:4px;color:rgba(255,255,255,0.5);font-weight:300}
 
 /* Image logo — transparent PNG, white mark.
-   Visible as-is on dark backgrounds (default nav, footer, mega-bg).
-   Inverted to black on light backgrounds (scrolled nav, mobile menu). */
+   Visible as-is on dark backgrounds (default nav, footer, mega-bg, mobile menu).
+   Inverted to black on light backgrounds (scrolled nav, mega-open). */
 .logo-img{height:42px;width:auto;display:block;object-fit:contain;transition:all var(--tr)}
 .nav.scrolled .logo-img{height:36px;filter:invert(1) brightness(0.85)}
 .nav.mega-open .logo-img{filter:invert(1) brightness(0.85)}
-.mob .logo-img{height:40px;filter:invert(1) brightness(0.85)}
+.mob .logo-img{height:40px}
 .footer .logo-img{height:60px;opacity:.95}
 .footer .logo-img:hover{opacity:1}
 @media(max-width:768px){
