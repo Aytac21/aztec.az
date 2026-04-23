@@ -41,6 +41,7 @@ var TR={
     'navProjects':'Layihələr',
     'navCareer':'Karyera',
     'navNews':'Xəbərlər',
+    'nav_blog':'Bloq',
     'navContact':'Əlaqə',
     'ftCopy':'Bütün hüquqlar qorunur.',
     'ftTerms':'İstifadə Şərtləri',
@@ -248,6 +249,7 @@ var TR={
     'navProjects':'Проекты',
     'navCareer':'Карьера',
     'navNews':'Новости',
+    'nav_blog':'Блог',
     'navContact':'Контакт',
     'ftCopy':'Все права защищены.',
     'ftTerms':'Условия использования',
@@ -455,6 +457,7 @@ var TR={
     'navProjects':'Projects',
     'navCareer':'Career',
     'navNews':'News',
+    'nav_blog':'Blog',
     'navContact':'Contact',
     'ftCopy':'All rights reserved.',
     'ftTerms':'Terms of Use',
@@ -667,7 +670,7 @@ function _applyLang(l){
 
   /* Nav links */
   var nv=document.querySelectorAll('.nav-center>a:not(.mega-trigger)');
-  ['navHome','navServices','navProjects','navCareer','navNews','navContact'].forEach(function(k,i){if(nv[i]&&d[k])nv[i].textContent=d[k]});
+  ['navHome','navServices','navProjects','navCareer','navNews','nav_blog','navContact'].forEach(function(k,i){if(nv[i]&&d[k])nv[i].textContent=d[k]});
 
   /* Mega trigger */
   var mt=document.querySelector('.mega-trigger');
@@ -675,7 +678,7 @@ function _applyLang(l){
 
   /* Mobile menu links */
   var ml=document.querySelectorAll('.mob-link'),mi=0;
-  ['navHome','navServices','navProjects','navCareer','navNews','navContact'].forEach(function(k){if(ml[mi]&&d[k]){ml[mi].textContent=d[k];mi++}});
+  ['navHome','navServices','navProjects','navCareer','navNews','nav_blog','navContact'].forEach(function(k){if(ml[mi]&&d[k]){ml[mi].textContent=d[k];mi++}});
   var gt=document.querySelector('.mob-group-title');
   if(gt)gt.innerHTML=(d.navAbout||'Haqqımızda')+' <i class="fas fa-chevron-down"></i>';
 
@@ -694,7 +697,7 @@ function _applyLang(l){
 
   /* Footer */
   var ftn=document.querySelectorAll('.ft-nav a');
-  ['navAbout','navServices','navProjects','navNews','navCareer','navContact'].forEach(function(k,i){if(ftn[i]&&d[k])ftn[i].textContent=d[k]});
+  ['navAbout','navServices','navProjects','navNews','nav_blog','navCareer','navContact'].forEach(function(k,i){if(ftn[i]&&d[k])ftn[i].textContent=d[k]});
   var ftc=document.querySelector('.ft-copy');
   if(ftc)ftc.innerHTML='&copy; 2026 Aztec Construction MMC. '+(d.ftCopy||'');
   var fti=document.querySelector('.ft-info');
