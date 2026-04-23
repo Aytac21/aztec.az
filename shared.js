@@ -1145,8 +1145,11 @@ document.addEventListener('DOMContentLoaded', function(){
       if(!list || !list.length) return;
 
       list.forEach(function(kb){
-        var card = document.createElement('div');
+        var card = document.createElement('a');
+        card.href = 'bloq-detail?slug=' + kb.slug;
         card.className = 'bc reveal visible';
+        card.style.textDecoration = 'none';
+        card.style.color = 'inherit';
         card.innerHTML =
           '<span class="btg">' + kb.tag + '</span>' +
           '<h3>' + kb.title + '</h3>' +
@@ -1155,6 +1158,41 @@ document.addEventListener('DOMContentLoaded', function(){
       });
     })
     .catch(function(err){ console.warn('[kb] backend load failed:', err); });
+});
+
+/* ======== BLOG (KB) DETAIL PAGE LOADER ======== */
+document.addEventListener('DOMContentLoaded', function(){
+  var blogContent = document.getElementById('blogDetailContent');
+  if(!blogContent) return;
+
+  var params = new URLSearchParams(window.location.search);
+  var slug = params.get('slug');
+  if(!slug){ blogContent.innerHTML = '<p>Məqalə tapılmadı.</p>'; return; }
+
+  fetch(window.apiUrl('/api/knowledge-base/' + slug + '/'), {cache:'no-store'})
+    .then(function(r){ if(!r.ok) throw new Error('kb-d '+r.status); return r.json(); })
+    .then(function(d){
+      var tagEl   = document.getElementById('blogDetailTag');
+      var titleEl = document.getElementById('blogDetailTitle');
+      var descEl  = document.getElementById('blogDetailDesc');
+      if(tagEl)   tagEl.textContent   = d.tag || '';
+      if(titleEl) titleEl.textContent = d.title || '';
+      if(descEl)  descEl.textContent  = d.description || '';
+
+      document.title = (d.meta_title || d.title) + ' | Aztec Construction';
+      if(d.meta_description){
+        var md = document.querySelector('meta[name="description"]');
+        if(md) md.setAttribute('content', d.meta_description);
+      }
+
+      var html = d.content || ('<p>' + (d.description || '') + '</p>');
+      html += '<div style="margin-top:40px;text-align:center"><a href="elaqe" class="u-link lg" data-tr="det_consult">' + ((TR[localStorage.getItem('aztec-lang')||'az']||{}).det_consult || 'Konsultasiya alın') + ' <i class="fas fa-arrow-right"></i></a></div>';
+      blogContent.innerHTML = html;
+    })
+    .catch(function(err){
+      console.warn('[kb-detail] load failed:', err);
+      blogContent.innerHTML = '<p>Məqalə tapılmadı.</p>';
+    });
 });
 
 /* ======== NEWS DETAIL PAGE LOADER ======== */

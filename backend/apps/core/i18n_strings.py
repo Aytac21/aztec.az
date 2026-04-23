@@ -219,6 +219,12 @@ STRINGS = {
     'det_gallery': pgettext_lazy('det_gallery', 'Qalereya'),
     'det_consult': pgettext_lazy('det_consult', 'Konsultasiya alın'),
     'kr_apply': pgettext_lazy('kr_apply', 'Müraciət et'),
+    'det_backBlog': pgettext_lazy('det_backBlog', 'Bloqa qayıt'),
+    # --- Navigation / Blog page ---
+    'nav_blog': pgettext_lazy('nav_blog', 'Bloq'),
+    'bl_tag': pgettext_lazy('bl_tag', 'Bilik bazası'),
+    'bl_h1': pgettext_lazy('bl_h1', 'Bloq və məsləhətlər'),
+    'bl_desc': pgettext_lazy('bl_desc', 'Tikinti, təmir və dizayn mövzularında peşəkar bələdçilər və məsləhətlər.'),
     # --- Common article section headings ---
     'nb_projInfo': pgettext_lazy('nb_projInfo', 'Layihə məlumatları'),
     'nb_projScope': pgettext_lazy('nb_projScope', 'Layihə əhatəsi'),

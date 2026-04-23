@@ -48,8 +48,8 @@ img{max-width:100%;display:block}
 .nav.mega-open .lang-sw{background:var(--g1)}
 .nav.mega-open .lang-sw button{color:var(--dark)}
 .nav.mega-open .lang-sw button.active,.nav.scrolled .lang-sw button.active{background:var(--accent);color:var(--white)}
-.nav-center{display:flex;align-items:center;gap:24px}
-.nav-center>a,.mega-trigger{color:rgba(255,255,255,0.7);font-size:15px;font-weight:600;letter-spacing:1px;text-transform:uppercase;position:relative;padding:6px 0;background:none;border:none;cursor:pointer;font-family:var(--font);transition:all var(--tr);display:inline-flex;align-items:center}
+.nav-center{display:flex;align-items:center;gap:18px}
+.nav-center>a,.mega-trigger{color:rgba(255,255,255,0.7);font-size:13px;font-weight:600;letter-spacing:0.5px;text-transform:uppercase;position:relative;padding:6px 0;background:none;border:none;cursor:pointer;font-family:var(--font);transition:all var(--tr);display:inline-flex;align-items:center;white-space:nowrap}
 .nav-center>a::after,.mega-trigger::after{content:'';position:absolute;bottom:0;left:0;width:0;height:1.5px;background:var(--accent);transition:width var(--tr)}
 .nav-center>a:hover::after,.nav-center>a.active::after,.mega-trigger:hover::after{width:100%}
 .nav-center>a:hover,.mega-trigger:hover{color:var(--white)}

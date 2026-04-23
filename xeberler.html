@@ -23,7 +23,7 @@
 </head><body>
 <nav class="nav" id="nav"><div class="container nav-in">
 <a href="/" class="logo"><img src="assets/aztec-logo.png" alt="Aztec Construction" class="logo-img"></a>
-<div class="nav-center"><a href="/">Əsas</a><a href="#" class="mega-trigger" onmouseenter="openMega()" onclick="return false">Haqqımızda <i class="fas fa-chevron-down" style="font-size:8px;margin-left:2px"></i></a><a href="xidmetler">Xidmətlər</a><a href="layiheler">Layihələr</a><a href="karyera">Karyera</a><a href="xeberler" class="active">Xəbərlər</a><a href="elaqe">Əlaqə</a></div>
+<div class="nav-center"><a href="/">Əsas</a><a href="#" class="mega-trigger" onmouseenter="openMega()" onclick="return false">Haqqımızda <i class="fas fa-chevron-down" style="font-size:8px;margin-left:2px"></i></a><a href="xidmetler">Xidmətlər</a><a href="layiheler">Layihələr</a><a href="karyera">Karyera</a><a href="xeberler" class="active">Xəbərlər</a><a href="bloq" data-tr="nav_blog">Bloq</a><a href="elaqe">Əlaqə</a></div>
 <div class="nav-right"><div class="lang-sw"><button class="active" onclick="setLang('az')">AZ</button><button onclick="setLang('ru')">RU</button><button onclick="setLang('en')">EN</button></div>
 <div class="burger" onclick="toggleMenu()"><span></span><span></span><span></span></div></div>
 </div></nav>
@@ -47,6 +47,7 @@
   <a href="layiheler" class="mob-link" onclick="toggleMenu()">Layihələr</a>
   <a href="karyera" class="mob-link" onclick="toggleMenu()">Karyera</a>
   <a href="xeberler" class="mob-link" onclick="toggleMenu()">Xəbərlər</a>
+  <a href="bloq" class="mob-link" onclick="toggleMenu()" data-tr="nav_blog">Bloq</a>
   <a href="elaqe" class="mob-link" onclick="toggleMenu()">Əlaqə</a>
   <div class="mob-lang"><button class="active" onclick="setLang('az')">AZ</button><button onclick="setLang('ru')">RU</button><button onclick="setLang('en')">EN</button></div>
 </div></div>
@@ -69,8 +70,6 @@
 <div class="container"><div class="tag" data-tr="xb_tag">Yeniliklər</div><h1 data-tr="xb_h1">Xəbərlər və yeniliklər</h1><p class="desc" data-tr="xb_desc">Son layihələrimiz, korporativ yeniliklər və faydalı məlumatlar.</p></div></section>
 <section class="section"><div class="container"><h2 style="font-family:var(--display);font-size:26px;color:var(--dark);font-weight:500;margin-bottom:24px" data-tr="xb_latest">Son xəbərlər</h2>
 <div class="news-grid" id="newsGrid"></div></div></section>
-<section class="section alt"><div class="container"><h2 style="font-family:var(--display);font-size:26px;color:var(--dark);font-weight:500;margin-bottom:24px" data-tr="xb_blog">Bilik bazası</h2>
-<div class="blog-grid" id="kbGrid"></div></div></section>
 <footer class="footer">
 <div class="container">
   <div class="ft-top">
@@ -80,6 +79,7 @@
       <a href="xidmetler">Xidmətlər</a>
       <a href="layiheler">Layihələr</a>
       <a href="xeberler">Xəbərlər</a>
+      <a href="bloq" data-tr="nav_blog">Bloq</a>
       <a href="karyera">Karyera</a>
       <a href="elaqe">Əlaqə</a>
     </div>

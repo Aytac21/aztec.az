@@ -218,6 +218,26 @@ msgctxt "kr_apply"
 msgid "Müraciət et"
 msgstr "Apply"
 
+msgctxt "det_backBlog"
+msgid "Bloqa qayıt"
+msgstr "Back to blog"
+
+msgctxt "nav_blog"
+msgid "Bloq"
+msgstr "Blog"
+
+msgctxt "bl_tag"
+msgid "Bilik bazası"
+msgstr "Knowledge base"
+
+msgctxt "bl_h1"
+msgid "Bloq və məsləhətlər"
+msgstr "Blog and tips"
+
+msgctxt "bl_desc"
+msgid "Tikinti, təmir və dizayn mövzularında peşəkar bələdçilər və məsləhətlər."
+msgstr "Professional guides and tips on construction, renovation and design."
+
 msgctxt "more"
 msgid "Ətraflı"
 msgstr "Details"
