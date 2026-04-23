@@ -329,7 +329,8 @@ img{max-width:100%;display:block}
 .tm h4{font-size:15px;font-weight:700;color:var(--dark);margin-bottom:2px}.tm p{font-size:12px;color:var(--g4);text-transform:uppercase;letter-spacing:1px}
 .partner-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
 .ptr{padding:32px;background:var(--white);border:1px solid var(--g2);border-radius:var(--r2);text-align:center;transition:all var(--tr)}.ptr:hover{border-color:var(--accent)}
-.ptr-logo{width:80px;height:80px;border-radius:var(--r);background:var(--g1);margin:0 auto 14px;display:flex;align-items:center;justify-content:center;color:var(--g3);font-size:24px}
+.ptr-logo{width:140px;height:80px;border-radius:var(--r);background:var(--g1);margin:0 auto 14px;display:flex;align-items:center;justify-content:center;color:var(--g3);font-size:24px;overflow:hidden;padding:8px}
+.ptr-logo img{max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;display:block}
 .ptr h4{font-size:14px;font-weight:700;color:var(--dark);margin-bottom:6px}.ptr p{font-size:13px;color:var(--g4);line-height:1.6}
 .adv-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px}
 .adv{padding:28px;background:var(--white);border:1px solid var(--g2);border-radius:var(--r2);display:flex;gap:16px;transition:all var(--tr2)}.adv:hover{border-color:var(--accent)}

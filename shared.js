@@ -1611,9 +1611,15 @@ document.addEventListener('DOMContentLoaded', function(){
                   '<h2 class="s-title" style="margin-bottom:24px">' + g.category_display + '</h2>' +
                   '<div class="partner-grid">';
         g.items.forEach(function(it){
-          var icon = it.icon || 'fas fa-handshake';
+          var logoHtml;
+          if(it.logo){
+            logoHtml = '<img src="' + it.logo + '" alt="' + (it.name||'') + '">';
+          } else {
+            var icon = it.icon || 'fas fa-handshake';
+            logoHtml = '<i class="' + icon + '"></i>';
+          }
           html += '<div class="ptr">' +
-                    '<div class="ptr-logo"><i class="' + icon + '"></i></div>' +
+                    '<div class="ptr-logo">' + logoHtml + '</div>' +
                     '<h4>' + (it.name || '') + '</h4>' +
                     (it.description ? '<p>' + it.description + '</p>' : '') +
                   '</div>';
