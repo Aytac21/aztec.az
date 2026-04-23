@@ -12,6 +12,7 @@ class PageHero(models.Model):
         ('terefdashlar', 'Tərəfdaşlar'),
         ('karyera', 'Karyera'),
         ('xeberler', 'Xəbərlər'),
+        ('bloq', 'Bloq'),
         ('elaqe', 'Əlaqə'),
         ('gizlilik', 'Gizlilik'),
         ('shertler', 'Şərtlər'),

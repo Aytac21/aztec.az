@@ -76,6 +76,15 @@ HEROES = [
         'meta_keywords': 'tikinti xəbərləri, Aztec Construction yeniliklər, tikinti bloq, ev tikintisi məsləhətlər',
     },
     {
+        'page': 'bloq',
+        'tag': 'Bilik bazası',
+        'title': 'Bloq və məsləhətlər',
+        'description': 'Tikinti, təmir və dizayn mövzularında peşəkar bələdçilər və məsləhətlər.',
+        'meta_title': 'Bloq | Tikinti və Dizayn Məsləhətləri | Aztec Construction',
+        'meta_description': 'Tikinti, təmir, interyer və dizayn mövzularında peşəkar bələdçilər, məsləhətlər və bilik bazası. Aztec.az',
+        'meta_keywords': 'tikinti bloq, ev tikintisi məsləhətləri, təmir bələdçisi, dizayn məqalələri, Aztec Construction bloq',
+    },
+    {
         'page': 'elaqe',
         'tag': 'Əlaqə',
         'title': 'Bizimlə əlaqə saxlayın',
