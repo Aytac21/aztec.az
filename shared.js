@@ -1412,6 +1412,51 @@ document.addEventListener('DOMContentLoaded', function(){
     .catch(function(err){ console.warn('[projects] backend load failed:', err); });
 });
 
+/* ======== DETAIL PAGE LIGHTBOX ======== */
+var _dlbImgs=[],_dlbIdx=0;
+function _dlbEnsure(){
+  if(document.getElementById('dlb'))return;
+  var el=document.createElement('div');el.id='dlb';
+  var mob=window.innerWidth<768;
+  el.style.cssText='display:none;position:fixed;top:0;right:0;bottom:0;left:0;background:rgba(0,0,0,0.95);z-index:99999';
+  el.innerHTML='<button onclick="closeDLB()" style="position:absolute;top:16px;right:16px;background:rgba(255,255,255,0.15);border:none;color:#fff;font-size:18px;cursor:pointer;width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;z-index:10"><i class="fas fa-times"></i></button>'
+    +'<button onclick="navDLB(-1)" style="position:absolute;top:50%;left:16px;transform:translateY(-50%);background:rgba(255,255,255,0.15);border:none;color:#fff;font-size:20px;cursor:pointer;width:46px;height:46px;border-radius:50%;display:'+(mob?'none':'flex')+';align-items:center;justify-content:center;z-index:10"><i class="fas fa-chevron-left"></i></button>'
+    +'<div id="dlbContent" style="line-height:0;max-width:96vw;max-height:90vh"></div>'
+    +'<button onclick="navDLB(1)" style="position:absolute;top:50%;right:16px;transform:translateY(-50%);background:rgba(255,255,255,0.15);border:none;color:#fff;font-size:20px;cursor:pointer;width:46px;height:46px;border-radius:50%;display:'+(mob?'none':'flex')+';align-items:center;justify-content:center;z-index:10"><i class="fas fa-chevron-right"></i></button>';
+  el.addEventListener('click',function(e){if(e.target===el)closeDLB();});
+  var _tx=0;
+  el.addEventListener('touchstart',function(e){_tx=e.touches[0].clientX;},{passive:true});
+  el.addEventListener('touchend',function(e){var dx=e.changedTouches[0].clientX-_tx;if(Math.abs(dx)>50)navDLB(dx<0?1:-1);},{passive:true});
+  document.body.appendChild(el);
+}
+
+function openDLB(imgs,idx){
+  _dlbImgs=imgs;_dlbIdx=idx;
+  _dlbEnsure();_dlbRender();
+  var el=document.getElementById('dlb');
+  el.style.cssText='position:fixed;top:0;right:0;bottom:0;left:0;z-index:99999;background:rgba(0,0,0,0.95);display:grid;place-content:center';
+  document.body.style.overflow='hidden';
+}
+function closeDLB(){
+  var el=document.getElementById('dlb');if(el)el.style.display='none';
+  document.body.style.overflow='';
+  var ct=document.getElementById('dlbContent');if(ct)ct.innerHTML='';
+}
+function navDLB(d){
+  _dlbIdx=(_dlbIdx+d+_dlbImgs.length)%_dlbImgs.length;
+  _dlbRender();
+}
+function _dlbRender(){
+  var ct=document.getElementById('dlbContent');if(!ct||!_dlbImgs.length)return;
+  ct.innerHTML='<img src="'+_dlbImgs[_dlbIdx]+'" alt="" style="display:block;max-width:92vw;max-height:88vh;width:auto;height:auto;object-fit:contain;border-radius:8px">';
+}
+document.addEventListener('keydown',function(e){
+  var el=document.getElementById('dlb');if(!el||el.style.display==='none'||!el.style.display)return;
+  if(e.key==='Escape')closeDLB();
+  if(e.key==='ArrowLeft')navDLB(-1);
+  if(e.key==='ArrowRight')navDLB(1);
+});
+
 /* ======== PROJECT DETAIL PAGE LOADER ======== */
 document.addEventListener('DOMContentLoaded', function(){
   var detailContent = document.getElementById('projDetailContent');
@@ -1479,20 +1524,25 @@ document.addEventListener('DOMContentLoaded', function(){
       }
 
       /* Gallery */
+      var _pgImgs=[];
       if(d.images && d.images.length){
         html += '<h2 style="margin-top:40px" data-tr="det_gallery">' + ((TR[localStorage.getItem('aztec-lang')||'az']||{}).det_gallery || 'Qalereya') + '</h2>';
         html += '<div class="detail-gallery" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;margin-top:20px">';
+        var _gii=0;
         for(var i=0;i<d.images.length;i++){
           var gi = d.images[i];
           if(!gi.image) continue;
-          html += '<a href="' + gi.image + '" target="_blank" rel="noopener" style="display:block;aspect-ratio:4/3;border-radius:var(--r);overflow:hidden;background:var(--g1)">';
+          _pgImgs.push(gi.image);
+          html += '<div onclick="openDLB(window._dlbProjImgs,'+_gii+')" style="display:block;aspect-ratio:4/3;border-radius:var(--r);overflow:hidden;background:var(--g1);cursor:pointer">';
           html += '<img src="' + gi.image + '" alt="' + (gi.caption || d.title) + '" loading="lazy" style="width:100%;height:100%;object-fit:cover;transition:transform .3s" onmouseover="this.style.transform=\'scale(1.04)\'" onmouseout="this.style.transform=\'\'">';
-          html += '</a>';
+          html += '</div>';
+          _gii++;
         }
         html += '</div>';
       }
 
       detailContent.innerHTML = html;
+      window._dlbProjImgs = _pgImgs;
     })
     .catch(function(err){
       console.warn('[project-detail] load failed:', err);
@@ -1560,20 +1610,25 @@ document.addEventListener('DOMContentLoaded', function(){
       }
 
       /* Gallery */
+      var _sgImgs=[];
       if(d.images && d.images.length){
         html += '<h2 style="margin-top:40px" data-tr="det_gallery">' + ((TR[localStorage.getItem('aztec-lang')||'az']||{}).det_gallery || 'Qalereya') + '</h2>';
         html += '<div class="detail-gallery" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;margin-top:20px">';
+        var _sii=0;
         for(var i=0;i<d.images.length;i++){
           var gi = d.images[i];
           if(!gi.image) continue;
-          html += '<a href="' + gi.image + '" target="_blank" rel="noopener" style="display:block;aspect-ratio:4/3;border-radius:var(--r);overflow:hidden;background:var(--g1)">';
+          _sgImgs.push(gi.image);
+          html += '<div onclick="openDLB(window._dlbSvcImgs,'+_sii+')" style="display:block;aspect-ratio:4/3;border-radius:var(--r);overflow:hidden;background:var(--g1);cursor:pointer">';
           html += '<img src="' + gi.image + '" alt="' + (gi.caption || d.title) + '" loading="lazy" style="width:100%;height:100%;object-fit:cover;transition:transform .3s" onmouseover="this.style.transform=\'scale(1.04)\'" onmouseout="this.style.transform=\'\'">';
-          html += '</a>';
+          html += '</div>';
+          _sii++;
         }
         html += '</div>';
       }
 
       svcDetailContent.innerHTML = html;
+      window._dlbSvcImgs = _sgImgs;
     })
     .catch(function(err){
       console.warn('[svc-detail] load failed:', err);
