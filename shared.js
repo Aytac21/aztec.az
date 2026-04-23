@@ -1421,7 +1421,7 @@ function _dlbEnsure(){
   el.style.cssText='display:none;position:fixed;top:0;right:0;bottom:0;left:0;background:rgba(0,0,0,0.95);z-index:99999';
   el.innerHTML='<button onclick="closeDLB()" style="position:absolute;top:16px;right:16px;background:rgba(255,255,255,0.15);border:none;color:#fff;font-size:18px;cursor:pointer;width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;z-index:10"><i class="fas fa-times"></i></button>'
     +'<button onclick="navDLB(-1)" style="position:absolute;top:50%;left:16px;transform:translateY(-50%);background:rgba(255,255,255,0.15);border:none;color:#fff;font-size:20px;cursor:pointer;width:46px;height:46px;border-radius:50%;display:'+(mob?'none':'flex')+';align-items:center;justify-content:center;z-index:10"><i class="fas fa-chevron-left"></i></button>'
-    +'<div id="dlbContent" style="line-height:0;max-width:96vw;max-height:90vh"></div>'
+    +'<div style="position:absolute;top:0;left:0;width:100%;height:100%;display:flex;align-items:center;justify-content:center;pointer-events:none"><div id="dlbContent" style="line-height:0;max-width:96vw;max-height:90vh;pointer-events:auto"></div></div>'
     +'<button onclick="navDLB(1)" style="position:absolute;top:50%;right:16px;transform:translateY(-50%);background:rgba(255,255,255,0.15);border:none;color:#fff;font-size:20px;cursor:pointer;width:46px;height:46px;border-radius:50%;display:'+(mob?'none':'flex')+';align-items:center;justify-content:center;z-index:10"><i class="fas fa-chevron-right"></i></button>';
   el.addEventListener('click',function(e){if(e.target===el)closeDLB();});
   var _tx=0;
@@ -1434,7 +1434,7 @@ function openDLB(imgs,idx){
   _dlbImgs=imgs;_dlbIdx=idx;
   _dlbEnsure();_dlbRender();
   var el=document.getElementById('dlb');
-  el.style.cssText='position:fixed;top:0;right:0;bottom:0;left:0;z-index:99999;background:rgba(0,0,0,0.95);display:grid;place-content:center';
+  el.style.cssText='position:fixed;top:0;right:0;bottom:0;left:0;z-index:99999;background:rgba(0,0,0,0.95);display:block';
   document.body.style.overflow='hidden';
 }
 function closeDLB(){
