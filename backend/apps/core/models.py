@@ -469,10 +469,17 @@ class Partner(models.Model):
         ('ozel', pgettext_lazy('pCat_ozel', 'Özəl şirkət')),
     ]
     name = models.CharField(max_length=200, verbose_name='Ad')
+    logo = models.ImageField(
+        upload_to='partners/',
+        blank=True,
+        null=True,
+        verbose_name='Loqo (şəkil)',
+    )
     icon = models.CharField(
         max_length=100,
-        help_text='Font Awesome class, məs: fas fa-cubes',
-        verbose_name='İkon (FA)',
+        blank=True,
+        help_text='Şəkil yoxdursa FA ikon, məs: fas fa-cubes',
+        verbose_name='İkon (FA, ehtiyat)',
     )
     description = models.CharField(
         max_length=500,

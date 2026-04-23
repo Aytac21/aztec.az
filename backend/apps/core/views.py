@@ -236,8 +236,12 @@ def partners_list(request):
                 'items': [],
             }
             order.append(key)
+        logo_url = None
+        if p.logo:
+            logo_url = request.build_absolute_uri(p.logo.url)
         groups[key]['items'].append({
             'name': p.name,
+            'logo': logo_url,
             'icon': p.icon,
             'description': p.description,
             'order': p.order,
