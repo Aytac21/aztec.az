@@ -1418,48 +1418,73 @@ document.addEventListener('DOMContentLoaded', function(){
     .catch(function(err){ console.warn('[projects] backend load failed:', err); });
 });
 
-/* ======== DETAIL PAGE LIGHTBOX ======== */
+/* ======== DETAIL PAGE LIGHTBOX (modal) ======== */
 var _dlbImgs=[],_dlbIdx=0;
-function _dlbEnsure(){
-  if(document.getElementById('dlb'))return;
-  var el=document.createElement('div');el.id='dlb';
-  var mob=window.innerWidth<768;
-  el.style.cssText='display:none;position:fixed;top:0;right:0;bottom:0;left:0;background:rgba(0,0,0,0.95);z-index:99999';
-  el.innerHTML='<button onclick="closeDLB()" style="position:absolute;top:16px;right:16px;background:rgba(255,255,255,0.15);border:none;color:#fff;font-size:18px;cursor:pointer;width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;z-index:10"><i class="fas fa-times"></i></button>'
-    +'<button onclick="navDLB(-1)" style="position:absolute;top:50%;left:16px;transform:translateY(-50%);background:rgba(255,255,255,0.15);border:none;color:#fff;font-size:20px;cursor:pointer;width:46px;height:46px;border-radius:50%;display:'+(mob?'none':'flex')+';align-items:center;justify-content:center;z-index:10"><i class="fas fa-chevron-left"></i></button>'
-    +'<div id="dlbContent" style="display:flex;align-items:center;justify-content:center;line-height:0;max-width:100%;max-height:100%"></div>'
-    +'<button onclick="navDLB(1)" style="position:absolute;top:50%;right:16px;transform:translateY(-50%);background:rgba(255,255,255,0.15);border:none;color:#fff;font-size:20px;cursor:pointer;width:46px;height:46px;border-radius:50%;display:'+(mob?'none':'flex')+';align-items:center;justify-content:center;z-index:10"><i class="fas fa-chevron-right"></i></button>';
-  el.addEventListener('click',function(e){if(e.target===el)closeDLB();});
-  var _tx=0;
-  el.addEventListener('touchstart',function(e){_tx=e.touches[0].clientX;},{passive:true});
-  el.addEventListener('touchend',function(e){var dx=e.changedTouches[0].clientX-_tx;if(Math.abs(dx)>50)navDLB(dx<0?1:-1);},{passive:true});
-  document.body.appendChild(el);
-}
 
 function openDLB(imgs,idx){
   _dlbImgs=imgs;_dlbIdx=idx;
-  _dlbEnsure();
-  var el=document.getElementById('dlb');
-  el.style.cssText='position:fixed;top:0;right:0;bottom:0;left:0;z-index:99999;background:rgba(0,0,0,0.95);display:flex;align-items:center;justify-content:center';
-  // document.body.style.overflow='hidden';
-  document.body.style.overflowX='visible';  // ← BU SƏTİRİ ƏLAVƏ EDİN
-  _dlbRender();
+  /* remove old instance so fresh markup is always used */
+  var old=document.getElementById('dlb');if(old)old.remove();
+
+  /* kill body animation – its transform breaks position:fixed */
+  document.body.style.animation='none';
+
+  /* --- backdrop --- */
+  var bg=document.createElement('div');bg.id='dlb';
+  bg.style.cssText='position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:99999;background:rgba(0,0,0,.95);display:flex;align-items:center;justify-content:center';
+  bg.addEventListener('click',function(e){if(e.target===bg)closeDLB();});
+
+  /* --- close btn --- */
+  var cb=document.createElement('button');
+  cb.innerHTML='<i class="fas fa-times"></i>';
+  cb.style.cssText='position:fixed;top:16px;right:16px;z-index:100001;background:rgba(255,255,255,.15);border:none;color:#fff;font-size:18px;cursor:pointer;width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center';
+  cb.onclick=closeDLB;
+
+  /* --- image element --- */
+  var img=document.createElement('img');
+  img.src=_dlbImgs[_dlbIdx];
+  img.alt='';
+  img.id='dlbImg';
+  img.style.cssText='max-width:92vw;max-height:88vh;width:auto;height:auto;object-fit:contain;border-radius:8px;display:block';
+
+  /* --- nav arrows (desktop only) --- */
+  var mob=window.innerWidth<768;
+  if(!mob&&_dlbImgs.length>1){
+    var mkBtn=function(dir){
+      var b=document.createElement('button');
+      b.innerHTML='<i class="fas fa-chevron-'+(dir<0?'left':'right')+'"></i>';
+      b.style.cssText='position:fixed;top:50%;'+(dir<0?'left':'right')+':16px;transform:translateY(-50%);z-index:100001;background:rgba(255,255,255,.15);border:none;color:#fff;font-size:20px;cursor:pointer;width:46px;height:46px;border-radius:50%;display:flex;align-items:center;justify-content:center';
+      b.onclick=function(){navDLB(dir);};
+      return b;
+    };
+    bg.appendChild(mkBtn(-1));
+    bg.appendChild(mkBtn(1));
+  }
+
+  /* --- swipe (mobile) --- */
+  var tx=0;
+  bg.addEventListener('touchstart',function(e){tx=e.touches[0].clientX;},{passive:true});
+  bg.addEventListener('touchend',function(e){var dx=e.changedTouches[0].clientX-tx;if(Math.abs(dx)>50)navDLB(dx<0?1:-1);},{passive:true});
+
+  bg.appendChild(cb);
+  bg.appendChild(img);
+  document.body.appendChild(bg);
+  document.body.style.overflow='hidden';
 }
+
 function closeDLB(){
-  var el=document.getElementById('dlb');if(el)el.style.display='none';
+  var el=document.getElementById('dlb');if(el)el.remove();
   document.body.style.overflow='';
-  var ct=document.getElementById('dlbContent');if(ct)ct.innerHTML='';
 }
+
 function navDLB(d){
   _dlbIdx=(_dlbIdx+d+_dlbImgs.length)%_dlbImgs.length;
-  _dlbRender();
+  var img=document.getElementById('dlbImg');
+  if(img)img.src=_dlbImgs[_dlbIdx];
 }
-function _dlbRender(){
-  var ct=document.getElementById('dlbContent');if(!ct||!_dlbImgs.length)return;
-  ct.innerHTML='<img src="'+_dlbImgs[_dlbIdx]+'" alt="" style="display:block;max-width:92vw;max-height:88vh;width:auto;height:auto;object-fit:contain;border-radius:8px">';
-}
+
 document.addEventListener('keydown',function(e){
-  var el=document.getElementById('dlb');if(!el||el.style.display==='none'||!el.style.display)return;
+  if(!document.getElementById('dlb'))return;
   if(e.key==='Escape')closeDLB();
   if(e.key==='ArrowLeft')navDLB(-1);
   if(e.key==='ArrowRight')navDLB(1);
