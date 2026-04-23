@@ -6,7 +6,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('core', '0025_partner_teammember_alter_projectimage_id_and_more'),
+        ('core', '0024_projectimage_serviceimage'),
     ]
 
     operations = [
