@@ -12,7 +12,7 @@
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{font-family:var(--font);background:var(--bg);color:var(--g5);line-height:1.75;overflow-x:hidden;-webkit-font-smoothing:antialiased;animation:fadeUp .6s var(--tr2) both}
-@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
 a{color:var(--accent);text-decoration:none;transition:all var(--tr)}
 img{max-width:100%;display:block}
 .container{max-width:1200px;margin:0 auto;padding:0 28px}

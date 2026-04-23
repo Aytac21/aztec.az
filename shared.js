@@ -1427,7 +1427,7 @@ function _dlbEnsure(){
   el.style.cssText='display:none;position:fixed;top:0;right:0;bottom:0;left:0;background:rgba(0,0,0,0.95);z-index:99999';
   el.innerHTML='<button onclick="closeDLB()" style="position:absolute;top:16px;right:16px;background:rgba(255,255,255,0.15);border:none;color:#fff;font-size:18px;cursor:pointer;width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;z-index:10"><i class="fas fa-times"></i></button>'
     +'<button onclick="navDLB(-1)" style="position:absolute;top:50%;left:16px;transform:translateY(-50%);background:rgba(255,255,255,0.15);border:none;color:#fff;font-size:20px;cursor:pointer;width:46px;height:46px;border-radius:50%;display:'+(mob?'none':'flex')+';align-items:center;justify-content:center;z-index:10"><i class="fas fa-chevron-left"></i></button>'
-    +'<div id="dlbContent" style="position:absolute;line-height:0"></div>'
+    +'<div id="dlbContent" style="display:flex;align-items:center;justify-content:center;line-height:0;max-width:100%;max-height:100%"></div>'
     +'<button onclick="navDLB(1)" style="position:absolute;top:50%;right:16px;transform:translateY(-50%);background:rgba(255,255,255,0.15);border:none;color:#fff;font-size:20px;cursor:pointer;width:46px;height:46px;border-radius:50%;display:'+(mob?'none':'flex')+';align-items:center;justify-content:center;z-index:10"><i class="fas fa-chevron-right"></i></button>';
   el.addEventListener('click',function(e){if(e.target===el)closeDLB();});
   var _tx=0;
@@ -1438,10 +1438,12 @@ function _dlbEnsure(){
 
 function openDLB(imgs,idx){
   _dlbImgs=imgs;_dlbIdx=idx;
-  _dlbEnsure();_dlbRender();
+  _dlbEnsure();
   var el=document.getElementById('dlb');
-  el.style.cssText='position:fixed;top:0;right:0;bottom:0;left:0;z-index:99999;background:rgba(0,0,0,0.95);display:block';
-  document.body.style.overflow='hidden';
+  el.style.cssText='position:fixed;top:0;right:0;bottom:0;left:0;z-index:99999;background:rgba(0,0,0,0.95);display:flex;align-items:center;justify-content:center';
+  // document.body.style.overflow='hidden';
+  document.body.style.overflowX='visible';  // ← BU SƏTİRİ ƏLAVƏ EDİN
+  _dlbRender();
 }
 function closeDLB(){
   var el=document.getElementById('dlb');if(el)el.style.display='none';
@@ -1455,16 +1457,6 @@ function navDLB(d){
 function _dlbRender(){
   var ct=document.getElementById('dlbContent');if(!ct||!_dlbImgs.length)return;
   ct.innerHTML='<img src="'+_dlbImgs[_dlbIdx]+'" alt="" style="display:block;max-width:92vw;max-height:88vh;width:auto;height:auto;object-fit:contain;border-radius:8px">';
-  var img=ct.querySelector('img');
-  var doCenter=function(){
-    var box=document.getElementById('dlb');
-    if(!box)return;
-    var vw=box.clientWidth,vh=box.clientHeight;
-    ct.style.left=Math.max(0,Math.round((vw-ct.offsetWidth)/2))+'px';
-    ct.style.top=Math.max(0,Math.round((vh-ct.offsetHeight)/2))+'px';
-  };
-  if(img.complete&&img.naturalWidth)doCenter();
-  else img.onload=doCenter;
 }
 document.addEventListener('keydown',function(e){
   var el=document.getElementById('dlb');if(!el||el.style.display==='none'||!el.style.display)return;
