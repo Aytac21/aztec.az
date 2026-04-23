@@ -161,6 +161,7 @@ class KnowledgeBase(models.Model):
     title = models.CharField(max_length=300, verbose_name='Başlıq')
     description = models.CharField(max_length=500, verbose_name='Qısa açıqlama')
     content = models.TextField(blank=True, verbose_name='Tam məzmun (HTML)')
+    image = models.ImageField(upload_to='knowledge-base/', blank=True, null=True, verbose_name='Şəkil')
     meta_title = models.CharField(max_length=200, blank=True, verbose_name='Meta Title')
     meta_description = models.TextField(blank=True, verbose_name='Meta Description')
     order = models.PositiveIntegerField(default=0, verbose_name='Sıralama')

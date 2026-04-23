@@ -55,7 +55,7 @@ class KnowledgeBaseAdmin(TabbedTranslationAdmin):
     prepopulated_fields = {'slug': ('title',)}
     fieldsets = (
         ('Əsas', {'fields': ('slug', 'tag', 'title', 'order', 'is_active')}),
-        ('Məzmun', {'fields': ('description', 'content')}),
+        ('Məzmun', {'fields': ('description', 'image', 'content')}),
         ('SEO', {'fields': ('meta_title', 'meta_description')}),
     )
 

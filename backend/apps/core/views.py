@@ -184,11 +184,18 @@ def knowledge_base_list(request):
     qs = KnowledgeBase.objects.filter(is_active=True)
     items = []
     for kb in qs:
+        img = ''
+        if kb.image:
+            try:
+                img = request.build_absolute_uri(kb.image.url)
+            except Exception:
+                img = kb.image.url
         items.append({
             'slug': kb.slug,
             'tag': kb.tag,
             'title': kb.title,
             'description': kb.description,
+            'image': img,
         })
     return _cors(JsonResponse({'knowledge_base': items}))
 
@@ -198,12 +205,19 @@ def knowledge_base_detail(request, slug):
         kb = KnowledgeBase.objects.get(slug=slug, is_active=True)
     except KnowledgeBase.DoesNotExist:
         raise Http404('Article not found')
+    img = ''
+    if kb.image:
+        try:
+            img = request.build_absolute_uri(kb.image.url)
+        except Exception:
+            img = kb.image.url
     data = {
         'slug': kb.slug,
         'tag': kb.tag,
         'title': kb.title,
         'description': kb.description,
         'content': kb.content,
+        'image': img,
         'meta_title': kb.meta_title,
         'meta_description': kb.meta_description,
     }

@@ -1153,7 +1153,11 @@ document.addEventListener('DOMContentLoaded', function(){
         card.className = 'bc reveal visible';
         card.style.textDecoration = 'none';
         card.style.color = 'inherit';
+        var imgHtml = kb.image
+          ? '<div class="bc-img" style="background-image:url(\''+kb.image+'\')"></div>'
+          : '';
         card.innerHTML =
+          imgHtml +
           '<span class="btg">' + kb.tag + '</span>' +
           '<h3>' + kb.title + '</h3>' +
           '<p>' + kb.description + '</p>';
@@ -1181,6 +1185,11 @@ document.addEventListener('DOMContentLoaded', function(){
       if(tagEl)   tagEl.textContent   = d.tag || '';
       if(titleEl) titleEl.textContent = d.title || '';
       if(descEl)  descEl.textContent  = d.description || '';
+
+      var heroBg = document.getElementById('blogDetailHeroBg');
+      if(heroBg && d.image){
+        heroBg.style.backgroundImage = "url('" + d.image + "')";
+      }
 
       document.title = (d.meta_title || d.title) + ' | Aztec Construction';
       if(d.meta_description){
