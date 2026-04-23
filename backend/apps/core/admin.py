@@ -157,12 +157,12 @@ class CareerApplicationAdmin(admin.ModelAdmin):
 
 @admin.register(Partner)
 class PartnerAdmin(TabbedTranslationAdmin):
-    list_display = ('name', 'category', 'icon', 'is_active', 'order')
+    list_display = ('name', 'category', 'is_active', 'order')
     list_editable = ('order', 'is_active')
     list_filter = ('category', 'is_active')
     search_fields = ('name', 'description')
     fieldsets = (
-        ('Əsas', {'fields': ('category', 'name', 'icon', 'order', 'is_active')}),
+        ('Əsas', {'fields': ('category', 'name', 'logo', 'icon', 'order', 'is_active')}),
         ('Açıqlama', {'fields': ('description',)}),
     )
 
