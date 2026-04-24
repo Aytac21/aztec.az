@@ -13,6 +13,7 @@ from .models import (
     PageHero,
     Partner,
     Project,
+    ProjectsOffer,
     Service,
     TeamMember,
     Vacancy,
@@ -102,3 +103,15 @@ class CatalogPDFTR(TranslationOptions):
 @register(CatalogImage)
 class CatalogImageTR(TranslationOptions):
     fields = ('title',)
+
+
+@register(ProjectsOffer)
+class ProjectsOfferTR(TranslationOptions):
+    fields = (
+        'badge_label', 'tag', 'title',
+        'item1', 'item2', 'item3',
+        'cta_primary_text', 'cta_secondary_text',
+        'trust_text',
+        'stat1_label', 'stat2_label', 'stat3_label',
+        'note_text',
+    )

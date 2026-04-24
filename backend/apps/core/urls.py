@@ -19,6 +19,7 @@ urlpatterns = [
     path('services/', views.services_list, name='services-list'),
     path('services/<slug:slug>/', views.service_detail, name='service-detail'),
     path('projects/', views.projects_list, name='projects-list'),
+    path('projects/offer/', views.projects_offer, name='projects-offer'),
     path('projects/featured/', views.featured_project, name='featured-project'),
     path('projects/<slug:slug>/', views.project_detail, name='project-detail'),
     path('catalog/pdfs/', views.catalog_pdfs_list, name='catalog-pdfs'),

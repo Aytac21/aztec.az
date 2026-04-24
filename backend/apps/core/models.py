@@ -586,3 +586,95 @@ class CareerApplication(models.Model):
 
     def __str__(self):
         return f'{self.name} — {self.phone} ({self.created_at:%d.%m.%Y %H:%M})'
+
+
+class ProjectsOffer(models.Model):
+    """Layihələr səhifəsindəki xüsusi təklif banner-i (singleton)."""
+
+    is_active = models.BooleanField(default=True, verbose_name='Aktivdir')
+
+    badge_percent = models.CharField(
+        max_length=10, default='100%', verbose_name='Badge rəqəm',
+        help_text='Məs: 100%',
+    )
+    badge_label = models.CharField(
+        max_length=30, default='Pulsuz', verbose_name='Badge etiket',
+        help_text='Məs: PULSUZ',
+    )
+
+    tag = models.CharField(
+        max_length=200, default='Xüsusi təklif · yalnız Aztec müştərilərinə',
+        verbose_name='Tag mətni',
+    )
+    title = models.CharField(
+        max_length=300, default='Tikinti Aztec MMC-yə təhvil verildiyi halda:',
+        verbose_name='Başlıq',
+    )
+
+    item1 = models.CharField(
+        max_length=300, blank=True,
+        default='<strong>Layihənin çəkilməsi</strong> — tam hədiyyə',
+        verbose_name='Siyahı 1',
+        help_text='<strong>…</strong> teqlərini qalın mətn üçün istifadə edə bilərsiniz.',
+    )
+    item2 = models.CharField(
+        max_length=300, blank=True,
+        default='<strong>İnşaat icazələrinin alınması</strong> — tam hədiyyə',
+        verbose_name='Siyahı 2',
+    )
+    item3 = models.CharField(
+        max_length=300, blank=True, default='',
+        verbose_name='Siyahı 3 (opsional)',
+    )
+
+    cta_primary_text = models.CharField(
+        max_length=100, default='Təklifdən yararlan', verbose_name='Əsas düymə mətni',
+    )
+    cta_primary_url = models.CharField(
+        max_length=300, default='elaqe', verbose_name='Əsas düymə URL',
+        help_text='Məs: elaqe və ya https://...',
+    )
+    cta_secondary_text = models.CharField(
+        max_length=100, default='WhatsApp ilə yazın', verbose_name='İkinci düymə mətni',
+    )
+    cta_secondary_url = models.CharField(
+        max_length=300, default='https://wa.me/994559758900',
+        verbose_name='İkinci düymə URL',
+    )
+
+    trust_text = models.CharField(
+        max_length=200, blank=True,
+        default='Pulsuz konsultasiya · 24 saat ərzində cavab',
+        verbose_name='Etibar mətni',
+    )
+
+    stat1_number = models.CharField(max_length=20, default='500+', verbose_name='Stat 1 rəqəm')
+    stat1_label = models.CharField(max_length=50, default='Layihə', verbose_name='Stat 1 etiket')
+    stat2_number = models.CharField(max_length=20, default='8+', verbose_name='Stat 2 rəqəm')
+    stat2_label = models.CharField(max_length=50, default='İl təcrübə', verbose_name='Stat 2 etiket')
+    stat3_number = models.CharField(max_length=20, default='100+', verbose_name='Stat 3 rəqəm')
+    stat3_label = models.CharField(max_length=50, default='Mütəxəssis', verbose_name='Stat 3 etiket')
+
+    note_text = models.CharField(
+        max_length=200, blank=True,
+        default='Açar təhvilinə qədər zəmanət',
+        verbose_name='Zəmanət mətni',
+    )
+
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = 'Layihələr — xüsusi təklif banneri'
+        verbose_name_plural = 'Layihələr — xüsusi təklif banneri'
+
+    def __str__(self):
+        return 'Xüsusi təklif banneri'
+
+    def save(self, *args, **kwargs):
+        self.pk = 1
+        super().save(*args, **kwargs)
+
+    @classmethod
+    def load(cls):
+        obj, _ = cls.objects.get_or_create(pk=1)
+        return obj

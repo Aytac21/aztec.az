@@ -1,7 +1,7 @@
 from django.contrib import admin
 from modeltranslation.admin import TabbedTranslationAdmin
 
-from .models import AboutContent, Advantage, CareerApplication, CatalogCategory, CatalogImage, CatalogPDF, ContactInfo, ContactSubmission, GalleryItem, KnowledgeBase, News, PageHero, Partner, Project, ProjectImage, Service, ServiceImage, TeamMember, Vacancy
+from .models import AboutContent, Advantage, CareerApplication, CatalogCategory, CatalogImage, CatalogPDF, ContactInfo, ContactSubmission, GalleryItem, KnowledgeBase, News, PageHero, Partner, Project, ProjectImage, ProjectsOffer, Service, ServiceImage, TeamMember, Vacancy
 
 admin.site.index_title = 'İdarə bölməsi'
 
@@ -229,3 +229,22 @@ class CatalogImageAdmin(TabbedTranslationAdmin):
     list_editable = ('order', 'is_active')
     list_filter = ('is_active', 'category')
     search_fields = ('title',)
+
+
+@admin.register(ProjectsOffer)
+class ProjectsOfferAdmin(TabbedTranslationAdmin):
+    fieldsets = (
+        ('Ümumi', {'fields': ('is_active',)}),
+        ('Badge (sol dairə)', {'fields': ('badge_percent', 'badge_label')}),
+        ('Mətn', {'fields': ('tag', 'title')}),
+        ('Siyahı maddələri', {'fields': ('item1', 'item2', 'item3')}),
+        ('Düymələr', {'fields': ('cta_primary_text', 'cta_primary_url', 'cta_secondary_text', 'cta_secondary_url', 'trust_text')}),
+        ('Statistika (sağ blok)', {'fields': (('stat1_number', 'stat1_label'), ('stat2_number', 'stat2_label'), ('stat3_number', 'stat3_label'))}),
+        ('Zəmanət qutusu', {'fields': ('note_text',)}),
+    )
+
+    def has_add_permission(self, request):
+        return not ProjectsOffer.objects.exists()
+
+    def has_delete_permission(self, request, obj=None):
+        return False

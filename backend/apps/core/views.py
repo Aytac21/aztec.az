@@ -6,7 +6,7 @@ from django.utils import translation
 from django.views.decorators.csrf import csrf_exempt
 
 from .i18n_strings import STRINGS
-from .models import AboutContent, Advantage, CareerApplication, CatalogCategory, CatalogImage, CatalogPDF, ContactInfo, ContactSubmission, GalleryItem, KnowledgeBase, News, PageHero, Partner, Project, Service, TeamMember, Vacancy
+from .models import AboutContent, Advantage, CareerApplication, CatalogCategory, CatalogImage, CatalogPDF, ContactInfo, ContactSubmission, GalleryItem, KnowledgeBase, News, PageHero, Partner, Project, ProjectsOffer, Service, TeamMember, Vacancy
 
 
 def _cors(response):
@@ -383,6 +383,30 @@ def projects_list(request):
             'order': p.order,
         })
     return _cors(JsonResponse({'projects': items}))
+
+
+def projects_offer(request):
+    obj = ProjectsOffer.load()
+    data = {
+        'is_active': obj.is_active,
+        'badge_percent': obj.badge_percent,
+        'badge_label': obj.badge_label,
+        'tag': obj.tag,
+        'title': obj.title,
+        'items': [x for x in (obj.item1, obj.item2, obj.item3) if x],
+        'cta_primary_text': obj.cta_primary_text,
+        'cta_primary_url': obj.cta_primary_url,
+        'cta_secondary_text': obj.cta_secondary_text,
+        'cta_secondary_url': obj.cta_secondary_url,
+        'trust_text': obj.trust_text,
+        'stats': [
+            {'number': obj.stat1_number, 'label': obj.stat1_label},
+            {'number': obj.stat2_number, 'label': obj.stat2_label},
+            {'number': obj.stat3_number, 'label': obj.stat3_label},
+        ],
+        'note_text': obj.note_text,
+    }
+    return _cors(JsonResponse(data))
 
 
 def featured_project(request):

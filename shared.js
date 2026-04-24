@@ -1614,6 +1614,52 @@ document.addEventListener('DOMContentLoaded', function(){
     .catch(function(err){ console.warn('[services] backend load failed:', err); });
 });
 
+/* ======== PROJECTS OFFER BANNER LOADER ======== */
+document.addEventListener('DOMContentLoaded', function(){
+  var banner = document.getElementById('offerBanner');
+  var section = document.getElementById('offerBannerSec');
+  if(!banner || !section) return;
+  fetch(window.apiUrl('/api/projects/offer/'), {cache:'no-store'})
+    .then(function(r){ if(!r.ok) throw new Error('offer '+r.status); return r.json(); })
+    .then(function(d){
+      if(!d || d.is_active === false){ section.style.display = 'none'; return; }
+      var esc = function(s){ return (s==null?'':String(s)); };
+      var items = (d.items||[]).map(function(t){
+        return '<li><i class="fas fa-check-circle"></i> <span>' + esc(t) + '</span></li>';
+      }).join('');
+      var stats = (d.stats||[]).map(function(s){
+        return '<div class="offer-stat"><div class="offer-stat-n">' + esc(s.number) + '</div><div class="offer-stat-l">' + esc(s.label) + '</div></div>';
+      }).join('');
+      banner.innerHTML =
+        '<div class="offer-bp" aria-hidden="true"></div>'+
+        '<div class="offer-glow offer-glow-1"></div>'+
+        '<div class="offer-glow offer-glow-2"></div>'+
+        '<div class="offer-sparkle s1"></div><div class="offer-sparkle s2"></div><div class="offer-sparkle s3"></div>'+
+        '<div class="offer-left"><div class="offer-badge">'+
+          '<div class="offer-badge-ring"></div>'+
+          '<div class="offer-badge-inner">'+
+            '<div class="offer-badge-pct">'+esc(d.badge_percent)+'</div>'+
+            '<div class="offer-badge-lbl">'+esc(d.badge_label)+'</div>'+
+          '</div>'+
+          '<i class="fas fa-gift offer-badge-ic"></i>'+
+        '</div></div>'+
+        '<div class="offer-right">'+
+          (d.tag ? '<div class="offer-tag"><i class="fas fa-star"></i> <span>'+esc(d.tag)+'</span></div>' : '')+
+          '<h3 class="offer-headline">'+esc(d.title)+'</h3>'+
+          (items ? '<ul class="offer-list">'+items+'</ul>' : '')+
+          '<div class="offer-ctas">'+
+            '<a href="'+esc(d.cta_primary_url)+'" class="offer-cta primary">'+esc(d.cta_primary_text)+' <i class="fas fa-arrow-right"></i></a>'+
+          '</div>'+
+          (d.trust_text ? '<div class="offer-trust"><i class="fas fa-clock"></i> <span>'+esc(d.trust_text)+'</span></div>' : '')+
+        '</div>'+
+        '<div class="offer-stats">'+
+          stats+
+          (d.note_text ? '<div class="offer-note"><i class="fas fa-shield-alt"></i> <span>'+esc(d.note_text)+'</span></div>' : '')+
+        '</div>';
+    })
+    .catch(function(){ /* statik HTML fallback qalır */ });
+});
+
 /* ======== BACKEND PROJECTS LOADER ======== */
 document.addEventListener('DOMContentLoaded', function(){
   var projGrid = document.getElementById('projGrid');
