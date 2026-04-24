@@ -754,16 +754,6 @@ function _applyLang(l){
   if(ftl[0]&&d.ftTerms)ftl[0].textContent=d.ftTerms;
   if(ftl[1]&&d.ftPrivacy)ftl[1].textContent=d.ftPrivacy;
 
-  /* "Made by neOtwork" credit — injected once per page */
-  var ftBot=document.querySelector('.ft-bot');
-  if(ftBot && !ftBot.querySelector('.ft-madeby')){
-    var mb=document.createElement('div');
-    mb.className='ft-madeby';
-    mb.style.cssText='margin-top:12px;font-size:12px;color:var(--g4);text-align:center;width:100%';
-    mb.innerHTML='Made by <a href="https://neotwork.com/" target="_blank" rel="noopener noreferrer" style="color:var(--accent);text-decoration:none;font-weight:500">neOtwork</a>';
-    ftBot.appendChild(mb);
-  }
-
   /* ALL data-tr elements (covers ALL page content) */
   document.querySelectorAll('[data-tr]').forEach(function(el){
     var k=el.getAttribute('data-tr');
@@ -1613,6 +1603,21 @@ document.addEventListener('DOMContentLoaded', function(){
     })
     .catch(function(err){ console.warn('[services] backend load failed:', err); });
 });
+
+/* ======== "Made by neOtwork" footer credit (all pages) ======== */
+(function injectMadeBy(){
+  function run(){
+    var ftBot = document.querySelector('.ft-bot');
+    if(!ftBot || ftBot.querySelector('.ft-madeby')) return;
+    var mb = document.createElement('div');
+    mb.className = 'ft-madeby';
+    mb.style.cssText = 'margin-top:12px;font-size:12px;color:var(--g4);text-align:center;width:100%';
+    mb.innerHTML = 'Made by <a href="https://neotwork.com/" target="_blank" rel="noopener noreferrer" style="color:var(--accent);text-decoration:none;font-weight:500">neOtwork</a>';
+    ftBot.appendChild(mb);
+  }
+  if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', run);
+  else run();
+})();
 
 /* ======== PROJECTS OFFER BANNER LOADER ======== */
 document.addEventListener('DOMContentLoaded', function(){
