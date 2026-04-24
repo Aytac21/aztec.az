@@ -1,3 +1,4 @@
+from ckeditor_uploader.fields import RichTextUploadingField
 from django.db import models
 from django.utils.translation import pgettext_lazy
 
@@ -14,6 +15,7 @@ class PageHero(models.Model):
         ('karyera', 'Karyera'),
         ('xeberler', 'Xəbərlər'),
         ('bloq', 'Bloq'),
+        ('kataloq', 'Kataloq'),
         ('elaqe', 'Əlaqə'),
         ('gizlilik', 'Gizlilik'),
         ('shertler', 'Şərtlər'),
@@ -67,11 +69,13 @@ class Service(models.Model):
         help_text='Məs: fas fa-drafting-compass',
     )
     title = models.CharField(max_length=200, verbose_name='Başlıq')
-    short_description = models.TextField(
+    short_description = RichTextUploadingField(
         verbose_name='Qısa açıqlama (ana səhifə)',
+        help_text='Zehinli redaktor — qalın/kürsiv mətn, siyahı, link.',
     )
-    description = models.TextField(
+    description = RichTextUploadingField(
         verbose_name='Ətraflı açıqlama (xidmətlər səhifəsi)',
+        help_text='Zehinli redaktor — şəkil, link, sərlovhə, siyahı əlavə edə bilərsiniz.',
     )
     image = models.ImageField(
         upload_to='services/',
@@ -147,7 +151,7 @@ class News(models.Model):
     tag = models.CharField(max_length=100, blank=True, verbose_name='Tag / Kateqoriya')
     date_label = models.CharField(max_length=100, blank=True, verbose_name='Tarix etiketi', help_text='Məs: Aprel 2026, 2025')
     short_description = models.CharField(max_length=500, blank=True, verbose_name='Qısa açıqlama')
-    content = models.TextField(blank=True, verbose_name='Tam məzmun (HTML)')
+    content = RichTextUploadingField(blank=True, verbose_name='Tam məzmun', help_text='Zehinli redaktor — şəkil, link, sərlovhə əlavə edə bilərsiniz.')
     image = models.ImageField(upload_to='news/', blank=True, null=True, verbose_name='Şəkil')
     video_url = models.URLField(blank=True, verbose_name='Video URL (embed)')
     is_published = models.BooleanField(default=True, verbose_name='Dərc olunub')
@@ -168,7 +172,7 @@ class KnowledgeBase(models.Model):
     tag = models.CharField(max_length=100, verbose_name='Tag')
     title = models.CharField(max_length=300, verbose_name='Başlıq')
     description = models.CharField(max_length=500, verbose_name='Qısa açıqlama')
-    content = models.TextField(blank=True, verbose_name='Tam məzmun (HTML)')
+    content = RichTextUploadingField(blank=True, verbose_name='Tam məzmun', help_text='Zehinli redaktor — şəkil, link, sərlovhə əlavə edə bilərsiniz.')
     image = models.ImageField(upload_to='knowledge-base/', blank=True, null=True, verbose_name='Şəkil')
     meta_title = models.CharField(max_length=200, blank=True, verbose_name='Meta Title')
     meta_description = models.TextField(blank=True, verbose_name='Meta Description')
@@ -201,7 +205,7 @@ class AboutContent(models.Model):
     # Haqqımızda page — profile
     profile_tag = models.CharField(max_length=100, blank=True, verbose_name='Profil tag')
     profile_title = models.CharField(max_length=200, blank=True, verbose_name='Profil başlıq')
-    profile_text = models.TextField(verbose_name='Profil mətni (HTML / paraqraflar)')
+    profile_text = RichTextUploadingField(verbose_name='Profil mətni', help_text='Paraqraflar, qalın/kürsiv mətn, siyahılar dəstəklənir.')
 
     # Dəyərlər
     values_tag = models.CharField(max_length=100, blank=True, verbose_name='Dəyərlər tag')
@@ -319,8 +323,9 @@ class Project(models.Model):
 
     slug = models.SlugField(max_length=128, unique=True, verbose_name='Slug')
     title = models.CharField(max_length=200, verbose_name='Başlıq')
-    description = models.CharField(
-        max_length=300, blank=True, verbose_name='Qısa açıqlama',
+    description = RichTextUploadingField(
+        blank=True, verbose_name='Açıqlama',
+        help_text='Zehinli redaktor — qalın mətn, siyahı, link əlavə edə bilərsiniz.',
     )
     status = models.CharField(
         max_length=10, choices=STATUS_CHOICES, default='done',
@@ -344,7 +349,7 @@ class Project(models.Model):
     is_featured = models.BooleanField(
         default=False, verbose_name='Seçilmiş layihə (mega menu)',
     )
-    featured_description = models.TextField(
+    featured_description = RichTextUploadingField(
         blank=True, verbose_name='Seçilmiş layihə açıqlaması',
         help_text='Mega menuda göstəriləcək açıqlama',
     )
@@ -510,6 +515,61 @@ class Partner(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class CatalogCategory(models.Model):
+    name = models.CharField(max_length=100, verbose_name='Ad')
+    slug = models.SlugField(max_length=100, unique=True, verbose_name='Slug')
+    order = models.PositiveIntegerField(default=0, verbose_name='Sıralama')
+    is_active = models.BooleanField(default=True, verbose_name='Aktiv')
+
+    class Meta:
+        verbose_name = 'Kataloq kateqoriyası'
+        verbose_name_plural = 'Kataloq kateqoriyaları'
+        ordering = ['order', 'id']
+
+    def __str__(self):
+        return self.name
+
+
+class CatalogPDF(models.Model):
+    title = models.CharField(max_length=200, blank=True, verbose_name='Başlıq')
+    description = models.CharField(max_length=300, blank=True, verbose_name='Qısa açıqlama')
+    file = models.FileField(upload_to='catalog/pdfs/', verbose_name='PDF faylı')
+    cover = models.ImageField(upload_to='catalog/pdf-covers/', blank=True, null=True, verbose_name='Üz şəkli')
+    category = models.ForeignKey(
+        CatalogCategory, on_delete=models.SET_NULL, blank=True, null=True,
+        related_name='pdfs', verbose_name='Kateqoriya',
+    )
+    order = models.PositiveIntegerField(default=0, verbose_name='Sıralama')
+    is_active = models.BooleanField(default=True, verbose_name='Aktiv')
+
+    class Meta:
+        verbose_name = 'Kataloq PDF'
+        verbose_name_plural = 'Kataloq PDF-lər'
+        ordering = ['order', 'id']
+
+    def __str__(self):
+        return self.title or f'PDF #{self.pk}'
+
+
+class CatalogImage(models.Model):
+    title = models.CharField(max_length=200, blank=True, verbose_name='Başlıq')
+    image = models.ImageField(upload_to='catalog/images/', verbose_name='Şəkil')
+    category = models.ForeignKey(
+        CatalogCategory, on_delete=models.SET_NULL, blank=True, null=True,
+        related_name='images', verbose_name='Kateqoriya',
+    )
+    order = models.PositiveIntegerField(default=0, verbose_name='Sıralama')
+    is_active = models.BooleanField(default=True, verbose_name='Aktiv')
+
+    class Meta:
+        verbose_name = 'Kataloq şəkli'
+        verbose_name_plural = 'Kataloq şəkilləri'
+        ordering = ['order', 'id']
+
+    def __str__(self):
+        return self.title or f'Şəkil #{self.pk}'
 
 
 class CareerApplication(models.Model):

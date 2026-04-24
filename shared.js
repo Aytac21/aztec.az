@@ -42,6 +42,7 @@ var TR={
     'navCareer':'Karyera',
     'navNews':'Xəbərlər',
     'nav_blog':'Bloq',
+    'nav_catalog':'Kataloq',
     'navContact':'Əlaqə',
     'ftCopy':'Bütün hüquqlar qorunur.',
     'ftTerms':'İstifadə Şərtləri',
@@ -131,6 +132,21 @@ var TR={
     'lp_tag':'Portfolio',
     'lp_h1':'Layihələrimiz',
     'lp_desc':'İcra etdiyimiz layihələr potensialımızın ən real göstəricisidir.',
+    'lp_offerRibbon':'Xüsusi Təklif',
+    'lp_offerTitle':'Tikinti Aztec MMC-yə təhvil verildiyi halda:',
+    'lp_offerDesc':'<strong>Layihənin çəkilməsi və inşaat icazələrinin alınması</strong> — şirkət tərəfindən <span class="offer-hl">hədiyyədir</span>.',
+    'lp_offerCta':'Təklifdən yararlan',
+    'lp_offerCta2':'WhatsApp ilə yazın',
+    'lp_offerTag':'Xüsusi təklif · yalnız Aztec müştərilərinə',
+    'lp_offerFree':'Pulsuz',
+    'lp_offerI1':'<strong>Layihənin çəkilməsi</strong> — tam hədiyyə',
+    'lp_offerI2':'<strong>İnşaat icazələrinin alınması</strong> — tam hədiyyə',
+    'lp_offerI3':'<strong>Mütəxəssis konsultasiyası</strong> — ilkin pulsuz',
+    'lp_offerSt1':'Layihə',
+    'lp_offerSt2':'İl təcrübə',
+    'lp_offerSt3':'Mütəxəssis',
+    'lp_offerNote':'Açar təhvilinə qədər zəmanət',
+    'lp_offerTrust':'Pulsuz konsultasiya · 24 saat ərzində cavab',
     'fAll':'Hamısı',
     'fDone':'Tamamlanmış',
     'fOngoing':'Cari',
@@ -250,6 +266,7 @@ var TR={
     'navCareer':'Карьера',
     'navNews':'Новости',
     'nav_blog':'Блог',
+    'nav_catalog':'Каталог',
     'navContact':'Контакт',
     'ftCopy':'Все права защищены.',
     'ftTerms':'Условия использования',
@@ -339,6 +356,21 @@ var TR={
     'lp_tag':'Портфолио',
     'lp_h1':'Наши проекты',
     'lp_desc':'Наши проекты — лучший показатель нашего потенциала.',
+    'lp_offerRibbon':'Специальное предложение',
+    'lp_offerTitle':'Если строительство передано компании Aztec MMC:',
+    'lp_offerDesc':'<strong>Проектирование и получение строительных разрешений</strong> — <span class="offer-hl">в подарок</span> от компании.',
+    'lp_offerCta':'Воспользоваться предложением',
+    'lp_offerCta2':'Написать в WhatsApp',
+    'lp_offerTag':'Специальное предложение · только для клиентов Aztec',
+    'lp_offerFree':'Бесплатно',
+    'lp_offerI1':'<strong>Проектирование</strong> — в подарок',
+    'lp_offerI2':'<strong>Получение строительных разрешений</strong> — в подарок',
+    'lp_offerI3':'<strong>Консультация специалиста</strong> — первично бесплатно',
+    'lp_offerSt1':'Проектов',
+    'lp_offerSt2':'Лет опыта',
+    'lp_offerSt3':'Специалистов',
+    'lp_offerNote':'Гарантия до сдачи под ключ',
+    'lp_offerTrust':'Бесплатная консультация · ответ в течение 24 часов',
     'fAll':'Все',
     'fDone':'Завершённые',
     'fOngoing':'Текущие',
@@ -458,6 +490,7 @@ var TR={
     'navCareer':'Career',
     'navNews':'News',
     'nav_blog':'Blog',
+    'nav_catalog':'Catalog',
     'navContact':'Contact',
     'ftCopy':'All rights reserved.',
     'ftTerms':'Terms of Use',
@@ -547,6 +580,21 @@ var TR={
     'lp_tag':'Portfolio',
     'lp_h1':'Our projects',
     'lp_desc':'Our projects are the best indicator of our potential.',
+    'lp_offerRibbon':'Special Offer',
+    'lp_offerTitle':'When construction is entrusted to Aztec MMC:',
+    'lp_offerDesc':'<strong>Project design and construction permits</strong> are <span class="offer-hl">complimentary</span> — provided by the company.',
+    'lp_offerCta':'Claim this offer',
+    'lp_offerCta2':'Message on WhatsApp',
+    'lp_offerTag':'Special offer · for Aztec clients only',
+    'lp_offerFree':'Free',
+    'lp_offerI1':'<strong>Project design</strong> — complimentary',
+    'lp_offerI2':'<strong>Construction permits</strong> — complimentary',
+    'lp_offerI3':'<strong>Expert consultation</strong> — first session free',
+    'lp_offerSt1':'Projects',
+    'lp_offerSt2':'Years of experience',
+    'lp_offerSt3':'Specialists',
+    'lp_offerNote':'Warranty until turnkey delivery',
+    'lp_offerTrust':'Free consultation · response within 24 hours',
     'fAll':'All',
     'fDone':'Completed',
     'fOngoing':'Ongoing',
@@ -670,7 +718,7 @@ function _applyLang(l){
 
   /* Nav links */
   var nv=document.querySelectorAll('.nav-center>a:not(.mega-trigger)');
-  ['navHome','navServices','navProjects','navCareer','navNews','nav_blog','navContact'].forEach(function(k,i){if(nv[i]&&d[k])nv[i].textContent=d[k]});
+  ['navHome','navServices','navProjects','navCareer','navNews','nav_blog','nav_catalog','navContact'].forEach(function(k,i){if(nv[i]&&d[k])nv[i].textContent=d[k]});
 
   /* Mega trigger */
   var mt=document.querySelector('.mega-trigger');
@@ -678,7 +726,7 @@ function _applyLang(l){
 
   /* Mobile menu links */
   var ml=document.querySelectorAll('.mob-link'),mi=0;
-  ['navHome','navServices','navProjects','navCareer','navNews','nav_blog','navContact'].forEach(function(k){if(ml[mi]&&d[k]){ml[mi].textContent=d[k];mi++}});
+  ['navHome','navServices','navProjects','navCareer','navNews','nav_blog','nav_catalog','navContact'].forEach(function(k){if(ml[mi]&&d[k]){ml[mi].textContent=d[k];mi++}});
   var gt=document.querySelector('.mob-group-title');
   if(gt)gt.innerHTML=(d.navAbout||'Haqqımızda')+' <i class="fas fa-chevron-down"></i>';
 
@@ -697,7 +745,7 @@ function _applyLang(l){
 
   /* Footer */
   var ftn=document.querySelectorAll('.ft-nav a');
-  ['navAbout','navServices','navProjects','navNews','nav_blog','navCareer','navContact'].forEach(function(k,i){if(ftn[i]&&d[k])ftn[i].textContent=d[k]});
+  ['navAbout','navServices','navProjects','navNews','nav_blog','nav_catalog','navCareer','navContact'].forEach(function(k,i){if(ftn[i]&&d[k])ftn[i].textContent=d[k]});
   var ftc=document.querySelector('.ft-copy');
   if(ftc)ftc.innerHTML='&copy; 2026 Aztec Construction MMC. '+(d.ftCopy||'');
   var fti=document.querySelector('.ft-info');
@@ -780,50 +828,92 @@ document.querySelectorAll('.stat-n[data-t]').forEach(function(c){
   })},{threshold:0.5}).observe(c);
 });
 
-/* ======== GALLERY CAROUSEL NAV ======== */
-var galIdx=0,galCloned=false,galVis=1;
+/* ======== GALLERY CAROUSEL NAV (multi-track) ======== */
+var _galState={};
 function galVisCount(){return window.innerWidth<768?1:3;}
+function _galGet(id){return _galState[id]||(_galState[id]={idx:0,cloned:false,vis:1});}
 function _galPeek(track,items){
   if(!track||!items.length||window.innerWidth>=768)return 0;
   var wrap=track.parentElement;
   return(wrap.offsetWidth-items[0].offsetWidth)/2;
 }
 function _galMove(track,items,animate){
+  var st=_galGet(track.id);
   if(!animate){track.style.transition='none';void track.offsetLeft;}
   var w=items[0].offsetWidth+16,peek=_galPeek(track,items);
-  track.style.transform='translateX('+(peek-galIdx*w)+'px)';
+  track.style.transform='translateX('+(peek-st.idx*w)+'px)';
   if(!animate)requestAnimationFrame(function(){requestAnimationFrame(function(){track.style.transition='';});});
 }
-function galNav(d){
-  var track=document.getElementById('galleryGrid');if(!track)return;
+function galNav(d,id){
+  id=id||'galleryGrid';
+  var track=document.getElementById(id);if(!track)return;
   var items=track.querySelectorAll('.g-item');if(!items.length)return;
-  if(galCloned){galIdx+=d;}
-  else{var vis=galVisCount(),max=Math.max(0,items.length-vis);galIdx=(galIdx+d+max+1)%(max+1);}
+  var st=_galGet(id);
+  /* no rotation when not cloned (≤3 items) */
+  if(!st.cloned)return;
+  st.idx+=d;
   _galMove(track,items,true);
 }
+function _galMinRotate(){return 3;}
+function _galToggleArrows(grid){
+  var real=grid.querySelectorAll('.g-item:not(.g-clone)').length;
+  var isStatic=real<=_galMinRotate();
+  if(isStatic&&real>=1)grid.setAttribute('data-few',String(real));else grid.removeAttribute('data-few');
+  var wrap=grid.closest('.gal-car');if(!wrap)return;
+  wrap.querySelectorAll('.gal-btn').forEach(function(b){b.style.display=isStatic?'none':'';});
+}
 function _galInitClones(grid){
-  if(galCloned)return;
-  galVis=galVisCount();
+  var st=_galGet(grid.id);
+  if(st.cloned)return;
+  st.vis=galVisCount();
   var real=Array.from(grid.querySelectorAll('.g-item:not(.g-clone)'));
-  if(real.length<=galVis)return;
+  /* Rotation threshold: mobile ≥3 items, desktop ≥4 items */
+  if(real.length<=_galMinRotate())return;
   var ref=grid.firstChild;
-  for(var i=real.length-galVis;i<real.length;i++){var c=real[i].cloneNode(true);c.classList.add('g-clone');grid.insertBefore(c,ref);}
-  for(var i=0;i<galVis;i++){var c=real[i].cloneNode(true);c.classList.add('g-clone');grid.appendChild(c);}
-  galCloned=true;galIdx=galVis;
+  for(var i=real.length-st.vis;i<real.length;i++){var c=real[i].cloneNode(true);c.classList.add('g-clone');grid.insertBefore(c,ref);}
+  for(var i=0;i<st.vis;i++){var c=real[i].cloneNode(true);c.classList.add('g-clone');grid.appendChild(c);}
+  st.cloned=true;st.idx=st.vis;
   var all=grid.querySelectorAll('.g-item');
   _galMove(grid,all,false);
-  grid.addEventListener('transitionend',function(e){
-    if(e.target!==grid||e.propertyName!=='transform')return;
-    var all=grid.querySelectorAll('.g-item'),realLen=all.length-galVis*2;
-    if(galIdx<galVis){galIdx+=realLen;_galMove(grid,all,false);}
-    else if(galIdx>=galVis+realLen){galIdx-=realLen;_galMove(grid,all,false);}
-  });
+  if(!grid._galHandlerBound){
+    grid.addEventListener('transitionend',function(e){
+      if(e.target!==grid||e.propertyName!=='transform')return;
+      var s=_galGet(grid.id);
+      if(!s.cloned)return;
+      var all=grid.querySelectorAll('.g-item'),realLen=all.length-s.vis*2;
+      if(realLen<=0)return;
+      if(s.idx<s.vis){s.idx+=realLen;_galMove(grid,all,false);}
+      else if(s.idx>=s.vis+realLen){s.idx-=realLen;_galMove(grid,all,false);}
+    });
+    grid._galHandlerBound=true;
+  }
+  _galAutoStart(grid);
+}
+function _galAutoStart(grid){
+  var st=_galGet(grid.id);
+  if(st.timer)clearInterval(st.timer);
+  st.timer=setInterval(function(){
+    if(document.hidden||st.paused)return;
+    galNav(1,grid.id);
+  },2000);
+  if(!st.hoverBound){
+    var wrap=grid.closest('.gal-car')||grid.parentElement;
+    if(wrap){
+      wrap.addEventListener('mouseenter',function(){st.paused=true;});
+      wrap.addEventListener('mouseleave',function(){st.paused=false;});
+    }
+    st.hoverBound=true;
+  }
 }
 window.addEventListener('resize',function(){
-  var track=document.getElementById('galleryGrid');if(!track)return;
-  track.querySelectorAll('.g-clone').forEach(function(c){c.remove();});
-  galCloned=false;galIdx=0;
-  requestAnimationFrame(function(){_galInitClones(track);});
+  Object.keys(_galState).forEach(function(id){
+    var track=document.getElementById(id);if(!track)return;
+    var old=_galState[id];
+    if(old&&old.timer)clearInterval(old.timer);
+    track.querySelectorAll('.g-clone').forEach(function(c){c.remove();});
+    _galState[id]={idx:0,cloned:false,vis:1,hoverBound:old&&old.hoverBound};
+    requestAnimationFrame(function(){_galInitClones(track);});
+  });
 });
 
 /* Gallery Lightbox */
@@ -840,6 +930,189 @@ document.addEventListener('keydown',function(e){var lb=document.getElementById('
   document.addEventListener('touchend',function(e){var lb=document.getElementById('lb');if(!lb||!lb.classList.contains('open'))return;var dx=e.changedTouches[0].clientX-_tx;if(Math.abs(dx)>50)navLB(dx<0?1:-1);},{passive:true});
   document.addEventListener('click',function(e){var lb=document.getElementById('lb');if(!lb||!lb.classList.contains('open'))return;if(e.target===lb)closeLB();});
 })();
+
+/* ======== CATALOG PAGE LOADER ======== */
+function openPdf(url){
+  var m=document.getElementById('pdfModal'),f=document.getElementById('pdfFrame');
+  if(!m||!f||!url)return;
+  f.src=url;
+  m.classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closePdf(e){
+  if(e&&e.target&&e.target.closest&&e.target.closest('.pdf-modal-inner'))return;
+  var m=document.getElementById('pdfModal'),f=document.getElementById('pdfFrame');
+  if(!m)return;
+  m.classList.remove('open');
+  if(f)f.src='';
+  document.body.style.overflow='';
+}
+document.addEventListener('keydown',function(e){
+  if(e.key==='Escape'){var m=document.getElementById('pdfModal');if(m&&m.classList.contains('open'))closePdf();}
+});
+
+document.addEventListener('DOMContentLoaded',function(){
+  var pdfGrid=document.getElementById('pdfGrid');
+  var catGrid=document.getElementById('catalogGrid');
+  var tabs=document.getElementById('catTabs');
+  if(!pdfGrid && !catGrid) return;
+
+  function renderPdfs(list){
+    pdfGrid.innerHTML='';
+    if(!list.length){pdfGrid.innerHTML='<p style="grid-column:1/-1;text-align:center;color:var(--g4);padding:40px">—</p>';return;}
+    list.forEach(function(p){
+      var thumbStyle=p.cover?' style="background-image:url(\''+p.cover+'\')"':'';
+      var hasCover=p.cover?' data-has-cover="1"':'';
+      var card=document.createElement('button');
+      card.type='button';
+      card.className='pdf-card';
+      card.innerHTML=
+        '<div class="pdf-thumb"'+hasCover+thumbStyle+'><i class="fas fa-file-pdf"></i></div>'+
+        '<div class="pdf-main">'+
+          (p.category_name?'<span class="pdf-badge">'+p.category_name+'</span>':'')+
+          (p.title?'<h3>'+p.title+'</h3>':'')+
+          (p.description?'<p>'+p.description+'</p>':'')+
+          '<div class="pdf-meta"><i class="fas fa-file-pdf"></i> PDF</div>'+
+        '</div>'+
+        (p.file?'<a href="'+p.file+'" download class="pdf-dl" title="Yüklə" onclick="event.stopPropagation()"><i class="fas fa-download"></i></a>':'');
+      card.addEventListener('click',function(){ if(p.file) openPdf(p.file); });
+      pdfGrid.appendChild(card);
+    });
+  }
+
+  var pdfTabs=document.getElementById('pdfTabs');
+  var allPdfs=[];
+  var currentPdfCat='';
+  function applyPdfFilter(){
+    var list=currentPdfCat?allPdfs.filter(function(p){return p.category===currentPdfCat;}):allPdfs;
+    renderPdfs(list);
+  }
+  function renderPdfTabs(cats){
+    if(!pdfTabs)return;
+    pdfTabs.innerHTML='';
+    var btnAll=document.createElement('button');
+    btnAll.type='button';btnAll.className='cat-tab active';btnAll.textContent='Hamısı';
+    btnAll.setAttribute('data-tr','kt_all');
+    btnAll.addEventListener('click',function(){
+      currentPdfCat='';
+      pdfTabs.querySelectorAll('.cat-tab').forEach(function(x){x.classList.remove('active');});
+      btnAll.classList.add('active');
+      applyPdfFilter();
+    });
+    pdfTabs.appendChild(btnAll);
+    cats.forEach(function(c){
+      var b=document.createElement('button');
+      b.type='button';b.className='cat-tab';b.textContent=c.name;
+      b.addEventListener('click',function(){
+        currentPdfCat=c.slug;
+        pdfTabs.querySelectorAll('.cat-tab').forEach(function(x){x.classList.remove('active');});
+        b.classList.add('active');
+        applyPdfFilter();
+      });
+      pdfTabs.appendChild(b);
+    });
+  }
+
+  if(pdfGrid){
+    fetch(window.apiUrl('/api/catalog/pdfs/'),{cache:'no-store'})
+      .then(function(r){if(!r.ok)throw new Error('pdf '+r.status);return r.json();})
+      .then(function(data){
+        allPdfs=data.pdfs||[];
+        var pdfCats=(data.categories||[]).filter(function(c){
+          return allPdfs.some(function(p){return p.category===c.slug;});
+        });
+        if(pdfCats.length) renderPdfTabs(pdfCats);
+        applyPdfFilter();
+      })
+      .catch(function(err){console.warn('[catalog-pdfs] failed:',err);});
+  }
+
+  var allImages=[];
+  var currentCat='';
+  function renderImages(list){
+    var prev=_galState['catalogGrid'];
+    if(prev&&prev.timer)clearInterval(prev.timer);
+    catGrid.style.transition='none';
+    catGrid.style.transform='translateX(0)';
+    catGrid.querySelectorAll('.g-clone').forEach(function(c){c.remove();});
+    catGrid.innerHTML='';
+    _galState['catalogGrid']={idx:0,cloned:false,vis:1,hoverBound:prev&&prev.hoverBound};
+    _galToggleArrows(catGrid);
+    void catGrid.offsetWidth;
+    catGrid.style.transition='';
+    if(!list.length){
+      var empty=document.createElement('div');
+      empty.style.cssText='padding:60px 20px;text-align:center;color:var(--g4);width:100%;font-size:14px';
+      empty.textContent='—';
+      catGrid.appendChild(empty);
+      return;
+    }
+    var imgUrls=list.map(function(g){return g.image;}).filter(Boolean);
+    window._dlbCatImgs=imgUrls;
+    list.forEach(function(g,idx){
+      var el=document.createElement('div');
+      el.className='g-item';
+      el.style.cursor='pointer';
+      if(g.image){
+        el.innerHTML='<img src="'+g.image+'" alt="'+(g.title||'Kataloq')+'" style="width:100%;height:100%;object-fit:cover;border-radius:var(--r)" onerror="this.style.display=\'none\';this.parentElement.innerHTML+=\'<div class=g-item-ph><i class=fas fa-image></i>'+(g.title||'Foto')+'</div>\'">';
+      } else {
+        el.innerHTML='<div class="g-item-ph"><i class="fas fa-image"></i>'+(g.title||'Foto')+'</div>';
+      }
+      el.addEventListener('click',function(){
+        var i=imgUrls.indexOf(g.image);
+        openDLB(window._dlbCatImgs,i>=0?i:0);
+      });
+      catGrid.appendChild(el);
+    });
+    _galToggleArrows(catGrid);
+    requestAnimationFrame(function(){_galInitClones(catGrid);});
+  }
+
+  function applyFilter(){
+    var list=currentCat?allImages.filter(function(g){return g.category===currentCat;}):allImages;
+    renderImages(list);
+  }
+
+  function renderTabs(cats){
+    if(!tabs)return;
+    tabs.innerHTML='';
+    var btnAll=document.createElement('button');
+    btnAll.type='button';btnAll.className='cat-tab active';btnAll.textContent='Hamısı';
+    btnAll.setAttribute('data-tr','kt_all');
+    btnAll.addEventListener('click',function(){
+      currentCat='';
+      tabs.querySelectorAll('.cat-tab').forEach(function(x){x.classList.remove('active');});
+      btnAll.classList.add('active');
+      applyFilter();
+    });
+    tabs.appendChild(btnAll);
+    cats.forEach(function(c){
+      var b=document.createElement('button');
+      b.type='button';b.className='cat-tab';b.textContent=c.name;
+      b.addEventListener('click',function(){
+        currentCat=c.slug;
+        tabs.querySelectorAll('.cat-tab').forEach(function(x){x.classList.remove('active');});
+        b.classList.add('active');
+        applyFilter();
+      });
+      tabs.appendChild(b);
+    });
+  }
+
+  if(catGrid){
+    fetch(window.apiUrl('/api/catalog/images/'),{cache:'no-store'})
+      .then(function(r){if(!r.ok)throw new Error('cat-img '+r.status);return r.json();})
+      .then(function(data){
+        allImages=data.images||[];
+        var imgCats=(data.categories||[]).filter(function(c){
+          return allImages.some(function(g){return g.category===c.slug;});
+        });
+        renderTabs(imgCats);
+        applyFilter();
+      })
+      .catch(function(err){console.warn('[catalog-images] failed:',err);});
+  }
+});
 
 /* ======== BACKEND GALLERY LOADER ======== */
 document.addEventListener('DOMContentLoaded', function(){
@@ -872,6 +1145,7 @@ document.addEventListener('DOMContentLoaded', function(){
         }
         grid.appendChild(el);
       });
+      _galToggleArrows(grid);
       requestAnimationFrame(function(){_galInitClones(grid);});
     })
     .catch(function(err){ console.warn('[gallery] backend load failed:', err); });

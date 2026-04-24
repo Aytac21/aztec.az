@@ -94,7 +94,30 @@ INSTALLED_APPS = [
 
     'apps.core',
     'rosetta',
+    'ckeditor',
+    'ckeditor_uploader',
 ]
+
+CKEDITOR_UPLOAD_PATH = 'uploads/'
+CKEDITOR_IMAGE_BACKEND = 'pillow'
+CKEDITOR_CONFIGS = {
+    'default': {
+        'toolbar': 'Custom',
+        'height': 280,
+        'width': '100%',
+        'toolbar_Custom': [
+            ['Bold', 'Italic', 'Underline', 'Strike'],
+            ['NumberedList', 'BulletedList', 'Blockquote'],
+            ['Link', 'Unlink'],
+            ['Image', 'Table', 'HorizontalRule'],
+            ['Format', 'TextColor', 'BGColor'],
+            ['RemoveFormat', 'Source'],
+            ['Undo', 'Redo'],
+        ],
+        'extraPlugins': ','.join(['autolink', 'autoembed', 'embedsemantic', 'autogrow']),
+        'removePlugins': 'exportpdf',
+    },
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

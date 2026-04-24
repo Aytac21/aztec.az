@@ -85,6 +85,15 @@ HEROES = [
         'meta_keywords': 'tikinti bloq, ev tikintisi məsləhətləri, təmir bələdçisi, dizayn məqalələri, Aztec Construction bloq',
     },
     {
+        'page': 'kataloq',
+        'tag': 'Kataloq',
+        'title': 'Kataloq və Qalereya',
+        'description': 'PDF bukletlər, texniki sənədlər və kateqoriyalı qalereya.',
+        'meta_title': 'Kataloq | PDF və Qalereya | Aztec Construction',
+        'meta_description': 'Aztec Construction kataloqu — məhsul bukletləri, texniki sənədlər və kateqoriyalı şəkil qalereyası. PDF yüklə. Aztec.az',
+        'meta_keywords': 'Aztec Construction kataloq, tikinti kataloqu, PDF bukletlər, məhsul qalereyası',
+    },
+    {
         'page': 'elaqe',
         'tag': 'Əlaqə',
         'title': 'Bizimlə əlaqə saxlayın',

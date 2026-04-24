@@ -238,6 +238,42 @@ msgctxt "bl_desc"
 msgid "Tikinti, təmir və dizayn mövzularında peşəkar bələdçilər və məsləhətlər."
 msgstr "Professional guides and tips on construction, renovation and design."
 
+msgctxt "nav_catalog"
+msgid "Kataloq"
+msgstr "Catalog"
+
+msgctxt "kt_tag"
+msgid "Kataloq"
+msgstr "Catalog"
+
+msgctxt "kt_h1"
+msgid "Kataloq və Qalereya"
+msgstr "Catalog and Gallery"
+
+msgctxt "kt_desc"
+msgid "PDF bukletlər, texniki sənədlər və kateqoriyalı qalereya."
+msgstr "PDF brochures, technical documents and categorized gallery."
+
+msgctxt "kt_pdfTag"
+msgid "Sənədlər"
+msgstr "Documents"
+
+msgctxt "kt_pdfTitle"
+msgid "PDF kataloqlar"
+msgstr "PDF catalogs"
+
+msgctxt "kt_galTag"
+msgid "Qalereya"
+msgstr "Gallery"
+
+msgctxt "kt_galTitle"
+msgid "Kateqoriyalı şəkillər"
+msgstr "Categorized images"
+
+msgctxt "kt_all"
+msgid "Hamısı"
+msgstr "All"
+
 msgctxt "more"
 msgid "Ətraflı"
 msgstr "Details"

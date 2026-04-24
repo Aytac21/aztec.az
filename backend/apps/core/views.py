@@ -6,7 +6,7 @@ from django.utils import translation
 from django.views.decorators.csrf import csrf_exempt
 
 from .i18n_strings import STRINGS
-from .models import AboutContent, Advantage, CareerApplication, ContactInfo, ContactSubmission, GalleryItem, KnowledgeBase, News, PageHero, Partner, Project, Service, TeamMember, Vacancy
+from .models import AboutContent, Advantage, CareerApplication, CatalogCategory, CatalogImage, CatalogPDF, ContactInfo, ContactSubmission, GalleryItem, KnowledgeBase, News, PageHero, Partner, Project, Service, TeamMember, Vacancy
 
 
 def _cors(response):
@@ -505,3 +505,50 @@ def project_detail(request, slug):
         'images': _gallery_payload(request, p.images),
     }
     return _cors(JsonResponse(data))
+
+
+def _catalog_categories_payload():
+    cats = CatalogCategory.objects.filter(is_active=True)
+    return [{'id': c.id, 'slug': c.slug, 'name': c.name} for c in cats]
+
+
+def catalog_pdfs_list(request):
+    qs = CatalogPDF.objects.filter(is_active=True).select_related('category')
+    cat_slug = request.GET.get('category')
+    if cat_slug:
+        qs = qs.filter(category__slug=cat_slug)
+    items = []
+    for p in qs:
+        items.append({
+            'id': p.id,
+            'title': p.title,
+            'description': p.description,
+            'file': _abs_url(request, p.file),
+            'cover': _abs_url(request, p.cover),
+            'category': p.category.slug if p.category else '',
+            'category_name': p.category.name if p.category else '',
+        })
+    return _cors(JsonResponse({
+        'pdfs': items,
+        'categories': _catalog_categories_payload(),
+    }))
+
+
+def catalog_images_list(request):
+    qs = CatalogImage.objects.filter(is_active=True).select_related('category')
+    cat_slug = request.GET.get('category')
+    if cat_slug:
+        qs = qs.filter(category__slug=cat_slug)
+    items = []
+    for im in qs:
+        items.append({
+            'id': im.id,
+            'title': im.title,
+            'image': _abs_url(request, im.image),
+            'category': im.category.slug if im.category else '',
+            'category_name': im.category.name if im.category else '',
+        })
+    return _cors(JsonResponse({
+        'images': items,
+        'categories': _catalog_categories_payload(),
+    }))

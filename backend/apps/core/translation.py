@@ -4,6 +4,9 @@ from modeltranslation.translator import TranslationOptions, register
 from .models import (
     AboutContent,
     Advantage,
+    CatalogCategory,
+    CatalogImage,
+    CatalogPDF,
     GalleryItem,
     KnowledgeBase,
     News,
@@ -84,3 +87,18 @@ class TeamMemberTR(TranslationOptions):
 @register(Partner)
 class PartnerTR(TranslationOptions):
     fields = ('name', 'description')
+
+
+@register(CatalogCategory)
+class CatalogCategoryTR(TranslationOptions):
+    fields = ('name',)
+
+
+@register(CatalogPDF)
+class CatalogPDFTR(TranslationOptions):
+    fields = ('title', 'description')
+
+
+@register(CatalogImage)
+class CatalogImageTR(TranslationOptions):
+    fields = ('title',)

@@ -1,7 +1,7 @@
 from django.contrib import admin
 from modeltranslation.admin import TabbedTranslationAdmin
 
-from .models import AboutContent, Advantage, CareerApplication, ContactInfo, ContactSubmission, GalleryItem, KnowledgeBase, News, PageHero, Partner, Project, ProjectImage, Service, ServiceImage, TeamMember, Vacancy
+from .models import AboutContent, Advantage, CareerApplication, CatalogCategory, CatalogImage, CatalogPDF, ContactInfo, ContactSubmission, GalleryItem, KnowledgeBase, News, PageHero, Partner, Project, ProjectImage, Service, ServiceImage, TeamMember, Vacancy
 
 admin.site.index_title = 'İdarə bölməsi'
 
@@ -205,3 +205,27 @@ class ProjectAdmin(TabbedTranslationAdmin):
         ('Detallar', {'fields': ('location', 'area')}),
         ('Seçilmiş layihə', {'fields': ('is_featured', 'featured_description')}),
     )
+
+
+@admin.register(CatalogCategory)
+class CatalogCategoryAdmin(TabbedTranslationAdmin):
+    list_display = ('name', 'slug', 'order', 'is_active')
+    list_editable = ('order', 'is_active')
+    prepopulated_fields = {'slug': ('name',)}
+    search_fields = ('name',)
+
+
+@admin.register(CatalogPDF)
+class CatalogPDFAdmin(TabbedTranslationAdmin):
+    list_display = ('title', 'category', 'order', 'is_active')
+    list_editable = ('order', 'is_active')
+    list_filter = ('is_active', 'category')
+    search_fields = ('title', 'description')
+
+
+@admin.register(CatalogImage)
+class CatalogImageAdmin(TabbedTranslationAdmin):
+    list_display = ('title', 'category', 'order', 'is_active')
+    list_editable = ('order', 'is_active')
+    list_filter = ('is_active', 'category')
+    search_fields = ('title',)

@@ -25,6 +25,7 @@ from django.views.static import serve as static_serve
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('rosetta/', include('rosetta.urls')),
+    path('ckeditor/', include('ckeditor_uploader.urls')),
     path('api/', include('apps.core.urls')),
 ]
 
