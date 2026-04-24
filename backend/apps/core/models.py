@@ -29,7 +29,7 @@ class PageHero(models.Model):
         verbose_name='Səhifə',
     )
     tag = models.CharField(max_length=100, blank=True, verbose_name='Tag')
-    title = models.CharField(max_length=200, verbose_name='Başlıq (H1)')
+    title = models.CharField(max_length=200, blank=True, verbose_name='Başlıq (H1)')
     description = models.TextField(blank=True, verbose_name='Açıqlama')
     background = models.ImageField(
         upload_to='heroes/',
