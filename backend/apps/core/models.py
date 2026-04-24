@@ -4,6 +4,7 @@ from django.utils.translation import pgettext_lazy
 
 class PageHero(models.Model):
     PAGE_CHOICES = [
+        ('home', 'Ana Səhifə'),
         ('haqqimizda', 'Haqqımızda'),
         ('komandamiz', 'Komandamız'),
         ('xidmetler', 'Xidmətlər'),
@@ -35,6 +36,12 @@ class PageHero(models.Model):
         blank=True,
         null=True,
         verbose_name='Fon şəkli',
+    )
+    video = models.FileField(
+        upload_to='heroes/',
+        blank=True,
+        null=True,
+        verbose_name='Fon videosu (mp4)',
     )
 
     meta_title = models.CharField(max_length=200, blank=True, verbose_name='Meta Title')

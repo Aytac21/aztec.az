@@ -885,6 +885,32 @@ document.addEventListener('DOMContentLoaded',function(){
   });
 });
 
+/* ======== HOME HERO VIDEO LOADER ======== */
+document.addEventListener('DOMContentLoaded', function(){
+  var heroSec = document.querySelector('section.hero[data-page="home"]');
+  if(!heroSec) return;
+  var vid = document.getElementById('heroVid');
+  if(!vid) return;
+
+  fetch(window.apiUrl('/api/hero/home/'), {cache:'no-store'})
+    .then(function(r){ if(!r.ok) throw new Error('home-hero '+r.status); return r.json(); })
+    .then(function(d){
+      if(d.video){
+        var src = vid.querySelector('source');
+        if(src){ src.setAttribute('src', d.video); }
+        else{
+          src = document.createElement('source');
+          src.setAttribute('src', d.video);
+          src.setAttribute('type', 'video/mp4');
+          vid.appendChild(src);
+        }
+        vid.load();
+        vid.play().catch(function(){});
+      }
+    })
+    .catch(function(err){ console.warn('[home-hero] video load failed:', err); });
+});
+
 /* ======== BACKEND PAGE HERO LOADER ======== */
 document.addEventListener('DOMContentLoaded', function(){
   var hero = document.querySelector('section.page-hero[data-page]');

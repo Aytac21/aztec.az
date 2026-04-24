@@ -26,7 +26,7 @@ class PageHeroAdmin(TabbedTranslationAdmin):
     fieldsets = (
         ('Səhifə', {'fields': ('page',)}),
         ('Məzmun', {'fields': ('tag', 'title', 'description')}),
-        ('Vizual', {'fields': ('background',)}),
+        ('Vizual', {'fields': ('background', 'video')}),
         ('SEO / Meta', {'fields': ('meta_title', 'meta_description', 'meta_keywords')}),
     )
 

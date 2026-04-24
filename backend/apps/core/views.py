@@ -61,12 +61,20 @@ def page_hero(request, slug):
         except Exception:
             bg = obj.background.url
 
+    vid = ''
+    if obj.video:
+        try:
+            vid = request.build_absolute_uri(obj.video.url)
+        except Exception:
+            vid = obj.video.url
+
     data = {
         'page': obj.page,
         'tag': obj.tag,
         'title': obj.title,
         'description': obj.description,
         'background': bg,
+        'video': vid,
         'meta_title': obj.meta_title,
         'meta_description': obj.meta_description,
         'meta_keywords': obj.meta_keywords,
