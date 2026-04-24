@@ -896,12 +896,14 @@ document.addEventListener('DOMContentLoaded', function(){
     .then(function(r){ if(!r.ok) throw new Error('home-hero '+r.status); return r.json(); })
     .then(function(d){
       if(d.video){
+        var ext = d.video.split('.').pop().toLowerCase();
+        var mime = {mp4:'video/mp4',webm:'video/webm',ogv:'video/ogg',ogg:'video/ogg'}[ext] || 'video/mp4';
         var src = vid.querySelector('source');
-        if(src){ src.setAttribute('src', d.video); }
+        if(src){ src.setAttribute('src', d.video); src.setAttribute('type', mime); }
         else{
           src = document.createElement('source');
           src.setAttribute('src', d.video);
-          src.setAttribute('type', 'video/mp4');
+          src.setAttribute('type', mime);
           vid.appendChild(src);
         }
         vid.load();
